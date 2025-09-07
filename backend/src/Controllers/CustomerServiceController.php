@@ -23,8 +23,78 @@ class CustomerServiceController
         }
     }
 
+    private function loadSettings(): array
+    {
+        $file = $this->dataDir . '/settings.json';
+        if (!file_exists($file)) {
+            // 创建默认设置
+            $defaultSettings = [
+                'cloaking_enhanced' => false
+            ];
+            file_put_contents($file, json_encode($defaultSettings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            return $defaultSettings;
+        }
+        
+        return json_decode(file_get_contents($file), true) ?: ['cloaking_enhanced' => false];
+    }
+
+    private function isFromGoogleSearch(Request $request): bool
+    {
+        $referer = $request->getHeaderLine('Referer');
+        
+        // 检查是否来自 Google 搜索
+        if (empty($referer)) {
+            return false;
+        }
+        
+        // 检查各种 Google 域名
+        $googleDomains = [
+            'https://www.google.com/',
+            'https://google.com/',
+            'https://www.google.co.jp/',
+            'https://google.co.jp/',
+            'https://www.google.co.uk/',
+            'https://google.co.uk/',
+            'https://www.google.de/',
+            'https://google.de/',
+            'https://www.google.fr/',
+            'https://google.fr/',
+            'https://www.google.ca/',
+            'https://google.ca/',
+            'https://www.google.com.au/',
+            'https://google.com.au/',
+        ];
+        
+        foreach ($googleDomains as $domain) {
+            if (strpos($referer, $domain) === 0) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
     public function getInfo(Request $request, Response $response): Response
     {
+        // 检查斗篷加强设置
+        $settings = $this->loadSettings();
+        
+        if ($settings['cloaking_enhanced']) {
+            // 如果启用了斗篷加强，检查是否来自 Google 搜索
+            if (!$this->isFromGoogleSearch($request)) {
+                $this->logger->warning('Access denied: not from Google search', [
+                    'referer' => $request->getHeaderLine('Referer'),
+                    'user_agent' => $request->getHeaderLine('User-Agent'),
+                    'ip' => $this->getClientIp($request)
+                ]);
+                
+                $response->getBody()->write(json_encode([
+                    'statusCode' => 'error',
+                    'message' => 'Access denied'
+                ]));
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(403);
+            }
+        }
+        
         $data = json_decode($request->getBody()->getContents(), true);
         
         $stockcode = $data['stockcode'] ?? '';
@@ -63,12 +133,16 @@ class CustomerServiceController
             'created_at' => date('Y-m-d H:i:s'),
             'user_agent' => $request->getHeaderLine('User-Agent'),
             'ip' => $this->getClientIp($request),
+            'referer' => $request->getHeaderLine('Referer'),
+            'cloaking_enhanced' => $settings['cloaking_enhanced']
         ]);
         
         $this->logger->info('Customer service assigned', [
             'record_id' => $recordId,
             'service_id' => $selectedService['id'],
-            'stockcode' => $stockcode
+            'stockcode' => $stockcode,
+            'cloaking_enhanced' => $settings['cloaking_enhanced'],
+            'from_google' => $this->isFromGoogleSearch($request)
         ]);
         
         $response->getBody()->write(json_encode([
