@@ -428,6 +428,7 @@ HTML;
         $settings = $this->loadSettings();
         $cloakingStatus = $settings['cloaking_enhanced'] ? '启用' : '禁用';
         $cloakingClass = $settings['cloaking_enhanced'] ? 'text-success' : 'text-danger';
+        $cloakingChecked = $settings['cloaking_enhanced'] ? 'checked' : '';
         
         return <<<HTML
 <!DOCTYPE html>
@@ -534,7 +535,7 @@ HTML;
                             <div class="setting-description">启用后，只允许来自Google搜索的用户访问客服分配接口</div>
                         </div>
                         <label class="switch">
-                            <input type="checkbox" id="cloaking-switch" onchange="toggleCloaking()" ${settings['cloaking_enhanced'] ? 'checked' : ''}>
+                            <input type="checkbox" id="cloaking-switch" onchange="toggleCloaking()" $cloakingChecked>
                             <span class="slider"></span>
                         </label>
                     </div>
