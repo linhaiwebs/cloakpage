@@ -17,24 +17,34 @@ class AdminController
         $this->logger = $logger;
         $this->dataDir = __DIR__ . '/../../data';
         
+        // 确保数据目录存在
         if (!is_dir($this->dataDir)) {
             mkdir($this->dataDir, 0755, true);
         }
-        
-        // 确保 session 已启动
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+    }
+
+    private function isAuthenticated(Request $request): bool
+    {
+        // 简单的认证检查 - 在生产环境中应该使用更安全的方法
+        $cookies = $request->getCookieParams();
+        return isset($cookies['admin_logged_in']) && $cookies['admin_logged_in'] === 'true';
+    }
+
+    private function requireAuth(Request $request, Response $response): ?Response
+    {
+        if (!$this->isAuthenticated($request)) {
+            return $response->withHeader('Location', '/admin')->withStatus(302);
         }
+        return null;
     }
 
     public function login(Request $request, Response $response): Response
     {
-        // 如果已经登录，重定向到仪表板
-        if ($this->isAuthenticated()) {
+        if ($this->isAuthenticated($request)) {
             return $response->withHeader('Location', '/admin/dashboard')->withStatus(302);
         }
-        
-        $html = $this->renderLogin();
+
+        $html = $this->renderLoginPage();
         $response->getBody()->write($html);
         return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
     }
@@ -44,38 +54,33 @@ class AdminController
         $data = $request->getParsedBody();
         $username = $data['username'] ?? '';
         $password = $data['password'] ?? '';
-        
-        // 验证用户名和密码
-        if ($username === 'adsadmin' && $password === 'Mm123567..') {
-            $_SESSION['admin_logged_in'] = true;
-            $_SESSION['admin_username'] = $username;
-            $_SESSION['admin_login_time'] = date('Y-m-d H:i:s');
-            
-            $this->logger->info('Admin login successful', [
-                'username' => $username,
-                'ip' => $this->getClientIp($request),
-                'user_agent' => $request->getHeaderLine('User-Agent')
-            ]);
-            
-            return $response->withHeader('Location', '/admin/dashboard')->withStatus(302);
-        } else {
-            $this->logger->warning('Admin login failed', [
-                'username' => $username,
-                'ip' => $this->getClientIp($request),
-                'user_agent' => $request->getHeaderLine('User-Agent')
-            ]);
-            
-            // 重定向回登录页面，带错误参数
-            return $response->withHeader('Location', '/admin?error=1')->withStatus(302);
+
+        // 简单的认证 - 在生产环境中应该使用数据库和哈希密码
+        if ($username === 'admin' && $password === 'admin123') {
+            return $response
+                ->withHeader('Set-Cookie', 'admin_logged_in=true; Path=/; HttpOnly')
+                ->withHeader('Location', '/admin/dashboard')
+                ->withStatus(302);
         }
+
+        $html = $this->renderLoginPage('用户名或密码错误');
+        $response->getBody()->write($html);
+        return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+    }
+
+    public function logout(Request $request, Response $response): Response
+    {
+        return $response
+            ->withHeader('Set-Cookie', 'admin_logged_in=; Path=/; HttpOnly; Expires=Thu, 01 Jan 1970 00:00:00 GMT')
+            ->withHeader('Location', '/admin')
+            ->withStatus(302);
     }
 
     public function dashboard(Request $request, Response $response): Response
     {
-        if (!$this->isAuthenticated()) {
-            return $response->withHeader('Location', '/admin')->withStatus(302);
-        }
-        
+        $authResponse = $this->requireAuth($request, $response);
+        if ($authResponse) return $authResponse;
+
         $html = $this->renderDashboard();
         $response->getBody()->write($html);
         return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
@@ -83,14 +88,13 @@ class AdminController
 
     public function customerServices(Request $request, Response $response): Response
     {
-        if (!$this->isAuthenticated()) {
-            return $response->withHeader('Location', '/admin')->withStatus(302);
-        }
-        
+        $authResponse = $this->requireAuth($request, $response);
+        if ($authResponse) return $authResponse;
+
         if ($request->getMethod() === 'POST') {
-            return $this->handleCustomerServicePost($request, $response);
+            return $this->handleCustomerServiceUpdate($request, $response);
         }
-        
+
         $html = $this->renderCustomerServices();
         $response->getBody()->write($html);
         return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
@@ -98,10 +102,9 @@ class AdminController
 
     public function trackingData(Request $request, Response $response): Response
     {
-        if (!$this->isAuthenticated()) {
-            return $response->withHeader('Location', '/admin')->withStatus(302);
-        }
-        
+        $authResponse = $this->requireAuth($request, $response);
+        if ($authResponse) return $authResponse;
+
         $html = $this->renderTrackingData();
         $response->getBody()->write($html);
         return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
@@ -109,438 +112,582 @@ class AdminController
 
     public function assignments(Request $request, Response $response): Response
     {
-        if (!$this->isAuthenticated()) {
-            return $response->withHeader('Location', '/admin')->withStatus(302);
-        }
-        
+        $authResponse = $this->requireAuth($request, $response);
+        if ($authResponse) return $authResponse;
+
         $html = $this->renderAssignments();
         $response->getBody()->write($html);
         return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
     }
 
-    public function logout(Request $request, Response $response): Response
-    {
-        $this->logger->info('Admin logout', [
-            'username' => $_SESSION['admin_username'] ?? 'unknown',
-            'ip' => $this->getClientIp($request)
-        ]);
-        
-        // 清除会话
-        $_SESSION = [];
-        session_destroy();
-        
-        // 重定向到登录页面
-        return $response->withHeader('Location', '/admin')->withStatus(302);
-    }
-
+    // API 方法
     public function apiCustomerServices(Request $request, Response $response): Response
     {
-        if (!$this->isAuthenticated()) {
+        $authResponse = $this->requireAuth($request, $response);
+        if ($authResponse) {
             $response->getBody()->write(json_encode(['error' => 'Unauthorized']));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
         }
+
+        $method = $request->getMethod();
         
-        try {
-            if ($request->getMethod() === 'POST') {
-                return $this->createCustomerService($request, $response);
-            } elseif ($request->getMethod() === 'PUT') {
-                return $this->updateCustomerService($request, $response);
-            } elseif ($request->getMethod() === 'DELETE') {
-                return $this->deleteCustomerService($request, $response);
-            }
-            
-            $services = $this->loadCustomerServices();
-            $response->getBody()->write(json_encode($services));
-            return $response->withHeader('Content-Type', 'application/json');
-        } catch (\Exception $e) {
-            $this->logger->error('API error in customer services', ['error' => $e->getMessage()]);
-            $response->getBody()->write(json_encode(['error' => $e->getMessage()]));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
+        switch ($method) {
+            case 'GET':
+                $services = $this->loadCustomerServices();
+                $response->getBody()->write(json_encode($services));
+                return $response->withHeader('Content-Type', 'application/json');
+                
+            case 'POST':
+                $data = json_decode($request->getBody()->getContents(), true);
+                $result = $this->createCustomerService($data);
+                $response->getBody()->write(json_encode($result));
+                return $response->withHeader('Content-Type', 'application/json');
+                
+            case 'PUT':
+                $data = json_decode($request->getBody()->getContents(), true);
+                $result = $this->updateCustomerService($data);
+                $response->getBody()->write(json_encode($result));
+                return $response->withHeader('Content-Type', 'application/json');
+                
+            case 'DELETE':
+                $data = json_decode($request->getBody()->getContents(), true);
+                $result = $this->deleteCustomerService($data['id'] ?? '');
+                $response->getBody()->write(json_encode($result));
+                return $response->withHeader('Content-Type', 'application/json');
+                
+            default:
+                $response->getBody()->write(json_encode(['error' => 'Method not allowed']));
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(405);
         }
     }
 
     public function apiTrackingData(Request $request, Response $response): Response
     {
-        if (!$this->isAuthenticated()) {
+        $authResponse = $this->requireAuth($request, $response);
+        if ($authResponse) {
             $response->getBody()->write(json_encode(['error' => 'Unauthorized']));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
         }
-        
-        $page = (int)($request->getQueryParams()['page'] ?? 1);
-        $limit = (int)($request->getQueryParams()['limit'] ?? 50);
-        
-        $data = $this->getTrackingData($page, $limit);
-        $response->getBody()->write(json_encode($data));
+
+        $trackingData = $this->loadTrackingData();
+        $response->getBody()->write(json_encode($trackingData));
         return $response->withHeader('Content-Type', 'application/json');
     }
 
     public function apiAssignments(Request $request, Response $response): Response
     {
-        if (!$this->isAuthenticated()) {
+        $authResponse = $this->requireAuth($request, $response);
+        if ($authResponse) {
             $response->getBody()->write(json_encode(['error' => 'Unauthorized']));
             return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
         }
-        
-        $page = (int)($request->getQueryParams()['page'] ?? 1);
-        $limit = (int)($request->getQueryParams()['limit'] ?? 50);
-        
-        $data = $this->getAssignments($page, $limit);
-        $response->getBody()->write(json_encode($data));
+
+        $assignments = $this->loadAssignments();
+        $response->getBody()->write(json_encode($assignments));
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    private function isAuthenticated(): bool
+    public function apiSettings(Request $request, Response $response): Response
     {
-        return isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
+        $authResponse = $this->requireAuth($request, $response);
+        if ($authResponse) {
+            $response->getBody()->write(json_encode(['error' => 'Unauthorized']));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
+        }
+
+        if ($request->getMethod() === 'POST') {
+            $data = json_decode($request->getBody()->getContents(), true);
+            $result = $this->updateSettings($data);
+            $response->getBody()->write(json_encode($result));
+            return $response->withHeader('Content-Type', 'application/json');
+        } else {
+            $settings = $this->loadSettings();
+            $response->getBody()->write(json_encode($settings));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
     }
 
-    private function renderLogin(bool $hasError = false): string
+    // 数据处理方法
+    private function loadSettings(): array
     {
-        $errorMessage = '';
-        if (isset($_GET['error']) && $_GET['error'] == '1') {
-            $errorMessage = '<div style="background: #fee; color: #c33; padding: 10px; border-radius: 4px; margin-bottom: 15px; border: 1px solid #fcc;">用户名或密码错误</div>';
+        $file = $this->dataDir . '/settings.json';
+        if (!file_exists($file)) {
+            $defaultSettings = [
+                'cloaking_enhanced' => false
+            ];
+            file_put_contents($file, json_encode($defaultSettings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            return $defaultSettings;
         }
         
-        return '<!DOCTYPE html>
-<html lang="ja">
+        return json_decode(file_get_contents($file), true) ?: ['cloaking_enhanced' => false];
+    }
+
+    private function updateSettings(array $data): array
+    {
+        $file = $this->dataDir . '/settings.json';
+        $settings = $this->loadSettings();
+        
+        if (isset($data['cloaking_enhanced'])) {
+            $settings['cloaking_enhanced'] = (bool)$data['cloaking_enhanced'];
+        }
+        
+        file_put_contents($file, json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        
+        $this->logger->info('Settings updated', $settings);
+        
+        return ['success' => true, 'settings' => $settings];
+    }
+
+    private function loadCustomerServices(): array
+    {
+        $file = $this->dataDir . '/customer_services.json';
+        if (!file_exists($file)) {
+            return [];
+        }
+        
+        return json_decode(file_get_contents($file), true) ?: [];
+    }
+
+    private function createCustomerService(array $data): array
+    {
+        $services = $this->loadCustomerServices();
+        
+        $newService = [
+            'id' => uniqid('cs_', true),
+            'name' => $data['name'] ?? '',
+            'url' => $data['url'] ?? '',
+            'fallback_url' => $data['fallback_url'] ?? '/',
+            'status' => $data['status'] ?? 'active',
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+        
+        $services[] = $newService;
+        
+        file_put_contents($this->dataDir . '/customer_services.json', json_encode($services, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        
+        return ['success' => true, 'service' => $newService];
+    }
+
+    private function updateCustomerService(array $data): array
+    {
+        $services = $this->loadCustomerServices();
+        $updated = false;
+        
+        for ($i = 0; $i < count($services); $i++) {
+            if ($services[$i]['id'] === ($data['id'] ?? '')) {
+                $services[$i]['name'] = $data['name'] ?? $services[$i]['name'];
+                $services[$i]['url'] = $data['url'] ?? $services[$i]['url'];
+                $services[$i]['fallback_url'] = $data['fallback_url'] ?? $services[$i]['fallback_url'];
+                $services[$i]['status'] = $data['status'] ?? $services[$i]['status'];
+                $updated = true;
+                break;
+            }
+        }
+        
+        if ($updated) {
+            file_put_contents($this->dataDir . '/customer_services.json', json_encode($services, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            return ['success' => true];
+        }
+        
+        return ['success' => false, 'error' => 'Service not found'];
+    }
+
+    private function deleteCustomerService(string $id): array
+    {
+        $services = $this->loadCustomerServices();
+        $originalCount = count($services);
+        
+        $services = array_filter($services, function($service) use ($id) {
+            return $service['id'] !== $id;
+        });
+        
+        if (count($services) < $originalCount) {
+            file_put_contents($this->dataDir . '/customer_services.json', json_encode(array_values($services), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            return ['success' => true];
+        }
+        
+        return ['success' => false, 'error' => 'Service not found'];
+    }
+
+    private function handleCustomerServiceUpdate(Request $request, Response $response): Response
+    {
+        $data = $request->getParsedBody();
+        
+        if (isset($data['action'])) {
+            switch ($data['action']) {
+                case 'create':
+                    $result = $this->createCustomerService($data);
+                    break;
+                case 'update':
+                    $result = $this->updateCustomerService($data);
+                    break;
+                case 'delete':
+                    $result = $this->deleteCustomerService($data['id'] ?? '');
+                    break;
+                default:
+                    $result = ['success' => false, 'error' => 'Invalid action'];
+            }
+        } else {
+            $result = ['success' => false, 'error' => 'No action specified'];
+        }
+
+        return $response->withHeader('Location', '/admin/customer-services')->withStatus(302);
+    }
+
+    private function loadTrackingData(): array
+    {
+        $file = $this->dataDir . '/../logs/tracking.log';
+        if (!file_exists($file)) {
+            return [];
+        }
+        
+        $lines = file($file, FILE_IGNORE_NEW_LINES);
+        $data = [];
+        
+        foreach (array_reverse(array_slice($lines, -100)) as $line) {
+            if (preg_match('/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) \[([^\]]+)\] (.+)$/', $line, $matches)) {
+                $data[] = [
+                    'timestamp' => $matches[1],
+                    'type' => $matches[2],
+                    'data' => json_decode($matches[3], true) ?: $matches[3]
+                ];
+            }
+        }
+        
+        return $data;
+    }
+
+    private function loadAssignments(): array
+    {
+        $file = $this->dataDir . '/assignments.jsonl';
+        if (!file_exists($file)) {
+            return [];
+        }
+        
+        $lines = file($file, FILE_IGNORE_NEW_LINES);
+        $assignments = [];
+        
+        foreach (array_reverse(array_slice($lines, -100)) as $line) {
+            $assignment = json_decode($line, true);
+            if ($assignment) {
+                $assignments[] = $assignment;
+            }
+        }
+        
+        return $assignments;
+    }
+
+    // 渲染方法
+    private function renderLoginPage(string $error = ''): string
+    {
+        $errorHtml = $error ? "<div class='alert alert-danger'>$error</div>" : '';
+        
+        return <<<HTML
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理后台登录</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .login-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            width: 100%;
-            max-width: 400px;
-        }
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .login-header h1 {
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-        .login-header p {
-            color: #666;
-            font-size: 14px;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 500;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e1e5e9;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        .login-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 0.75rem;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .login-btn:hover {
-            transform: translateY(-2px);
-        }
-        .login-btn:active {
-            transform: translateY(0);
-        }
-        .footer {
-            text-align: center;
-            margin-top: 2rem;
-            color: #666;
-            font-size: 12px;
-        }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 50px; }
+        .login-container { max-width: 400px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="password"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .alert { padding: 10px; margin-bottom: 20px; border-radius: 4px; }
+        .alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        h2 { text-align: center; margin-bottom: 30px; color: #333; }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <div class="login-header">
-            <h1>🔐 管理后台</h1>
-            <p>请输入您的登录凭据</p>
-        </div>
-        
-        ' . $errorMessage . '
-        
+        <h2>管理后台登录</h2>
+        $errorHtml
         <form method="POST" action="/admin/login">
             <div class="form-group">
-                <label for="username">用户名</label>
-                <input type="text" id="username" name="username" required autocomplete="username">
+                <label for="username">用户名:</label>
+                <input type="text" id="username" name="username" required>
             </div>
-            
             <div class="form-group">
-                <label for="password">密码</label>
-                <input type="password" id="password" name="password" required autocomplete="current-password">
+                <label for="password">密码:</label>
+                <input type="password" id="password" name="password" required>
             </div>
-            
-            <button type="submit" class="login-btn">登录</button>
+            <button type="submit">登录</button>
         </form>
-        
-        <div class="footer">
-            © 2025 股票分析系统
-        </div>
     </div>
 </body>
-</html>';
+</html>
+HTML;
     }
 
     private function renderDashboard(): string
     {
-        $username = $_SESSION['admin_username'] ?? 'unknown';
-        $loginTime = $_SESSION['admin_login_time'] ?? 'unknown';
-        $stats = $this->getDashboardStats();
         $settings = $this->loadSettings();
+        $cloakingStatus = $settings['cloaking_enhanced'] ? '启用' : '禁用';
+        $cloakingClass = $settings['cloaking_enhanced'] ? 'text-success' : 'text-danger';
         
-        return '<!DOCTYPE html>
-<html lang="ja">
+        return <<<HTML
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>管理后台 - 股票分析系统</title>
+    <title>管理后台 - 仪表板</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; }
-        .header { background: #2c3e50; color: white; padding: 1rem 2rem; }
-        .nav { background: #34495e; padding: 0 2rem; }
-        .nav ul { list-style: none; display: flex; }
-        .nav li { margin-right: 2rem; }
-        .nav a { color: white; text-decoration: none; padding: 1rem 0; display: block; }
-        .nav a:hover, .nav a.active { background: #2c3e50; padding: 1rem; margin: 0 -1rem; }
-        .container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-        .stat-card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .stat-number { font-size: 2rem; font-weight: bold; color: #3498db; }
-        .stat-label { color: #7f8c8d; margin-top: 0.5rem; }
-        .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; }
-        .card-header { background: #ecf0f1; padding: 1rem 1.5rem; border-bottom: 1px solid #bdc3c7; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; }
+        .navbar { background: #343a40; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { margin: 0; font-size: 1.5rem; }
+        .navbar a { color: white; text-decoration: none; margin-left: 1rem; }
+        .navbar a:hover { text-decoration: underline; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .nav-tabs { display: flex; border-bottom: 1px solid #dee2e6; margin-bottom: 2rem; }
+        .nav-tab { padding: 0.75rem 1.5rem; background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; }
+        .nav-tab.active { border-bottom-color: #007bff; color: #007bff; font-weight: bold; }
+        .nav-tab:hover { background: #f8f9fa; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .card-header { padding: 1rem 1.5rem; border-bottom: 1px solid #dee2e6; font-weight: bold; }
         .card-body { padding: 1.5rem; }
-        .settings-section { margin-bottom: 2rem; }
-        .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 1rem; }
-        .setting-label { font-weight: 600; color: #2c3e50; }
-        .setting-description { font-size: 14px; color: #7f8c8d; margin-top: 0.25rem; }
-        .toggle-switch { position: relative; display: inline-block; width: 60px; height: 34px; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .stat-card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #007bff; }
+        .stat-label { color: #6c757d; margin-top: 0.5rem; }
+        .text-success { color: #28a745 !important; }
+        .text-danger { color: #dc3545 !important; }
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn:hover { opacity: 0.9; }
+        .form-group { margin-bottom: 1rem; }
+        .form-control { width: 100%; padding: 0.5rem; border: 1px solid #ced4da; border-radius: 4px; }
+        .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
         .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background-color: #2196F3; }
+        input:focus + .slider { box-shadow: 0 0 1px #2196F3; }
         input:checked + .slider:before { transform: translateX(26px); }
-        .status-enabled { color: #27ae60; font-weight: bold; }
-        .status-disabled { color: #e74c3c; font-weight: bold; }
+        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; }
+        .setting-item:last-child { border-bottom: none; }
+        .setting-label { font-weight: bold; }
+        .setting-description { color: #6c757d; font-size: 0.9rem; margin-top: 0.25rem; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1>股票分析系统 - 管理后台</h1>
-            <div style="color: #ecf0f1; font-size: 14px;">
-                欢迎, ' . htmlspecialchars($username) . ' | 登录时间: ' . htmlspecialchars($loginTime) . ' | 
-                <a href="/admin/logout" style="color: #e74c3c; text-decoration: none;">退出登录</a>
+    <nav class="navbar">
+        <h1>管理后台</h1>
+        <div>
+            <a href="/admin/dashboard">仪表板</a>
+            <a href="/admin/customer-services">客服管理</a>
+            <a href="/admin/tracking">追踪数据</a>
+            <a href="/admin/assignments">分配记录</a>
+            <a href="/admin/logout">退出</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('overview')">概览</button>
+            <button class="nav-tab" onclick="showTab('settings')">系统设置</button>
+        </div>
+
+        <div id="overview" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-assignments">-</div>
+                    <div class="stat-label">总分配数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="success-rate">-</div>
+                    <div class="stat-label">成功率</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="active-services">-</div>
+                    <div class="stat-label">活跃客服</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number $cloakingClass">$cloakingStatus</div>
+                    <div class="stat-label">斗篷加强</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">最近活动</div>
+                <div class="card-body">
+                    <div id="recent-activity">加载中...</div>
+                </div>
             </div>
         </div>
-    </div>
-    <nav class="nav">
-        <ul>
-            <li><a href="/admin/dashboard" class="active">仪表板</a></li>
-            <li><a href="/admin/customer-services">客服管理</a></li>
-            <li><a href="/admin/tracking">追踪数据</a></li>
-            <li><a href="/admin/assignments">分配记录</a></li>
-        </ul>
-    </nav>
-    <div class="container">
-        <div class="settings-section">
-            <div class="setting-item">
-                <div>
-                    <div class="setting-label">斗篷加强</div>
-                    <div class="setting-description">启用后，只允许来自 Google 搜索的用户访问客服接口</div>
-                    <div style="margin-top: 0.5rem;">
-                        状态: <span id="cloaking-status" class="' . ($settings['cloaking_enhanced'] ? 'status-enabled">已启用' : 'status-disabled">已关闭') . '</span>
+
+        <div id="settings" class="tab-content">
+            <div class="card">
+                <div class="card-header">系统设置</div>
+                <div class="card-body">
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">斗篷加强</div>
+                            <div class="setting-description">启用后，只允许来自Google搜索的用户访问客服分配接口</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="cloaking-switch" onchange="toggleCloaking()" ${settings['cloaking_enhanced'] ? 'checked' : ''}>
+                            <span class="slider"></span>
+                        </label>
                     </div>
                 </div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="cloaking-toggle" ' . ($settings['cloaking_enhanced'] ? 'checked' : '') . '>
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-        
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number">' . $stats['total_assignments'] . '</div>
-                <div class="stat-label">总分配数</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">' . $stats['successful_launches'] . '</div>
-                <div class="stat-label">成功启动数</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">' . $stats['total_tracking'] . '</div>
-                <div class="stat-label">追踪记录数</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">' . $stats['active_services'] . '</div>
-                <div class="stat-label">活跃客服数</div>
-            </div>
-        </div>
-        
-        <div class="card">
-            <div class="card-header">
-                <h2>系统概览</h2>
-            </div>
-            <div class="card-body">
-                <p>欢迎使用股票分析系统管理后台。您可以通过左侧导航菜单管理各个模块。</p>
-                <ul style="margin-top: 1rem; padding-left: 2rem;">
-                    <li><strong>客服管理</strong>：添加、编辑和管理客服账号信息</li>
-                    <li><strong>追踪数据</strong>：查看用户行为追踪数据和错误日志</li>
-                    <li><strong>分配记录</strong>：查看客服分配记录和用户转化情况</li>
-                    <li><strong>斗篷加强</strong>：控制是否只允许来自 Google 搜索的用户访问</li>
-                </ul>
             </div>
         </div>
     </div>
-    
+
     <script>
-        document.getElementById("cloaking-toggle").addEventListener("change", async function() {
-            const isEnabled = this.checked;
-            const statusElement = document.getElementById("cloaking-status");
+        function showTab(tabName) {
+            // 隐藏所有标签内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
             
-            try {
-                const response = await fetch("/admin/api/settings", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ cloaking_enhanced: isEnabled })
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                
-                // 更新状态显示
-                if (isEnabled) {
-                    statusElement.textContent = "已启用";
-                    statusElement.className = "status-enabled";
+            // 移除所有标签的活跃状态
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // 显示选中的标签内容
+            document.getElementById(tabName).classList.add('active');
+            
+            // 设置选中的标签为活跃状态
+            event.target.classList.add('active');
+        }
+
+        function toggleCloaking() {
+            const checkbox = document.getElementById('cloaking-switch');
+            const enabled = checkbox.checked;
+            
+            fetch('/admin/api/settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    cloaking_enhanced: enabled
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('设置已更新');
+                    location.reload();
                 } else {
-                    statusElement.textContent = "已关闭";
-                    statusElement.className = "status-disabled";
+                    alert('更新失败');
+                    checkbox.checked = !enabled; // 恢复原状态
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('更新失败');
+                checkbox.checked = !enabled; // 恢复原状态
+            });
+        }
+
+        // 加载统计数据
+        function loadStats() {
+            Promise.all([
+                fetch('/admin/api/assignments').then(r => r.json()),
+                fetch('/admin/api/customer-services').then(r => r.json())
+            ]).then(([assignments, services]) => {
+                document.getElementById('total-assignments').textContent = assignments.length;
                 
-                console.log("斗篷加强设置已更新:", isEnabled ? "启用" : "关闭");
-            } catch (error) {
-                console.error("更新设置失败:", error);
-                alert("更新设置失败: " + error.message);
-                // 恢复开关状态
-                this.checked = !isEnabled;
-            }
-        });
+                const successCount = assignments.filter(a => a.launch_success).length;
+                const successRate = assignments.length > 0 ? Math.round((successCount / assignments.length) * 100) : 0;
+                document.getElementById('success-rate').textContent = successRate + '%';
+                
+                const activeServices = services.filter(s => s.status === 'active').length;
+                document.getElementById('active-services').textContent = activeServices;
+                
+                // 显示最近活动
+                const recentActivity = assignments.slice(0, 10).map(a => 
+                    `<div style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+                        <strong>\${a.stockcode || '未知股票'}</strong> - \${a.customer_service_name} 
+                        <span style="color: #6c757d; float: right;">\${a.created_at}</span>
+                    </div>`
+                ).join('');
+                
+                document.getElementById('recent-activity').innerHTML = recentActivity || '暂无活动记录';
+            }).catch(error => {
+                console.error('Error loading stats:', error);
+            });
+        }
+
+        // 页面加载时执行
+        document.addEventListener('DOMContentLoaded', loadStats);
     </script>
 </body>
-</html>';
+</html>
+HTML;
     }
 
     private function renderCustomerServices(): string
     {
-        $username = $_SESSION['admin_username'] ?? 'unknown';
-        $loginTime = $_SESSION['admin_login_time'] ?? 'unknown';
-        
-        return '<!DOCTYPE html>
-<html lang="ja">
+        return <<<HTML
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>客服管理 - 管理后台</title>
+    <title>客服管理</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; }
-        .header { background: #2c3e50; color: white; padding: 1rem 2rem; }
-        .nav { background: #34495e; padding: 0 2rem; }
-        .nav ul { list-style: none; display: flex; }
-        .nav li { margin-right: 2rem; }
-        .nav a { color: white; text-decoration: none; padding: 1rem 0; display: block; }
-        .nav a:hover { background: #2c3e50; padding: 1rem; margin: 0 -1rem; }
-        .nav a.active { background: #2c3e50; padding: 1rem; margin: 0 -1rem; }
-        .container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
-        .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 2rem; }
-        .card-header { background: #ecf0f1; padding: 1rem 1.5rem; border-bottom: 1px solid #bdc3c7; display: flex; justify-content: space-between; align-items: center; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; }
+        .navbar { background: #343a40; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { margin: 0; font-size: 1.5rem; }
+        .navbar a { color: white; text-decoration: none; margin-left: 1rem; }
+        .navbar a:hover { text-decoration: underline; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .card-header { padding: 1rem 1.5rem; border-bottom: 1px solid #dee2e6; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
         .card-body { padding: 1.5rem; }
-        .btn { background: #3498db; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
-        .btn:hover { background: #2980b9; }
-        .btn-success { background: #27ae60; }
-        .btn-success:hover { background: #229954; }
-        .btn-danger { background: #e74c3c; }
-        .btn-danger:hover { background: #c0392b; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
-        .form-group input, .form-group select { width: 100%; padding: 0.5rem; border: 1px solid #bdc3c7; border-radius: 4px; }
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn:hover { opacity: 0.9; }
         .table { width: 100%; border-collapse: collapse; }
-        .table th, .table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #ecf0f1; }
+        .table th, .table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #dee2e6; }
         .table th { background: #f8f9fa; font-weight: bold; }
-        .status-active { color: #27ae60; font-weight: bold; }
-        .status-inactive { color: #e74c3c; font-weight: bold; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
-        .modal-content { background: white; margin: 5% auto; padding: 2rem; width: 80%; max-width: 500px; border-radius: 8px; }
+        .status-active { color: #28a745; font-weight: bold; }
+        .status-inactive { color: #dc3545; font-weight: bold; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: white; margin: 5% auto; padding: 2rem; width: 80%; max-width: 500px; border-radius: 8px; }
+        .form-group { margin-bottom: 1rem; }
+        .form-control { width: 100%; padding: 0.5rem; border: 1px solid #ced4da; border-radius: 4px; }
         .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
         .close:hover { color: black; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1>股票分析系统 - 管理后台</h1>
-            <div style="color: #ecf0f1; font-size: 14px;">
-                欢迎, ' . htmlspecialchars($username) . ' | 登录时间: ' . htmlspecialchars($loginTime) . ' | 
-                <a href="/admin/logout" style="color: #e74c3c; text-decoration: none;">退出登录</a>
-            </div>
+    <nav class="navbar">
+        <h1>客服管理</h1>
+        <div>
+            <a href="/admin/dashboard">仪表板</a>
+            <a href="/admin/customer-services">客服管理</a>
+            <a href="/admin/tracking">追踪数据</a>
+            <a href="/admin/assignments">分配记录</a>
+            <a href="/admin/logout">退出</a>
         </div>
-    </div>
-    <nav class="nav">
-        <ul>
-            <li><a href="/admin/dashboard">仪表板</a></li>
-            <li><a href="/admin/customer-services" class="active">客服管理</a></li>
-            <li><a href="/admin/tracking">追踪数据</a></li>
-            <li><a href="/admin/assignments">分配记录</a></li>
-        </ul>
     </nav>
+
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h2>客服管理</h2>
-                <button class="btn btn-success" onclick="openAddModal()">添加客服</button>
+                客服列表
+                <button class="btn btn-primary" onclick="showAddModal()">添加客服</button>
             </div>
             <div class="card-body">
-                <table class="table" id="servicesTable">
+                <table class="table" id="services-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>名称</th>
                             <th>URL</th>
                             <th>备用URL</th>
@@ -561,30 +708,30 @@ class AdminController
     <div id="serviceModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <h3 id="modalTitle">添加客服</h3>
-            <form id="serviceForm">
-                <input type="hidden" id="serviceId" name="id">
+            <h2 id="modal-title">添加客服</h2>
+            <form id="service-form">
+                <input type="hidden" id="service-id">
                 <div class="form-group">
-                    <label for="serviceName">名称</label>
-                    <input type="text" id="serviceName" name="name" required>
+                    <label for="service-name">名称:</label>
+                    <input type="text" id="service-name" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="serviceUrl">URL</label>
-                    <input type="url" id="serviceUrl" name="url" required>
+                    <label for="service-url">URL:</label>
+                    <input type="url" id="service-url" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="fallbackUrl">备用URL</label>
-                    <input type="url" id="fallbackUrl" name="fallback_url" required>
+                    <label for="service-fallback">备用URL:</label>
+                    <input type="url" id="service-fallback" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="serviceStatus">状态</label>
-                    <select id="serviceStatus" name="status">
+                    <label for="service-status">状态:</label>
+                    <select id="service-status" class="form-control">
                         <option value="active">活跃</option>
                         <option value="inactive">停用</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-success">保存</button>
-                <button type="button" class="btn" onclick="closeModal()">取消</button>
+                <button type="button" class="btn btn-danger" onclick="closeModal()">取消</button>
             </form>
         </div>
     </div>
@@ -592,688 +739,304 @@ class AdminController
     <script>
         let services = [];
 
-        async function loadServices() {
-            try {
-                const response = await fetch("/admin/api/customer-services");
-                const data = await response.json();
-                services = Array.isArray(data) ? data : [];
-                renderServicesTable();
-            } catch (error) {
-                console.error("加载客服数据失败:", error);
-                alert("加载客服数据失败: " + error.message);
-            }
+        function loadServices() {
+            fetch('/admin/api/customer-services')
+                .then(response => response.json())
+                .then(data => {
+                    services = data;
+                    renderServicesTable();
+                })
+                .catch(error => console.error('Error:', error));
         }
 
         function renderServicesTable() {
-            const tbody = document.querySelector("#servicesTable tbody");
-            if (!tbody) {
-                console.error("找不到表格tbody元素");
-                return;
-            }
-            
-            if (services.length === 0) {
-                tbody.innerHTML = \'<tr><td colspan="7" style="text-align:center;">暂无客服数据</td></tr>\';
-                return;
-            }
-            
+            const tbody = document.querySelector('#services-table tbody');
             tbody.innerHTML = services.map(service => `
                 <tr>
-                    <td>${service.id}</td>
-                    <td>${service.name}</td>
-                    <td><a href="${service.url}" target="_blank">${service.url}</a></td>
-                    <td><a href="${service.fallback_url}" target="_blank">${service.fallback_url}</a></td>
-                    <td><span class="status-${service.status}">${service.status === "active" ? "活跃" : "停用"}</span></td>
-                    <td>${service.created_at}</td>
+                    <td>\${service.name}</td>
+                    <td><a href="\${service.url}" target="_blank">\${service.url}</a></td>
+                    <td><a href="\${service.fallback_url}" target="_blank">\${service.fallback_url}</a></td>
+                    <td><span class="status-\${service.status}">\${service.status === 'active' ? '活跃' : '停用'}</span></td>
+                    <td>\${service.created_at}</td>
                     <td>
-                        <button class="btn" onclick="editService(\'${service.id}\')">编辑</button>
-                        <button class="btn btn-danger" onclick="deleteService(\'${service.id}\')">删除</button>
+                        <button class="btn btn-primary" onclick="editService('\${service.id}')">编辑</button>
+                        <button class="btn btn-danger" onclick="deleteService('\${service.id}')">删除</button>
                     </td>
                 </tr>
-            `).join("");
+            `).join('');
         }
 
-        function openAddModal() {
-            document.getElementById("modalTitle").textContent = "添加客服";
-            document.getElementById("serviceForm").reset();
-            document.getElementById("serviceId").value = "";
-            document.getElementById("serviceModal").style.display = "block";
+        function showAddModal() {
+            document.getElementById('modal-title').textContent = '添加客服';
+            document.getElementById('service-form').reset();
+            document.getElementById('service-id').value = '';
+            document.getElementById('serviceModal').style.display = 'block';
         }
 
         function editService(id) {
             const service = services.find(s => s.id === id);
             if (service) {
-                document.getElementById("modalTitle").textContent = "编辑客服";
-                document.getElementById("serviceId").value = service.id;
-                document.getElementById("serviceName").value = service.name;
-                document.getElementById("serviceUrl").value = service.url;
-                document.getElementById("fallbackUrl").value = service.fallback_url;
-                document.getElementById("serviceStatus").value = service.status;
-                document.getElementById("serviceModal").style.display = "block";
+                document.getElementById('modal-title').textContent = '编辑客服';
+                document.getElementById('service-id').value = service.id;
+                document.getElementById('service-name').value = service.name;
+                document.getElementById('service-url').value = service.url;
+                document.getElementById('service-fallback').value = service.fallback_url;
+                document.getElementById('service-status').value = service.status;
+                document.getElementById('serviceModal').style.display = 'block';
+            }
+        }
+
+        function deleteService(id) {
+            if (confirm('确定要删除这个客服吗？')) {
+                fetch('/admin/api/customer-services', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadServices();
+                    } else {
+                        alert('删除失败');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
             }
         }
 
         function closeModal() {
-            document.getElementById("serviceModal").style.display = "none";
+            document.getElementById('serviceModal').style.display = 'none';
         }
 
-        async function deleteService(id) {
-            if (confirm("确定要删除这个客服吗？")) {
-                try {
-                    const response = await fetch(`/admin/api/customer-services?id=${id}`, { method: "DELETE" });
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
-                    loadServices();
-                } catch (error) {
-                    console.error("删除失败:", error);
-                    alert("删除失败: " + error.message);
-                }
-            }
-        }
-
-        document.getElementById("serviceForm").addEventListener("submit", async (e) => {
+        document.getElementById('service-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
             
-            try {
-                const method = data.id ? "PUT" : "POST";
-                const response = await fetch("/admin/api/customer-services", {
-                    method,
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data)
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+            const formData = {
+                id: document.getElementById('service-id').value,
+                name: document.getElementById('service-name').value,
+                url: document.getElementById('service-url').value,
+                fallback_url: document.getElementById('service-fallback').value,
+                status: document.getElementById('service-status').value
+            };
+
+            const method = formData.id ? 'PUT' : 'POST';
+            
+            fetch('/admin/api/customer-services', {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    closeModal();
+                    loadServices();
+                } else {
+                    alert('保存失败');
                 }
-                
-                alert(data.id ? "客服更新成功" : "客服添加成功");
-                closeModal();
-                loadServices();
-            } catch (error) {
-                console.error("保存失败:", error);
-                alert("保存失败: " + error.message);
-            }
+            })
+            .catch(error => console.error('Error:', error));
         });
 
-        // 页面加载时获取数据
-        loadServices();
+        // 页面加载时执行
+        document.addEventListener('DOMContentLoaded', loadServices);
     </script>
 </body>
-</html>';
+</html>
+HTML;
     }
 
     private function renderTrackingData(): string
     {
-        $username = $_SESSION['admin_username'] ?? 'unknown';
-        $loginTime = $_SESSION['admin_login_time'] ?? 'unknown';
-        
-        return '<!DOCTYPE html>
-<html lang="ja">
+        return <<<HTML
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>追踪数据 - 管理后台</title>
+    <title>追踪数据</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; }
-        .header { background: #2c3e50; color: white; padding: 1rem 2rem; }
-        .nav { background: #34495e; padding: 0 2rem; }
-        .nav ul { list-style: none; display: flex; }
-        .nav li { margin-right: 2rem; }
-        .nav a { color: white; text-decoration: none; padding: 1rem 0; display: block; }
-        .nav a:hover { background: #2c3e50; padding: 1rem; margin: 0 -1rem; }
-        .nav a.active { background: #2c3e50; padding: 1rem; margin: 0 -1rem; }
-        .container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
-        .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 2rem; }
-        .card-header { background: #ecf0f1; padding: 1rem 1.5rem; border-bottom: 1px solid #bdc3c7; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; }
+        .navbar { background: #343a40; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { margin: 0; font-size: 1.5rem; }
+        .navbar a { color: white; text-decoration: none; margin-left: 1rem; }
+        .navbar a:hover { text-decoration: underline; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .card-header { padding: 1rem 1.5rem; border-bottom: 1px solid #dee2e6; font-weight: bold; }
         .card-body { padding: 1.5rem; }
         .table { width: 100%; border-collapse: collapse; }
-        .table th, .table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #ecf0f1; }
+        .table th, .table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #dee2e6; }
         .table th { background: #f8f9fa; font-weight: bold; }
-        .pagination { display: flex; justify-content: center; margin-top: 1rem; }
-        .pagination button { margin: 0 0.25rem; padding: 0.5rem 1rem; border: 1px solid #bdc3c7; background: white; cursor: pointer; }
-        .pagination button.active { background: #3498db; color: white; }
-        .pagination button:hover { background: #ecf0f1; }
-        .error-log { background: #fff5f5; border-left: 4px solid #e74c3c; }
-        .page-track { background: #f0f9ff; border-left: 4px solid #3498db; }
-        .uppage-track { background: #f0fff4; border-left: 4px solid #27ae60; }
+        .log-entry { margin-bottom: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 4px; }
+        .log-timestamp { font-weight: bold; color: #007bff; }
+        .log-type { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+        .log-type-page_track { background: #d4edda; color: #155724; }
+        .log-type-uppage_track { background: #d1ecf1; color: #0c5460; }
+        .log-type-error_log { background: #f8d7da; color: #721c24; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1>股票分析系统 - 管理后台</h1>
-            <div style="color: #ecf0f1; font-size: 14px;">
-                欢迎, ' . htmlspecialchars($username) . ' | 登录时间: ' . htmlspecialchars($loginTime) . ' | 
-                <a href="/admin/logout" style="color: #e74c3c; text-decoration: none;">退出登录</a>
-            </div>
+    <nav class="navbar">
+        <h1>追踪数据</h1>
+        <div>
+            <a href="/admin/dashboard">仪表板</a>
+            <a href="/admin/customer-services">客服管理</a>
+            <a href="/admin/tracking">追踪数据</a>
+            <a href="/admin/assignments">分配记录</a>
+            <a href="/admin/logout">退出</a>
         </div>
-    </div>
-    <nav class="nav">
-        <ul>
-            <li><a href="/admin/dashboard">仪表板</a></li>
-            <li><a href="/admin/customer-services">客服管理</a></li>
-            <li><a href="/admin/tracking" class="active">追踪数据</a></li>
-            <li><a href="/admin/assignments">分配记录</a></li>
-        </ul>
     </nav>
+
     <div class="container">
         <div class="card">
-            <div class="card-header">
-                <h2>用户追踪数据</h2>
-            </div>
+            <div class="card-header">最近追踪记录</div>
             <div class="card-body">
-                <table class="table" id="trackingTable">
-                    <thead>
-                        <tr>
-                            <th>时间</th>
-                            <th>类型</th>
-                            <th>URL/消息</th>
-                            <th>IP地址</th>
-                            <th>用户代理</th>
-                            <th>详情</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- 数据将通过JavaScript加载 -->
-                    </tbody>
-                </table>
-                <div class="pagination" id="pagination"></div>
+                <div id="tracking-data">加载中...</div>
             </div>
         </div>
     </div>
 
     <script>
-        let currentPage = 1;
-        const pageSize = 20;
-
-        async function loadTrackingData(page = 1) {
-            try {
-                const response = await fetch(`/admin/api/tracking?page=${page}&limit=${pageSize}`);
-                const data = await response.json();
-                renderTrackingTable(data.items);
-                renderPagination(data.total, page);
-            } catch (error) {
-                console.error("加载追踪数据失败:", error);
-            }
+        function loadTrackingData() {
+            fetch('/admin/api/tracking')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('tracking-data');
+                    if (data.length === 0) {
+                        container.innerHTML = '<p>暂无追踪数据</p>';
+                        return;
+                    }
+                    
+                    container.innerHTML = data.map(entry => `
+                        <div class="log-entry">
+                            <div class="log-timestamp">\${entry.timestamp}</div>
+                            <span class="log-type log-type-\${entry.type}">\${entry.type}</span>
+                            <pre style="margin-top: 0.5rem; white-space: pre-wrap;">\${JSON.stringify(entry.data, null, 2)}</pre>
+                        </div>
+                    `).join('');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('tracking-data').innerHTML = '<p>加载失败</p>';
+                });
         }
 
-        function renderTrackingTable(items) {
-            const tbody = document.querySelector("#trackingTable tbody");
-            tbody.innerHTML = items.map(item => {
-                const typeClass = item.type === "error_log" ? "error-log" : 
-                                 item.type === "page_track" ? "page-track" : "uppage-track";
-                return `
-                    <tr class="${typeClass}">
-                        <td>${item.timestamp}</td>
-                        <td>${getTypeLabel(item.type)}</td>
-                        <td>${item.url || item.message || "-"}</td>
-                        <td>${item.ip}</td>
-                        <td title="${item.user_agent}">${item.user_agent.substring(0, 50)}...</td>
-                        <td><button onclick="showDetails(${JSON.stringify(item).replace(/"/g, "&quot;")})">查看</button></td>
-                    </tr>
-                `;
-            }).join("");
-        }
-
-        function getTypeLabel(type) {
-            const labels = {
-                "page_track": "页面追踪",
-                "uppage_track": "页面更新",
-                "error_log": "错误日志"
-            };
-            return labels[type] || type;
-        }
-
-        function renderPagination(total, current) {
-            const totalPages = Math.ceil(total / pageSize);
-            const pagination = document.getElementById("pagination");
-            
-            let html = "";
-            for (let i = 1; i <= totalPages; i++) {
-                html += `<button class="${i === current ? "active" : ""}" onclick="loadTrackingData(${i})">${i}</button>`;
-            }
-            pagination.innerHTML = html;
-        }
-
-        function showDetails(item) {
-            alert(JSON.stringify(item, null, 2));
-        }
-
-        // 页面加载时获取数据
-        loadTrackingData();
+        document.addEventListener('DOMContentLoaded', loadTrackingData);
     </script>
 </body>
-</html>';
+</html>
+HTML;
     }
 
     private function renderAssignments(): string
     {
-        $username = $_SESSION['admin_username'] ?? 'unknown';
-        $loginTime = $_SESSION['admin_login_time'] ?? 'unknown';
-        
-        return '<!DOCTYPE html>
-<html lang="ja">
+        return <<<HTML
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>分配记录 - 管理后台</title>
+    <title>分配记录</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; }
-        .header { background: #2c3e50; color: white; padding: 1rem 2rem; }
-        .nav { background: #34495e; padding: 0 2rem; }
-        .nav ul { list-style: none; display: flex; }
-        .nav li { margin-right: 2rem; }
-        .nav a { color: white; text-decoration: none; padding: 1rem 0; display: block; }
-        .nav a:hover { background: #2c3e50; padding: 1rem; margin: 0 -1rem; }
-        .nav a.active { background: #2c3e50; padding: 1rem; margin: 0 -1rem; }
-        .container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
-        .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 2rem; }
-        .card-header { background: #ecf0f1; padding: 1rem 1.5rem; border-bottom: 1px solid #bdc3c7; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; }
+        .navbar { background: #343a40; color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { margin: 0; font-size: 1.5rem; }
+        .navbar a { color: white; text-decoration: none; margin-left: 1rem; }
+        .navbar a:hover { text-decoration: underline; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .card-header { padding: 1rem 1.5rem; border-bottom: 1px solid #dee2e6; font-weight: bold; }
         .card-body { padding: 1.5rem; }
-        .table { width: 100%; border-collapse: collapse; }
-        .table th, .table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #ecf0f1; }
+        .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .table th, .table td { padding: 0.5rem; text-align: left; border-bottom: 1px solid #dee2e6; }
         .table th { background: #f8f9fa; font-weight: bold; }
-        .pagination { display: flex; justify-content: center; margin-top: 1rem; }
-        .pagination button { margin: 0 0.25rem; padding: 0.5rem 1rem; border: 1px solid #bdc3c7; background: white; cursor: pointer; }
-        .pagination button.active { background: #3498db; color: white; }
-        .pagination button:hover { background: #ecf0f1; }
-        .success { color: #27ae60; font-weight: bold; }
-        .failed { color: #e74c3c; font-weight: bold; }
-        .pending { color: #f39c12; font-weight: bold; }
+        .status-success { color: #28a745; font-weight: bold; }
+        .status-failed { color: #dc3545; font-weight: bold; }
+        .status-pending { color: #ffc107; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1>股票分析系统 - 管理后台</h1>
-            <div style="color: #ecf0f1; font-size: 14px;">
-                欢迎, ' . htmlspecialchars($username) . ' | 登录时间: ' . htmlspecialchars($loginTime) . ' | 
-                <a href="/admin/logout" style="color: #e74c3c; text-decoration: none;">退出登录</a>
-            </div>
+    <nav class="navbar">
+        <h1>分配记录</h1>
+        <div>
+            <a href="/admin/dashboard">仪表板</a>
+            <a href="/admin/customer-services">客服管理</a>
+            <a href="/admin/tracking">追踪数据</a>
+            <a href="/admin/assignments">分配记录</a>
+            <a href="/admin/logout">退出</a>
         </div>
-    </div>
-    <nav class="nav">
-        <ul>
-            <li><a href="/admin/dashboard">仪表板</a></li>
-            <li><a href="/admin/customer-services">客服管理</a></li>
-            <li><a href="/admin/tracking">追踪数据</a></li>
-            <li><a href="/admin/assignments" class="active">分配记录</a></li>
-        </ul>
     </nav>
+
     <div class="container">
         <div class="card">
-            <div class="card-header">
-                <h2>客服分配记录</h2>
-            </div>
+            <div class="card-header">最近分配记录</div>
             <div class="card-body">
-                <table class="table" id="assignmentsTable">
+                <table class="table" id="assignments-table">
                     <thead>
                         <tr>
-                            <th>记录ID</th>
+                            <th>时间</th>
                             <th>股票代码</th>
-                            <th>文本</th>
                             <th>客服名称</th>
                             <th>状态</th>
-                            <th>创建时间</th>
                             <th>IP地址</th>
+                            <th>用户代理</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- 数据将通过JavaScript加载 -->
                     </tbody>
                 </table>
-                <div class="pagination" id="pagination"></div>
             </div>
         </div>
     </div>
 
     <script>
-        let currentPage = 1;
-        const pageSize = 20;
-
-        async function loadAssignments(page = 1) {
-            try {
-                const response = await fetch(`/admin/api/assignments?page=${page}&limit=${pageSize}`);
-                const data = await response.json();
-                renderAssignmentsTable(data.items);
-                renderPagination(data.total, page);
-            } catch (error) {
-                console.error("加载分配记录失败:", error);
-            }
+        function loadAssignments() {
+            fetch('/admin/api/assignments')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.querySelector('#assignments-table tbody');
+                    if (data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6">暂无分配记录</td></tr>';
+                        return;
+                    }
+                    
+                    tbody.innerHTML = data.map(assignment => {
+                        let status = '待处理';
+                        let statusClass = 'status-pending';
+                        
+                        if (assignment.launch_success) {
+                            status = '成功';
+                            statusClass = 'status-success';
+                        } else if (assignment.page_leave_at || assignment.fallback_redirect_at) {
+                            status = '失败';
+                            statusClass = 'status-failed';
+                        }
+                        
+                        return `
+                            <tr>
+                                <td>\${assignment.created_at}</td>
+                                <td>\${assignment.stockcode || '-'}</td>
+                                <td>\${assignment.customer_service_name}</td>
+                                <td><span class="\${statusClass}">\${status}</span></td>
+                                <td>\${assignment.ip}</td>
+                                <td title="\${assignment.user_agent}">\${assignment.user_agent.substring(0, 50)}...</td>
+                            </tr>
+                        `;
+                    }).join('');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.querySelector('#assignments-table tbody').innerHTML = '<tr><td colspan="6">加载失败</td></tr>';
+                });
         }
 
-        function renderAssignmentsTable(items) {
-            const tbody = document.querySelector("#assignmentsTable tbody");
-            tbody.innerHTML = items.map(item => {
-                const status = getStatus(item);
-                return `
-                    <tr>
-                        <td>${item.id}</td>
-                        <td>${item.stockcode || "-"}</td>
-                        <td title="${item.text}">${(item.text || "").substring(0, 30)}...</td>
-                        <td>${item.customer_service_name}</td>
-                        <td><span class="${status.class}">${status.label}</span></td>
-                        <td>${item.created_at}</td>
-                        <td>${item.ip}</td>
-                    </tr>
-                `;
-            }).join("");
-        }
-
-        function getStatus(item) {
-            if (item.launch_success) {
-                return { class: "success", label: "成功启动" };
-            } else if (item.page_leave_at) {
-                return { class: "failed", label: "启动失败" };
-            } else {
-                return { class: "pending", label: "等待中" };
-            }
-        }
-
-        function renderPagination(total, current) {
-            const totalPages = Math.ceil(total / pageSize);
-            const pagination = document.getElementById("pagination");
-            
-            let html = "";
-            for (let i = 1; i <= totalPages; i++) {
-                html += `<button class="${i === current ? "active" : ""}" onclick="loadAssignments(${i})">${i}</button>`;
-            }
-            pagination.innerHTML = html;
-        }
-
-        // 页面加载时获取数据
-        loadAssignments();
+        document.addEventListener('DOMContentLoaded', loadAssignments);
     </script>
 </body>
-</html>';
-    }
-
-    private function handleCustomerServicePost(Request $request, Response $response): Response
-    {
-        $data = json_decode($request->getBody()->getContents(), true);
-        
-        if (isset($data['action']) && $data['action'] === 'delete') {
-            return $this->deleteCustomerService($request, $response);
-        }
-        
-        return $this->createCustomerService($request, $response);
-    }
-
-    private function createCustomerService(Request $request, Response $response): Response
-    {
-        try {
-            $data = json_decode($request->getBody()->getContents(), true);
-            
-            if (!$data) {
-                $response->getBody()->write(json_encode(['error' => '无效的JSON数据']));
-                return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-            }
-            
-            // 验证必填字段
-            if (empty($data['name']) || empty($data['url']) || empty($data['fallback_url'])) {
-                $response->getBody()->write(json_encode(['error' => '名称、URL和备用URL为必填项']));
-                return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-            }
-            
-            $services = $this->loadCustomerServices();
-            
-            $newService = [
-                'id' => $data['id'] ?? 'cs_' . uniqid(),
-                'name' => $data['name'],
-                'url' => $data['url'],
-                'fallback_url' => $data['fallback_url'],
-                'status' => $data['status'] ?? 'active',
-                'created_at' => date('Y-m-d H:i:s')
-            ];
-            
-            if (isset($data['id']) && !empty($data['id'])) {
-                // 更新现有服务
-                for ($i = 0; $i < count($services); $i++) {
-                    if ($services[$i]['id'] === $data['id']) {
-                        $services[$i] = array_merge($services[$i], $newService);
-                        break;
-                    }
-                }
-            } else {
-                // 添加新服务
-                $services[] = $newService;
-            }
-            
-            $this->saveCustomerServices($services);
-            
-            $this->logger->info('Customer service created/updated', ['service' => $newService]);
-            
-            $response->getBody()->write(json_encode(['status' => 'success']));
-            return $response->withHeader('Content-Type', 'application/json');
-        } catch (\Exception $e) {
-            $this->logger->error('Error creating customer service', ['error' => $e->getMessage()]);
-            $response->getBody()->write(json_encode(['error' => $e->getMessage()]));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
-        }
-    }
-
-    private function updateCustomerService(Request $request, Response $response): Response
-    {
-        return $this->createCustomerService($request, $response);
-    }
-
-    private function deleteCustomerService(Request $request, Response $response): Response
-    {
-        try {
-            $id = $request->getQueryParams()['id'] ?? '';
-            
-            if (empty($id)) {
-                $response->getBody()->write(json_encode(['error' => '缺少客服ID']));
-                return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-            }
-            
-            $services = $this->loadCustomerServices();
-            $services = array_filter($services, function($service) use ($id) {
-                return $service['id'] !== $id;
-            });
-            
-            $this->saveCustomerServices(array_values($services));
-            
-            $this->logger->info('Customer service deleted', ['id' => $id]);
-            
-            $response->getBody()->write(json_encode(['status' => 'success']));
-            return $response->withHeader('Content-Type', 'application/json');
-        } catch (\Exception $e) {
-            $this->logger->error('Error deleting customer service', ['error' => $e->getMessage()]);
-            $response->getBody()->write(json_encode(['error' => $e->getMessage()]));
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
-        }
-    }
-
-    private function getDashboardStats(): array
-    {
-        $assignments = $this->getAssignments(1, 1000);
-        $tracking = $this->getTrackingData(1, 1000);
-        $services = $this->loadCustomerServices();
-        
-        $successfulLaunches = 0;
-        foreach ($assignments['items'] as $assignment) {
-            if ($assignment['launch_success'] ?? false) {
-                $successfulLaunches++;
-            }
-        }
-        
-        $activeServices = count(array_filter($services, function($service) {
-            return $service['status'] === 'active';
-        }));
-        
-        // 添加一些测试数据到分配记录（仅在没有数据时）
-        if ($assignments['total'] === 0) {
-            $this->createTestAssignments();
-            $assignments = $this->getAssignments(1, 1000);
-            foreach ($assignments['items'] as $assignment) {
-                if ($assignment['launch_success'] ?? false) {
-                    $successfulLaunches++;
-                }
-            }
-        }
-        
-        return [
-            'total_assignments' => $assignments['total'],
-            'successful_launches' => $successfulLaunches,
-            'total_tracking' => $tracking['total'],
-            'active_services' => $activeServices
-        ];
-    }
-
-    private function getTrackingData(int $page, int $limit): array
-    {
-        $file = __DIR__ . '/../../logs/tracking.log';
-        if (!file_exists($file)) {
-            return ['items' => [], 'total' => 0];
-        }
-        
-        $lines = file($file, FILE_IGNORE_NEW_LINES);
-        $items = [];
-        
-        foreach (array_reverse($lines) as $line) {
-            if (preg_match('/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) \[([^\]]+)\] (.+)$/', $line, $matches)) {
-                $data = json_decode($matches[3], true);
-                if ($data) {
-                    $items[] = array_merge($data, [
-                        'timestamp' => $matches[1],
-                        'type' => $matches[2]
-                    ]);
-                }
-            }
-        }
-        
-        $total = count($items);
-        $offset = ($page - 1) * $limit;
-        $items = array_slice($items, $offset, $limit);
-        
-        return ['items' => $items, 'total' => $total];
-    }
-
-    private function getAssignments(int $page, int $limit): array
-    {
-        $file = $this->dataDir . '/assignments.jsonl';
-        if (!file_exists($file)) {
-            return ['items' => [], 'total' => 0];
-        }
-        
-        $lines = file($file, FILE_IGNORE_NEW_LINES);
-        $items = [];
-        
-        foreach (array_reverse($lines) as $line) {
-            $data = json_decode($line, true);
-            if ($data) {
-                $items[] = $data;
-            }
-        }
-        
-        $total = count($items);
-        $offset = ($page - 1) * $limit;
-        $items = array_slice($items, $offset, $limit);
-        
-        return ['items' => $items, 'total' => $total];
-    }
-
-    private function loadCustomerServices(): array
-    {
-        $file = $this->dataDir . '/customer_services.json';
-        if (!file_exists($file)) {
-            return [];
-        }
-        
-        return json_decode(file_get_contents($file), true) ?: [];
-    }
-
-    private function saveCustomerServices(array $services): void
-    {
-        $file = $this->dataDir . '/customer_services.json';
-        
-        // 确保目录存在
-        if (!is_dir($this->dataDir)) {
-            mkdir($this->dataDir, 0755, true);
-        }
-        
-        file_put_contents($file, json_encode($services, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-        
-        // 验证文件是否写入成功
-        if (!file_exists($file)) {
-            throw new \Exception('无法保存客服数据文件');
-        }
-    }
-
-    private function createTestAssignments(): void
-    {
-        $testAssignments = [
-            [
-                'id' => 'test_' . uniqid(),
-                'stockcode' => '7203',
-                'text' => '输入7203加人',
-                'customer_service_id' => 'cs_001',
-                'customer_service_name' => 'LINE公式アカウント',
-                'customer_service_url' => 'https://line.me/R/ti/p/@example',
-                'links' => '/',
-                'created_at' => date('Y-m-d H:i:s', strtotime('-2 hours')),
-                'user_agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X)',
-                'ip' => '192.168.1.100',
-                'launch_success' => true,
-                'page_leave_at' => date('Y-m-d H:i:s', strtotime('-2 hours') + 30),
-                'action' => 'open'
-            ],
-            [
-                'id' => 'test_' . uniqid(),
-                'stockcode' => '6758',
-                'text' => '输入6758加人',
-                'customer_service_id' => 'cs_002',
-                'customer_service_name' => 'WeChat客服',
-                'customer_service_url' => 'weixin://dl/chat?example',
-                'links' => 'https://web.wechat.com',
-                'created_at' => date('Y-m-d H:i:s', strtotime('-1 hour')),
-                'user_agent' => 'Mozilla/5.0 (Android 11; Mobile)',
-                'ip' => '192.168.1.101',
-                'launch_success' => false,
-                'page_leave_at' => date('Y-m-d H:i:s', strtotime('-1 hour') + 300),
-                'action' => 'fallback'
-            ],
-            [
-                'id' => 'test_' . uniqid(),
-                'stockcode' => '9984',
-                'text' => '输入9984加人',
-                'customer_service_id' => 'cs_001',
-                'customer_service_name' => 'LINE公式アカウント',
-                'customer_service_url' => 'https://line.me/R/ti/p/@example',
-                'links' => '/',
-                'created_at' => date('Y-m-d H:i:s', strtotime('-30 minutes')),
-                'user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-                'ip' => '192.168.1.102'
-            ]
-        ];
-
-        $file = $this->dataDir . '/assignments.jsonl';
-        foreach ($testAssignments as $assignment) {
-            $line = json_encode($assignment, JSON_UNESCAPED_UNICODE) . "\n";
-            file_put_contents($file, $line, FILE_APPEND | LOCK_EX);
-        }
-
-        $this->logger->info('Test assignments created', ['count' => count($testAssignments)]);
-    }
-
-    private function getClientIp(Request $request): string
-    {
-        $serverParams = $request->getServerParams();
-        
-        if (!empty($serverParams['HTTP_X_FORWARDED_FOR'])) {
-            return explode(',', $serverParams['HTTP_X_FORWARDED_FOR'])[0];
-        }
-        
-        if (!empty($serverParams['HTTP_X_REAL_IP'])) {
-            return $serverParams['HTTP_X_REAL_IP'];
-        }
-        
-        return $serverParams['REMOTE_ADDR'] ?? 'unknown';
+</html>
+HTML;
     }
 }
