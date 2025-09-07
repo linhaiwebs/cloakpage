@@ -53,6 +53,7 @@ return function (App $app) {
         $group->map(['GET', 'POST', 'PUT', 'DELETE'], '/api/customer-services', AdminController::class . ':apiCustomerServices');
         $group->get('/api/tracking', AdminController::class . ':apiTrackingData');
         $group->get('/api/assignments', AdminController::class . ':apiAssignments');
+        $group->map(['GET', 'POST'], '/api/settings', AdminController::class . ':apiSettings');
     });
 
     // 跳转页面

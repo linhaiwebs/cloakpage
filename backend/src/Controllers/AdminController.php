@@ -320,6 +320,7 @@ class AdminController
         $username = $_SESSION['admin_username'] ?? 'unknown';
         $loginTime = $_SESSION['admin_login_time'] ?? 'unknown';
         $stats = $this->getDashboardStats();
+        $settings = $this->loadSettings();
         
         return '<!DOCTYPE html>
 <html lang="ja">
@@ -344,6 +345,18 @@ class AdminController
         .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; }
         .card-header { background: #ecf0f1; padding: 1rem 1.5rem; border-bottom: 1px solid #bdc3c7; }
         .card-body { padding: 1.5rem; }
+        .settings-section { margin-bottom: 2rem; }
+        .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 1rem; }
+        .setting-label { font-weight: 600; color: #2c3e50; }
+        .setting-description { font-size: 14px; color: #7f8c8d; margin-top: 0.25rem; }
+        .toggle-switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #2196F3; }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .status-enabled { color: #27ae60; font-weight: bold; }
+        .status-disabled { color: #e74c3c; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -365,6 +378,22 @@ class AdminController
         </ul>
     </nav>
     <div class="container">
+        <div class="settings-section">
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">斗篷加强</div>
+                    <div class="setting-description">启用后，只允许来自 Google 搜索的用户访问客服接口</div>
+                    <div style="margin-top: 0.5rem;">
+                        状态: <span id="cloaking-status" class="' . ($settings['cloaking_enhanced'] ? 'status-enabled">已启用' : 'status-disabled">已关闭') . '</span>
+                    </div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="cloaking-toggle" ' . ($settings['cloaking_enhanced'] ? 'checked' : '') . '>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-number">' . $stats['total_assignments'] . '</div>
@@ -394,10 +423,46 @@ class AdminController
                     <li><strong>客服管理</strong>：添加、编辑和管理客服账号信息</li>
                     <li><strong>追踪数据</strong>：查看用户行为追踪数据和错误日志</li>
                     <li><strong>分配记录</strong>：查看客服分配记录和用户转化情况</li>
+                    <li><strong>斗篷加强</strong>：控制是否只允许来自 Google 搜索的用户访问</li>
                 </ul>
             </div>
         </div>
     </div>
+    
+    <script>
+        document.getElementById("cloaking-toggle").addEventListener("change", async function() {
+            const isEnabled = this.checked;
+            const statusElement = document.getElementById("cloaking-status");
+            
+            try {
+                const response = await fetch("/admin/api/settings", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ cloaking_enhanced: isEnabled })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                // 更新状态显示
+                if (isEnabled) {
+                    statusElement.textContent = "已启用";
+                    statusElement.className = "status-enabled";
+                } else {
+                    statusElement.textContent = "已关闭";
+                    statusElement.className = "status-disabled";
+                }
+                
+                console.log("斗篷加强设置已更新:", isEnabled ? "启用" : "关闭");
+            } catch (error) {
+                console.error("更新设置失败:", error);
+                alert("更新设置失败: " + error.message);
+                // 恢复开关状态
+                this.checked = !isEnabled;
+            }
+        });
+    </script>
 </body>
 </html>';
     }
