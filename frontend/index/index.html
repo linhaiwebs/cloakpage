@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="index,follow"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>日本株 年次報告の読み方アトラス｜注記・MD&A・セグメントの見どころ（学習用）</title>
+<meta name="description" content="日本株の開示資料（有価証券報告書・統合報告・決算短信など）を、注記・MD&A・セグメント情報の順に読み解くための学習ページ。バレットチャート、ツリーマップ、カレンダー熱量はダミー描画です。投資助言や将来利益の保証は行いません。"/>
+<style>
+/* ===== 新テーマ：アイボリー × バイオレット × ティール（編集デザイン風） ===== */
+:root{
+  --bg:#fcfcf7;         /* 明るい紙 */
+  --paper:#ffffff;      /* 面の白 */
+  --ink:#1b1b1b;        /* 本文 */
+  --muted:#5c6472;      /* 補助文字 */
+  --line:#e7e5df;       /* 罫線（薄いベージュ） */
+  --violet:#7c3aed;     /* 見出しアクセント */
+  --teal:#0ea5a6;       /* 第二アクセント */
+  --rose:#e11d48;       /* 強調 */
+  --sun:#f59e0b;        /* 警告/注意 */
+  --shadow:0 26px 70px rgba(27,27,27,.08);
+  --radius:18px; --radius-lg:22px; --maxw:1160px;
+}
+
+/* Reset & Base */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans JP","Hiragino Kaku Gothic ProN","Meiryo",Arial,sans-serif;
+  color:var(--ink);
+  background:
+    linear-gradient(120deg, rgba(124,58,237,.05), transparent 40%),
+    radial-gradient(1200px 520px at 110% -10%, rgba(14,165,166,.10), transparent 60%),
+    var(--bg);
+  line-height:1.9;
+}
+a{color:var(--teal); text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Header — 編集紙面の帯 */
+header{
+  position:sticky; top:0; z-index:30;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--paper) 95%, transparent), color-mix(in srgb, var(--paper) 85%, transparent));
+  border-bottom:1px solid var(--line);
+  backdrop-filter:saturate(150%) blur(6px);
+}
+.head{max-width:var(--maxw); margin:0 auto; padding:10px 16px; display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center}
+.brand{display:flex; align-items:center; gap:10px; font-weight:900}
+.sig{width:34px;height:34px;border-radius:10px; background:conic-gradient(from 0deg, var(--violet), #a78bfa, var(--teal), #34d399, var(--violet))}
+.tabs{justify-self:center; display:flex; gap:8px; flex-wrap:wrap}
+.tab{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--line); background:var(--paper); border-radius:999px; font-weight:800}
+.cta a{display:inline-block; padding:10px 14px; border-radius:12px; border:1px solid var(--line); background:var(--paper); color:var(--ink); text-decoration:none; font-weight:900}
+.cta a.primary{background:linear-gradient(180deg, color-mix(in srgb, var(--violet) 26%, #fff), color-mix(in srgb, var(--violet) 48%, #fff)); color:#230c55; border:none; box-shadow:0 14px 34px rgba(124,58,237,.22)}
+
+/* Hero — 斜めカバーバンド + 右サイド情報欄 */
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px}
+.hero{margin-top:16px; position:relative}
+.band{
+  position:relative; overflow:hidden; border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow);
+  background:var(--paper);
+}
+.band::before{
+  content:""; position:absolute; inset:-50px -60px auto auto; height:180px; width:60%;
+  transform:skewY(-7deg);
+  background:linear-gradient(135deg, rgba(124,58,237,.10), rgba(14,165,166,.10));
+  border-bottom:1px solid var(--line);
+}
+.sheet{position:relative; display:grid; grid-template-columns:1.2fr .8fr; gap:16px; padding:16px}
+.kicker{display:inline-flex; align-items:center; gap:8px; color:var(--violet); font-weight:900}
+.kdot{width:10px; height:10px; border-radius:50%; background:var(--violet)}
+.h1{font-family:ui-serif, Georgia,"Times New Roman",serif; font-weight:900; font-size:clamp(30px,5.6vw,52px); line-height:1.12; margin:8px 0 6px}
+.lead{color:var(--muted)}
+.badges{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
+.badge{display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#f5f3ff; color:#2e1065; font-weight:800; font-size:12px}
+.side{background:var(--paper); border:1px solid var(--line); border-radius:16px; padding:14px}
+.kpi{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+.kpill{border:1px solid var(--line); border-radius:12px; padding:10px; text-align:center}
+.kpill .k{font-size:12px; color:var(--muted)} .kpill .v{font-weight:900}
+
+/* Sections */
+.section{margin-top:16px; display:grid; grid-template-columns:1.15fr .85fr; gap:16px}
+.block{background:var(--paper); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:16px}
+.h2{font-size:clamp(18px,3vw,26px); margin:0 0 8px; font-weight:900; color:#231942}
+.h3{font-size:clamp(16px,2.6vw,20px); margin:0 0 6px; font-weight:800}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+.note{background:#fffbeb; border:1px solid #fde68a; color:#854d0e; border-radius:12px; padding:10px}
+
+/* Card Component */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  margin-bottom: 1.5rem;
+}
+
+.card-title {
+  margin-bottom: 0.5rem;
+  color: var(--violet);
+}
+
+.card-description {
+  color: var(--muted);
+}
+
+/* Feature List */
+.feature-list {
+  list-style: none;
+  margin: 1.5rem 0;
+  padding: 0;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: var(--bg);
+  border-radius: var(--radius);
+  border-left: 4px solid var(--teal);
+}
+
+.feature-list li::before {
+  content: "✓";
+  color: white;
+  font-weight: bold;
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--teal);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+/* Table */
+table{width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden}
+th,td{padding:12px; border-bottom:1px solid var(--line); text-align:left; font-size:14px}
+th{background:#f6f5ff}
+
+/* Data Visualization (CSS Only) */
+.chart-container {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.chart-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--ink);
+}
+
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bar-label {
+  min-width: 100px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.bar-container {
+  flex: 1;
+  height: 2rem;
+  background: var(--bg);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: var(--radius);
+  transition: width 0.8s ease;
+  position: relative;
+}
+
+.bar-fill.violet { background: linear-gradient(90deg, var(--violet), rgba(124, 58, 237, 0.7)); width: 85%; }
+.bar-fill.teal { background: linear-gradient(90deg, var(--teal), rgba(14, 165, 166, 0.7)); width: 72%; }
+.bar-fill.sun { background: linear-gradient(90deg, var(--sun), rgba(245, 158, 11, 0.7)); width: 68%; }
+
+.bar-value {
+  min-width: 60px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: right;
+}
+
+/* CSS-only visualizations */
+.bullet-chart {
+  height: 240px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+}
+
+.bullet-item {
+  height: 60px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.bullet-label {
+  font-weight: 700;
+  font-size: 12px;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+.bullet-track {
+  height: 30px;
+  background: linear-gradient(90deg, #eef2ff 0%, #e2f7f7 60%, #fde2e7 100%);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bullet-bar {
+  height: 18px;
+  margin: 6px 0;
+  border-radius: 6px;
+  position: relative;
+}
+
+.bullet-bar.violet { background: var(--violet); width: 76%; }
+.bullet-bar.teal { background: var(--teal); width: 65%; }
+.bullet-bar.rose { background: var(--rose); width: 82%; }
+
+.bullet-target {
+  position: absolute;
+  top: 0;
+  height: 30px;
+  width: 2px;
+  background: var(--ink);
+}
+
+.bullet-target.t1 { left: 85%; }
+.bullet-target.t2 { left: 70%; }
+.bullet-target.t3 { left: 88%; }
+
+.treemap {
+  height: 240px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  grid-template-areas: 
+    "domestic domestic foreign"
+    "equipment life foreign"
+    "equipment other other";
+  gap: 4px;
+}
+
+.tree-item {
+  border-radius: 8px;
+  padding: 8px;
+  font-weight: 700;
+  font-size: 12px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tree-domestic { grid-area: domestic; background: var(--violet); }
+.tree-foreign { grid-area: foreign; background: var(--teal); }
+.tree-equipment { grid-area: equipment; background: var(--sun); }
+.tree-life { grid-area: life; background: var(--rose); }
+.tree-other { grid-area: other; background: var(--muted); }
+
+.calendar-heatmap {
+  height: 180px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.cal-cell {
+  border-radius: 6px;
+  background: var(--line);
+}
+
+.cal-cell.low { background: rgba(124, 58, 237, 0.2); }
+.cal-cell.medium { background: rgba(124, 58, 237, 0.5); }
+.cal-cell.high { background: var(--violet); }
+.cal-cell.teal-low { background: rgba(14, 165, 166, 0.2); }
+.cal-cell.teal-medium { background: rgba(14, 165, 166, 0.5); }
+.cal-cell.teal-high { background: var(--teal); }
+
+/* FAQ Styles */
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.faq-item input[type="checkbox"] {
+  display: none;
+}
+
+.faq-question {
+  width: 100%;
+  padding: 1.5rem;
+  background: var(--bg);
+  border: none;
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.faq-question:hover {
+  background: var(--line);
+}
+
+.faq-question::after {
+  content: "+";
+  font-size: 1.5rem;
+  color: var(--violet);
+  transition: transform 0.2s ease;
+}
+
+.faq-item input[type="checkbox"]:checked + .faq-question::after {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  background: var(--paper);
+}
+
+.faq-item input[type="checkbox"]:checked ~ .faq-answer {
+  max-height: 500px;
+  padding: 1.5rem;
+}
+
+/* Footer */
+footer{margin-top:24px; border-top:1px solid var(--line); background:linear-gradient(135deg,#0b1220,#1c1230); color:#edf0ff}
+.foot{max-width:var(--maxw); margin:0 auto; padding:24px 16px 40px}
+.cols{display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:16px}
+.foot h3{
+  margin:0 0 12px; 
+  font-size:18px; 
+  color:#ffffff;
+  border-bottom: 2px solid var(--violet);
+  padding-bottom: 8px;
+  display: inline-block;
+}
+.foot p, .foot ul {
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+.foot a {
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+.foot a:hover {
+  color: #ffffff;
+}
+.copy{
+  border-top:1px solid rgba(255,255,255,.2); 
+  margin-top:20px; 
+  padding-top:16px; 
+  font-size:13px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width:1080px){
+  .sheet,.section{grid-template-columns:1fr}
+  .grid2,.grid3,.cols{grid-template-columns:1fr}
+  .treemap {
+    grid-template-areas: 
+      "domestic"
+      "foreign"
+      "equipment"
+      "life"
+      "other";
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header>
+  <div class="head">
+    <div class="brand"><div class="sig" aria-hidden="true"></div>年次報告の読み方アトラス <span class="tab">学習・中立</span></div>
+    <nav class="tabs" aria-label="メニュー">
+      <a class="tab" href="#intro">概要</a>
+      <a class="tab" href="#insight">注記</a>
+      <a class="tab" href="#mda">MD&A</a>
+      <a class="tab" href="#segment">セグメント</a>
+      <a class="tab" href="#viz">可視化</a>
+      <a class="tab" href="#faq">FAQ</a>
+    </nav>
+    <div class="cta">
+      <a class="primary" href="#policy">ポリシー</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Hero ===== -->
+<section class="wrap hero" id="intro">
+  <div class="band">
+    <div class="sheet">
+      <article>
+        <div class="kicker"><span class="kdot"></span>"注記 → MD&A → セグメント"の順で負担を軽くする</div>
+        <h1 class="h1">日本株の開示を"編集"の順番で読む。<br>断定せず、前提をそろえるための地図。</h1>
+        <p class="lead">本ページは学習・参考を目的とした一般的な情報整理です。特定の銘柄や金融商品の推奨、将来利益の保証は行いません。図表はダミー表示（<b>※実データに差し替え</b>）。</p>
+        <div class="badges">
+          <span class="badge">有報</span><span class="badge">統合報告</span><span class="badge">決算短信</span><span class="badge">株主通信</span>
+        </div>
+      </article>
+      <aside class="side">
+        <div class="h3" style="text-align: center; margin-bottom: 16px; color: var(--violet);">学習項目</div>
+        <div class="kpi">
+          <div class="kpill">
+            <div class="k">基礎知識</div>
+            <div class="v">5章</div>
+          </div>
+          <div class="kpill">
+            <div class="k">実例分析</div>
+            <div class="v">10例</div>
+          </div>
+          <div class="kpill">
+            <div class="k">演習問題</div>
+            <div class="v">20問</div>
+          </div>
+          <div class="kpill">
+            <div class="k">注記分析</div>
+            <div class="v">詳解</div>
+          </div>
+          <div class="kpill">
+            <div class="k">MD&A読解</div>
+            <div class="v">手法</div>
+          </div>
+          <div class="kpill">
+            <div class="k">セグメント</div>
+            <div class="v">分析法</div>
+          </div>
+        </div>
+        <div style="margin-top: 12px; padding: 8px; background: rgba(124,58,237,.05); border-radius: 8px; border: 1px solid rgba(124,58,237,.1);">
+          <p style="font-size: 11px; color: var(--muted); margin: 0; line-height: 1.4; text-align: center;">
+            本教材は一般的な教育内容です。実際の投資判断には専門家にご相談ください。
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Section: 概要 ===== -->
+<section class="wrap section" id="overview">
+  <article class="block">
+    <h2 class="h2">年次報告書分析の基本アプローチ</h2>
+    <div class="grid3">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">1. 注記（Notes）</h3>
+          <p class="card-description">注記は財務諸表の「但し書き」として、会計方針や重要な見積りの変更を記載します。</p>
+        </div>
+        <ul class="feature-list">
+          <li>会計方針の変更点を確認</li>
+          <li>重要な見積りの変更を把握</li>
+          <li>前年度との比較可能性を検証</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">2. MD&A分析</h3>
+          <p class="card-description">経営陣による業績分析と今後の見通しを詳細に解説します。</p>
+        </div>
+        <ul class="feature-list">
+          <li>売上高の要因分解</li>
+          <li>利益率の変動要因</li>
+          <li>キャッシュフローの分析</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">3. セグメント情報</h3>
+          <p class="card-description">事業別・地域別の業績を分析し、成長ドライバーを特定します。</p>
+        </div>
+        <ul class="feature-list">
+          <li>事業別収益性の比較</li>
+          <li>地域別成長率の分析</li>
+          <li>資本配分の効率性</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+  <aside class="block">
+    <h2 class="h2">分析フレームワーク</h2>
+    <div class="chart-container">
+      <h3 class="chart-title">業績要因の重要度（例示）</h3>
+      <div class="bar-chart">
+        <div class="bar-item">
+          <div class="bar-label">売上成長</div>
+          <div class="bar-container">
+            <div class="bar-fill violet"></div>
+          </div>
+          <div class="bar-value">85%</div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label">利益率改善</div>
+          <div class="bar-container">
+            <div class="bar-fill teal"></div>
+          </div>
+          <div class="bar-value">72%</div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label">資本効率</div>
+          <div class="bar-container">
+            <div class="bar-fill sun"></div>
+          </div>
+          <div class="bar-value">68%</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</section>
+
+<!-- ===== Section: 注記 & MD&A ===== -->
+<section class="wrap section" id="insight">
+  <article class="block">
+    <h2 class="h2">注記（Notes）｜"但し書き"の棚を先に作る</h2>
+    <div class="grid2">
+      <div class="block">
+        <div class="h3">会計方針・見積りの変更</div>
+        <p class="lead">減価償却・引当金・在庫評価などの変化は、<b>一時要因</b>か<b>方針変更</b>かを分けて記録。</p>
+        <ul class="lead" style="margin:0; padding-left:18px; color:var(--muted)">
+          <li>範囲：子会社・持分法の追加/除外</li>
+          <li>時点：期首/期中/四半期</li>
+          <li>影響：前年修正の有無</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="h3">セグメント情報の切り分け</div>
+        <p class="lead">採算・資産・KPIの<b>単位</b>がどこで変わるか。統合や新設は注記に痕跡。</p>
+        <div class="note">ヒント：前年との並び替えがある場合は、その理由（組織・商品区分の見直し）を脚注で追う。</div>
+      </div>
+    </div>
+  </article>
+  <aside class="block" id="mda">
+    <h2 class="h2">MD&A（経営成績等の概況）</h2>
+    <p class="lead">"要因分解"の語彙で読む：<b>数量×単価</b>、<b>固定費/変動費</b>、<b>内外価格・為替</b>、<b>設備稼働</b>など。</p>
+    <div class="grid3">
+      <div class="block">
+        <div class="h3">数量・単価の確認</div>
+        <p class="lead">キャンペーンや季節要因を別枠に。</p>
+      </div>
+      <div class="block">
+        <div class="h3">在庫・運転資金</div>
+        <p class="lead">在庫圧縮の反動、回収サイトの変化。</p>
+      </div>
+      <div class="block">
+        <div class="h3">設備投資・減価更新</div>
+        <p class="lead">"成長投資"と"更新"を分け、回収の道筋を記録。</p>
+      </div>
+    </div>
+  </aside>
+</section>
+
+<!-- ===== Section: セグメント & 比較 ===== -->
+<section class="wrap section" id="segment">
+  <article class="block">
+    <h2 class="h2">セグメントの"型"をメモ化する</h2>
+    <div class="grid3">
+      <div class="block">
+        <div class="h3">国内需要の粘り</div>
+        <p class="lead">生活必需・更新投資は落ち込みにくいが、単価維持と数量反応のタイムラグに注意。</p>
+      </div>
+      <div class="block">
+        <div class="h3">外需・価格/為替感応</div>
+        <p class="lead">為替・国際価格の影響を注記・感応度で補強。</p>
+      </div>
+      <div class="block">
+        <div class="h3">装置/部材のサイクル</div>
+        <p class="lead">投資の谷と在庫平準化の同期/非同期を区別。</p>
+      </div>
+    </div>
+  </article>
+  <aside class="block">
+    <h2 class="h2">比較（例示）</h2>
+    <table aria-label="比較（例示）">
+      <thead><tr><th>領域</th><th>見るポイント</th><th>注意点</th><th>次の確認</th></tr></thead>
+      <tbody>
+        <tr><td>内需サービス</td><td>単価と客数</td><td>反動・一時要因</td><td>継続率</td></tr>
+        <tr><td>輸出寄り</td><td>数量×為替</td><td>価格転嫁の遅延</td><td>感応度</td></tr>
+        <tr><td>設備投資</td><td>更新/増設の比率</td><td>回収期間</td><td>稼働と在庫</td></tr>
+      </tbody>
+    </table>
+    <p class="lead" style="font-size:12px; color:var(--muted); margin-top:6px">※ 一般的枠組みの例です。個別の推奨ではありません。</p>
+  </aside>
+</section>
+
+<!-- ===== Section: 可視化（バレット/ツリー/カレンダー） ===== -->
+<section class="wrap section" id="viz">
+  <article class="block">
+    <h2 class="h2">バレットチャート（ダミー）｜目標と実績の距離感</h2>
+    <div class="bullet-chart">
+      <div class="bullet-item">
+        <div class="bullet-label">売上（目標:90／実績:76）</div>
+        <div class="bullet-track">
+          <div class="bullet-bar violet"></div>
+          <div class="bullet-target t1"></div>
+        </div>
+      </div>
+      <div class="bullet-item">
+        <div class="bullet-label">営業利益（目標:22／実績:18）</div>
+        <div class="bullet-track">
+          <div class="bullet-bar teal"></div>
+          <div class="bullet-target t2"></div>
+        </div>
+      </div>
+      <div class="bullet-item">
+        <div class="bullet-label">EPS（目標:120／実績:105）</div>
+        <div class="bullet-track">
+          <div class="bullet-bar rose"></div>
+          <div class="bullet-target t3"></div>
+        </div>
+      </div>
+    </div>
+    <p class="lead" style="font-size:12px; color:var(--muted); margin-top:6px">※ ダミー描画。実運用では定義（目標/実績/許容レンジ）と出所を明記。</p>
+  </article>
+  <aside class="block">
+    <h2 class="h2">ツリーマップ（ダミー）｜セグメント比率の概観</h2>
+    <div class="treemap">
+      <div class="tree-item tree-domestic">国内 32%</div>
+      <div class="tree-item tree-foreign">外需 28%</div>
+      <div class="tree-item tree-equipment">設備 18%</div>
+      <div class="tree-item tree-life">生活 12%</div>
+      <div class="tree-item tree-other">その他 10%</div>
+    </div>
+    <div class="h2" style="margin-top:14px">カレンダー熱量（ダミー）｜イベント散布</div>
+    <div class="calendar-heatmap">
+      <div class="cal-cell"></div>
+      <div class="cal-cell low"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell high"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-low"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-high"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell low"></div>
+      <div class="cal-cell medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell high"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-low"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-high"></div>
+      <div class="cal-cell low"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell high"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-low"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-high"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell low"></div>
+      <div class="cal-cell medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell high"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-low"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-high"></div>
+      <div class="cal-cell low"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell high"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-low"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-high"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell low"></div>
+      <div class="cal-cell medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell high"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-low"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-high"></div>
+      <div class="cal-cell low"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell high"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-low"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-medium"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell"></div>
+      <div class="cal-cell teal-high"></div>
+    </div>
+  </aside>
+</section>
+
+<!-- ===== FAQ & Policy ===== -->
+<section class="wrap section" id="faq">
+  <article class="block">
+    <h2 class="h2">よくある質問</h2>
+    <div class="faq-container">
+      <div class="faq-item">
+        <input type="checkbox" id="faq1">
+        <label for="faq1" class="faq-question">このページは投資助言ですか？</label>
+        <div class="faq-answer">
+          <p class="lead">いいえ。学習・参考を目的とした一般的な情報整理です。特定の銘柄の推奨や将来利益の保証は行いません。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <input type="checkbox" id="faq2">
+        <label for="faq2" class="faq-question">外部フォントや外部スクリプトは使っていますか？</label>
+        <div class="faq-answer">
+          <p class="lead">使用していません。単一のHTML+CSS（キャンバス描画）で構成しています。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <input type="checkbox" id="faq3">
+        <label for="faq3" class="faq-question">データの信頼性はどうですか？</label>
+        <div class="faq-answer">
+          <p class="lead">本サイトの図表・数値はすべてダミー表示です。実際の分析には必ず一次情報（有価証券報告書等）をご確認ください。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <input type="checkbox" id="faq4">
+        <label for="faq4" class="faq-question">投資リスクについて教えてください</label>
+        <div class="faq-answer">
+          <p class="lead">株式投資には価格変動リスク、信用リスク、流動性リスクなど様々なリスクが伴います。投資判断は必ずご自身の責任で行ってください。</p>
+        </div>
+      </div>
+    </div>
+  </article>
+  <aside class="block" id="policy">
+    <h2 class="h2">免責・プライバシー（雛形）</h2>
+    <ul class="lead" style="margin:0; padding-left:18px; color:var(--muted)">
+      <li>可視化・数値はダミー表示（<b>※実データに差し替え</b>）。</li>
+      <li>一次情報・公式開示の確認を優先。</li>
+      <li>誇張表現・将来保証の言い切りは避ける。</li>
+      <li>投資判断は必ずご自身の責任で行ってください。</li>
+    </ul>
+    <div class="note" style="margin-top: 16px;">
+      <strong>重要：</strong>本サイトは教育・学習目的のみを目的としており、金融商品取引法に基づく投資助言・代理業の登録を行っておりません。
+    </div>
+  </aside>
+</section>
+
+<footer>
+  <div class="foot">
+    <div class="cols">
+      <div>
+        <h3>年次報告の読み方アトラス</h3>
+        <p class="lead">注記・MD&A・セグメントを順に読み解く学習ページ。すべての図表はダミー表示です。投資判断は必ずご自身の責任で行ってください。</p>
+      </div>
+      <div>
+        <h3>学習セクション</h3>
+        <ul class="lead" style="margin:0; padding-left:18px;">
+          <li><a href="#overview">概要・基本アプローチ</a></li>
+          <li><a href="#insight">注記分析</a></li>
+          <li><a href="#mda">MD&A読解</a></li>
+          <li><a href="#segment">セグメント分析</a></li>
+          <li><a href="#viz">データ可視化</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>重要事項</h3>
+        <p class="lead">
+          <a href="#policy">免責事項</a><br>
+          <a href="#policy">プライバシーポリシー</a><br>
+          <a href="#policy">利用規約</a>
+        </p>
+        <div style="margin-top: 16px; padding: 12px; background: rgba(124,58,237,.1); border-radius: 8px; border: 1px solid rgba(124,58,237,.2);">
+          <p style="font-size: 12px; margin: 0; color: #cbd5e1;">
+            <strong>投資リスク警告：</strong><br>
+            株式投資には元本割れのリスクがあります。投資判断は必ずご自身の責任で行ってください。
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="copy">© 2024 年次報告の読み方アトラス｜学習・参考用（単一HTML・外部依存なし）</div>
+  </div>
+</footer>
+
+</body>
+</html>

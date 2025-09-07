@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+  <title>AI株式分析ツール｜今すぐ無料で体験</title>
+  <link rel="stylesheet" type="text/css" href="/static/jp_jqr/css/style.css">
+  <script src="/static/jp_jqr/js/jquery.js"></script>
+  <script src="/static/jp_jqr/js/index.js"></script>
+  <link href="/static/css/layui.css" rel="stylesheet">
+  <script src="/static/js/layui.js"></script>
+  <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <script src="/static/core/jp_202573.js"></script>
+  <style>
+    .btu {
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      40% {
+        transform: translateY(-6px);
+      }
+
+      70% {
+        transform: translateY(2px);
+      }
+    }
+    #danmu-layer {
+      pointer-events: none;
+      position: fixed;
+      top: 23%;
+      left: 0;
+      width: 100%;
+      height: 0;
+      overflow: visible;
+      z-index: 9999;
+    }
+
+    .danmu {
+      position: absolute;
+      white-space: nowrap;
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+      text-shadow: 0 0 4px #000;
+      animation: fly 12s linear forwards;
+    }
+    @keyframes fly {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(-100%);
+      }
+    }
+  </style>
+</head>
+<body style="width: 100%;height: 100vh;background-color: #f8f8f8;max-width: 750px;">
+  <div class="error" style="display: none">
+    <div class="error-content">続行するには、銘柄名またはティッカーを入力してください。</div>
+  </div>
+  <div class="box" style="width: 100%;height: 100vh;position: relative;">
+    <div class="p-title" style="font-size:13px">
+      AIが分析・予測｜正確率98%の株式診断ツール
+    </div>
+  </div>
+  <div id="t1" style="position: absolute; top: 38%; z-index: 10; width: 91%; height: auto; left: 4%;">
+    <div class="con-box">
+      <div class="word-box">
+        <div class="con" style="font-size:14px; line-height: 1.7; color: #333; margin-top: 8px;">
+          <span class="stockName" style="font-weight:bold;color:red;">富士通</span> は今後も上昇するのか、それとも売るべきなのか？<br>
+          AIがリアルタイムで診断した結果を今すぐご確認いただけます。<br>
+          データ・モメンタム・複数指標をもとに、<strong style="color:#0078d7;">精度98%</strong>の分析を実現。<br>
+          すでに <span id="n-stock" style="font-weight:bold;color:red;">20474</span> 人以上がこの無料診断を活用しています。<br>
+        </div>
+      </div>
+    </div>
+    <input class="inpur" type="text" id="code" placeholder="銘柄名またはコードを入力（例：7203）"
+      style="margin-top: 14px; padding: 10px; width: 100%; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;">
+    <div class="btu" onclick="startFX()" style="margin-top: 10px;">
+      🚀 無料で診断スタート
+    </div>
+    <p style="font-size: 11px; color: #666; text-align: center; margin-top: 8px;">
+      ※診断はすぐに完了し、結果が画面に表示されます。ご安心ください。
+    </p>
+  </div>
+  <div id="t2" style="position: absolute;top:45%;z-index: 10;width: 81%;height: auto;left: 9%;display: none;">
+    <img src="/static/jp_jqr/picture/jiaz.gif" alt="">
+  </div>
+  <div id="t3" style="position: absolute;top: 35%;z-index: 10;width: 92%;height: auto;left: 4%;display: none;">
+    <div class="con-box">
+      <div class="word-box">
+        <div class="con" style="margin-top: 20px;  font-size: 12px; line-height: 1.8; color: #333;">
+          ご入力いただいた <span class="stockName" style="font-weight:bold; color:#e74c3c;">富士通</span> について、
+          モメンタム分析・リアルタイムデータ・AIロジックをもとに診断を行いました。<br>
+          <div id="price-info" style="">
+            現在の株価は <span class="xianjia" style="font-weight: bold; color: rgb(3, 162, 12);">3511.00</span> 円、
+            前日比 <span class="zhangdie" style="color: rgb(3, 162, 12);">-28.00</span> 円（<span class="zhangfu"
+              style="color: rgb(3, 162, 12);">(-0.79%)</span>）<br>
+          </div>
+          私たちのスタッフ、 「<span class="Pname"
+            style="color:#0078d7; font-weight:bold;">株式投資アドバイザー西野彩羽</span>」のLINEアカウントを追加してください。
+          <br>
+          追加が完了しましたら、詳細な診断レポートを受け取るために、銘柄コード「<span class="stockName"
+            style="color:#d72600; font-weight:bold;">富士通</span>」または「<span id="okcode"
+            style="color:#d72600; font-weight:bold;">6702.T</span>」 と送信してください。<br>
+          <span style="background: #fffbe6; padding: 6px 10px; display: inline-block; border-radius: 6px;">
+            メッセージを送信した瞬間にAI診断が始まり、<strong>最新レポートが即座に届きます。</strong>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="btu sha"
+      style="font-size: 17px; margin-top: 10px; background-color: #00c300; color: white; font-weight: bold;  text-align: center; cursor: pointer;"
+      onclick="addjoin('受け取る加人')">
+      📩 予測レポートをLINEで受け取る
+    </div>
+    <p style="font-size: 0.6em; color: #666; margin-top: 8px; text-align: center;">
+      ※1分以内にLINEで届きます。ボタンを押すだけで完了します。
+    </p>
+  </div>
+  <div id="danmu-layer"></div>
+  <script>
+    function updateJpTime() {
+      const now = new Date();
+      const jpTime = now.toLocaleTimeString('ja-JP', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'Asia/Tokyo'
+      });
+      document.getElementById('current-time-jp').textContent = jpTime;
+    }
+    updateJpTime();
+    setInterval(updateJpTime, 1000);
+  </script>
+  <script>
+    let baseCount = 51203 + Math.floor(Math.random() * 20);
+    let currentCount = baseCount;
+    let userEl;
+
+    function animateUserCount() {
+      userEl = document.querySelector('#dynamicUserCount');
+      if (!userEl) return;
+
+      setInterval(() => {
+        currentCount += Math.floor(Math.random() * 3);
+        userEl.textContent = currentCount.toLocaleString();
+      }, 3000);
+    }
+    let countdownEl;
+    function startCountdown() {
+      const countdownEl = document.getElementById('countdown');
+      if (!countdownEl) return;
+      let remainingSeconds = 60 * 60;
+      function updateCountdown() {
+        if (remainingSeconds <= 0) {
+          countdownEl.textContent = '終了しました';
+          return;
+        }
+        const m = Math.floor((remainingSeconds / 60) % 60);
+        const s = remainingSeconds % 60;
+
+        countdownEl.textContent = `${m}分 ${s.toString().padStart(2, '0')}秒`;
+
+        remainingSeconds--;
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+      animateUserCount();
+      startCountdown();
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var currentDomain = window.location.hostname;
+      $(".current-domain").each(function () {
+        $(this).text(currentDomain);
+      });
+    })
+    var pageid = 911562;
+    loadStockData()
+    function upTrackingData(id) {
+      const data = {
+        id: id,
+      };
+      const endpoint = '/app/maike/api/info/uppage_track';
+      fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    function BtnTracking(text, click_type = 0) {
+      console.log(text)
+      if (text == '' || text == undefined || text == null || text == 'null') {
+        text = '点击按钮';
+      }
+      const data = {
+        url: text + window.location.href,
+        timestamp: new Date().toISOString(),
+        click_type: click_type
+      };
+      var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      var language = navigator.language || navigator.userLanguage;
+      const endpoint = '/app/maike/api/info/page_track';
+      fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'timezone': timezone,
+          'language': language
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    function getQueryVariable(variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split("&");
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] == variable) {
+          return pair[1];
+        }
+      }
+      return (false);
+    }
+    function loadStockData() {
+      const stockcode = getQueryVariable("code") || '^N225';
+      var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      var language = navigator.language || navigator.userLanguage;
+      $.ajax({
+        url: '/app/maike/api/stock/getinfo',
+        data: {
+          code: stockcode,
+        },
+        headers: {
+          Accept: "application/json; charset=utf-8",
+          timezone: timezone,
+          language: language
+        },
+        type: "get",
+        success: function (res) {
+          $('.Pname').html(res.name);
+          let data = res.chart.result[0];
+          const quote0 = (data?.indicators?.quote?.[0]) || {};
+          const close = Number(quote0.close) || null;
+          $('.xianjia').text(close ?? '--');
+          if (close !== null) {
+            $('#price-info').show();
+          } else {
+            $('#price-info').hide();
+          }
+          $('.gName,.btnBg span,.tcodeName').html(data.meta.stockName);
+          $('.gCode').text('(' + data.meta.stockCode + ')');
+          $('.sCode').text(data.meta.stockCode);
+          $('.xianjia').text(data.indicators.quote[0].close);
+          $('.jinkai').text(data.indicators.quote[0].open);
+          $('.zuigao').text(data.indicators.quote[0].high);
+          $('.zuidi').text(data.indicators.quote[0].low);
+          $('.zuoshou').text(data.meta.chartPreviousClose);
+          $('.chengjiaoliang').text(data.indicators.adjclose[0].adjclose);
+          $('.chengjiaoe').text(data.indicators.quote[0].volume);
+          $('.zhenfu').text(data.meta.lowPrice);
+          const price = data.indicators.quote[0].close;
+          let percentNum = (data.indicators.quote[0].close - data.meta.chartPreviousClose).toFixed(
+            2);
+          let changesPercentage = ((percentNum / data.meta.chartPreviousClose) * 100).toFixed(2);
+          if (percentNum >= 0) {
+            $('.zhang').show();
+            $('.zhangdie').text('+' + percentNum);
+            $('.zhangfu').text('(+' + changesPercentage + '%)');
+            $('.zhangdie,.zhangfu,.xianjia').css('color', '#dc3825');
+            $('.zhishu img').attr('src', "/static/jppicture/arrow.png");
+          } else {
+            $('.die').show();
+            $('.zhangdie').text(percentNum);
+            $('.zhangfu').text('(' + changesPercentage + '%)');
+            $('.zhangdie,.zhangfu,.xianjia').css('color', '#03a20c');
+            $('.zhishu img').attr('src', "/static/jppicture/arrowdown.png");
+          }
+          if (data.meta.stockName === 'Unknown') {
+            $('.stockName').html('銘柄コード:' + data.meta.stockCode);
+            $("#code").val(data.meta.stockCode);
+            $("#okcode").html('受け取る');
+          } else {
+            $('.stockName').html(data.meta.stockName);
+            $("#code").val(data.meta.stockName);
+            $("#okcode").html(data.meta.symbol);
+          }
+        },
+        error: function (e) {
+          console.log('Error loading stock data:', e);
+        }
+      });
+    }
+    upTrackingData(pageid)
+  </script>
+</body>
+</html>
