@@ -200,6 +200,7 @@ return function (App $app) {
   const qp = new URLSearchParams(location.search);
   const serviceName = (window.SERVICE_NAME || qp.get(\'service\') || \'LINE\').trim();
   const lang = (qp.get(\'lang\') || \'ja\').toLowerCase();
+  const originalRef = qp.get('original_ref') || ''; // 新增：获取原始 referrer
 
   const I18N = {
     \'en\': {
@@ -411,7 +412,8 @@ return function (App $app) {
         },
         body: JSON.stringify({
           stockcode: localStorage.getItem(\'stockcode\') || \'\',
-          text: localStorage.getItem(\'text\') || \'\'
+          text: localStorage.getItem('text') || '',
+          original_ref: decodeURIComponent(originalRef) // 新增：发送原始 referrer
         })
       });
       const data = await res.json();

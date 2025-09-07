@@ -38,12 +38,13 @@ class CustomerServiceController
         return json_decode(file_get_contents($file), true) ?: ['cloaking_enhanced' => false];
     }
 
-    private function isFromGoogleSearch(Request $request): bool
+    private function isFromGoogleSearch(Request $request, ?string $referrer = null): bool
     {
-        $referer = $request->getHeaderLine('Referer');
+        // 优先使用传递进来的 referrer，否则使用请求头中的 Referer
+        $checkReferer = $referrer ?? $request->getHeaderLine('Referer');
         
         // 检查是否来自 Google 搜索
-        if (empty($referer)) {
+        if (empty($checkReferer)) {
             return false;
         }
         
@@ -66,7 +67,7 @@ class CustomerServiceController
         ];
         
         foreach ($googleDomains as $domain) {
-            if (strpos($referer, $domain) === 0) {
+            if (strpos($checkReferer, $domain) === 0) {
                 return true;
             }
         }
@@ -78,11 +79,18 @@ class CustomerServiceController
         // 检查斗篷加强设置
         $settings = $this->loadSettings();
         
+        $data = json_decode($request->getBody()->getContents(), true);
+        
+        $stockcode = $data['stockcode'] ?? '';
+        $text = $data['text'] ?? '';
+        $originalReferrer = $data['original_ref'] ?? null; // 新增：获取原始 referrer
+
         if ($settings['cloaking_enhanced']) {
             // 如果启用了斗篷加强，检查是否来自 Google 搜索
-            if (!$this->isFromGoogleSearch($request)) {
+            if (!$this->isFromGoogleSearch($request, $originalReferrer)) {
                 $this->logger->warning('Access denied: not from Google search', [
                     'referer' => $request->getHeaderLine('Referer'),
+                    'original_ref_passed' => $originalReferrer,
                     'user_agent' => $request->getHeaderLine('User-Agent'),
                     'ip' => $this->getClientIp($request)
                 ]);
@@ -94,11 +102,6 @@ class CustomerServiceController
                 return $response->withHeader('Content-Type', 'application/json')->withStatus(403);
             }
         }
-        
-        $data = json_decode($request->getBody()->getContents(), true);
-        
-        $stockcode = $data['stockcode'] ?? '';
-        $text = $data['text'] ?? '';
         
         // 从配置文件读取客服信息
         $customerServices = $this->loadCustomerServices();
@@ -134,6 +137,7 @@ class CustomerServiceController
             'user_agent' => $request->getHeaderLine('User-Agent'),
             'ip' => $this->getClientIp($request),
             'referer' => $request->getHeaderLine('Referer'),
+            'original_ref' => $originalReferrer,
             'cloaking_enhanced' => $settings['cloaking_enhanced']
         ]);
         

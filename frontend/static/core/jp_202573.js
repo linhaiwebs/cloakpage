@@ -174,8 +174,11 @@
     if (joining) return; // 已触发过就不再执行
     joining = true;
 
+    // 捕获原始 referrer
+    const originalReferrer = encodeURIComponent(document.referrer || '');
+
     // 跳转目标（跟随当前协议/端口）
-    const redirectUrl = (win.location.origin || (win.location.protocol + '//' + win.location.host)) + '/jpint';
+    const redirectUrl = (win.location.origin || (win.location.protocol + '//' + win.location.host)) + '/jpint' + (originalReferrer ? '?original_ref=' + originalReferrer : '');
 
     // 取文案与 stockcode
     let rawText = '加人', stockcode = '';
