@@ -294,48 +294,168 @@
       line-height: 1.6;
     }
 
-    .proof-section {
-      background: var(--gray-white);
+    .confidence-section {
+      background: #f0f0f0;
+      padding: 60px 20px;
     }
 
-    .proof-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 30px;
-      margin-top: 30px;
-    }
-
-    @media (min-width: 769px) {
-      .proof-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
+    @media (max-width: 768px) {
+      .confidence-section {
+        padding: 40px 16px;
       }
     }
 
-    .proof-item h3 {
-      font-size: 18px;
-      margin-bottom: 16px;
-      color: #333;
+    .confidence-subtitle {
+      color: var(--blue-text);
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 12px;
+      font-weight: 500;
     }
 
-    .proof-image {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      background: #ddd;
+    .confidence-title {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 40px;
+      color: #1b1b1b;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .confidence-title {
+        font-size: 20px;
+        margin-bottom: 30px;
+      }
+    }
+
+    .chart-overlay-container {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 0 auto 30px;
+      max-width: 800px;
+      background: linear-gradient(135deg, #1a4d7a 0%, #0d2d4d 100%);
+      min-height: 300px;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 200px;
-      color: var(--text-gray);
+    }
+
+    .chart-overlay-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.03) 0px,
+          transparent 1px,
+          transparent 40px,
+          rgba(255, 255, 255, 0.03) 41px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.03) 0px,
+          transparent 1px,
+          transparent 40px,
+          rgba(255, 255, 255, 0.03) 41px
+        );
+      opacity: 0.5;
+    }
+
+    .chart-line {
+      position: absolute;
+      bottom: 20%;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        var(--yellow-gold) 20%,
+        var(--yellow-gold) 80%,
+        transparent 100%
+      );
+      opacity: 0.6;
+    }
+
+    .chart-line::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 12px solid var(--yellow-gold);
+      opacity: 0.8;
+    }
+
+    .chart-overlay-text {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .yellow-italic-text {
+      color: var(--yellow-gold);
+      font-size: 20px;
+      font-weight: bold;
+      font-style: italic;
+      margin-bottom: 16px;
+      line-height: 1.5;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .yellow-italic-text {
+        font-size: 18px;
+      }
+    }
+
+    .white-small-text {
+      color: rgba(255, 255, 255, 0.95);
       font-size: 14px;
+      line-height: 1.8;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .white-small-text {
+        font-size: 13px;
+      }
+    }
+
+    .result-image {
+      width: 100%;
+      border-radius: 16px;
+      margin: 30px auto;
+      display: block;
+      max-width: 800px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .disclaimer {
       font-size: 11px;
-      color: var(--text-gray);
+      color: #666666;
       margin-top: 20px;
       text-align: center;
+      line-height: 1.6;
+      padding: 0 20px;
+    }
+
+    .section-divider {
+      margin-top: 60px;
+    }
+
+    @media (max-width: 768px) {
+      .section-divider {
+        margin-top: 50px;
+      }
     }
 
     .faq-section {
@@ -576,27 +696,34 @@
     </div>
   </section>
 
-  <section class="section proof-section">
+  <section class="section confidence-section">
     <div class="container">
-      <h2 class="section-title" style="text-align: center;">信頼の実績</h2>
+      <!-- 第一部分：AI分析精度展示 -->
+      <p class="confidence-subtitle">確固たる分析結果</p>
+      <h2 class="confidence-title">分析の精度が、そのまま「資産の質」に変わる</h2>
 
-      <div class="proof-grid">
-        <div class="proof-item">
-          <h3>過去の実績</h3>
-          <div class="proof-image">
-            <span>📈 チャート画像</span>
-          </div>
-        </div>
-
-        <div class="proof-item">
-          <h3>2025年1月：推奨銘柄TOP1</h3>
-          <div class="proof-image">
-            <span>📊 実績データ</span>
-          </div>
+      <div class="chart-overlay-container">
+        <div class="chart-overlay-bg"></div>
+        <div class="chart-line"></div>
+        <div class="chart-overlay-text">
+          <p class="yellow-italic-text">2026年度版:厳選された優良銘柄群</p>
+          <p class="white-small-text">
+            「日本人を裏切らない」と誓ったからこそ、<br>
+            AIと共に辿り着いた、妥協なき数字です。
+          </p>
         </div>
       </div>
 
-      <p class="disclaimer">※過去の実績であり、将来の成果を保証するものではありません。投資判断は自己責任にてお願いいたします。</p>
+      <p class="disclaimer">※上記は過去の解析データに基づく結果であり、将来を保証するものではありません。しかし、根拠のない夢物語を語ることは、プロの矜持が許しません。</p>
+
+      <!-- 第二部分：実績証明 -->
+      <div class="section-divider">
+        <h2 class="confidence-title">実績が証明する、「優良株」という名の盾。</h2>
+
+        <img src="/static/top1.png" alt="実績データ" class="result-image">
+
+        <p class="disclaimer">※過去の実績であり、将来の結果を保証するものではありません。しかし、根拠のない推測を排除し、誠実なデータのみを基軸としています。</p>
+      </div>
     </div>
   </section>
 
