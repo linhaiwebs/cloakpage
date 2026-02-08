@@ -1,327 +1,646 @@
 <!DOCTYPE html>
-<html lang="jp">
-
+<html lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
-  <title>AI株式分析ツール｜今すぐ無料で体験</title>
-  <link rel="stylesheet" type="text/css" href="/static/jp_jqr/css/style.css">
-  <script src="/static/jp_jqr/js/jquery.js"></script>
-  <script src="/static/jp_jqr/js/index.js"></script>
-  <link href="/static/css/layui.css" rel="stylesheet">
-  <script src="/static/js/layui.js"></script>
-  <script src="/static/js/jquery-3.7.1.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AI選定の優良株リスト｜長期保有におすすめの銘柄を無料配信</title>
+  <meta name="description" content="AIが厳選した長期保有に最適な優良株リストを無料でお届け。高配当・成長性・安定性を兼ね備えた銘柄情報をLINEで受け取れます。">
   <script src="/static/core/jp_202573.js"></script>
   <style>
-    .btu {
-      animation: bounce 1.2s ease-in-out infinite;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    @keyframes bounce {
-
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-
-      40% {
-        transform: translateY(-6px);
-      }
-
-      70% {
-        transform: translateY(2px);
-      }
-    }
-    #danmu-layer {
-      pointer-events: none;
-      position: fixed;
-      top: 23%;
-      left: 0;
-      width: 100%;
-      height: 0;
-      overflow: visible;
-      z-index: 9999;
+    :root {
+      --black: #000000;
+      --gray-bg: #f5f5f5;
+      --light-orange: #ffe4c4;
+      --deep-orange: #ff8c00;
+      --blue-text: #1e90ff;
+      --red-highlight: #dc143c;
+      --yellow-gold: #ffd700;
+      --dark-yellow: #b8860b;
+      --blue-bg: #1a4d7a;
+      --dark-blue-bg: #0d2d4d;
+      --gray-white: #e8e8e8;
+      --line-green: #00B900;
+      --white: #ffffff;
+      --text-gray: #666666;
+      --text-light-gray: #999999;
     }
 
-    .danmu {
-      position: absolute;
-      white-space: nowrap;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", YuGothic, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: var(--white);
+      overflow-x: hidden;
+      padding-bottom: 140px;
+    }
+
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 769px) {
+      .container {
+        max-width: 1200px;
+      }
+    }
+
+    .pulse-dot {
+      width: 12px;
+      height: 12px;
+      background: #ff0000;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 2s ease-in-out infinite;
+      margin-right: 6px;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+      }
+      50% {
+        opacity: 0.6;
+        transform: scale(1.15);
+        box-shadow: 0 0 0 8px rgba(255, 0, 0, 0);
+      }
+    }
+
+    .top-banner {
+      background: var(--black);
+      color: var(--white);
+      text-align: center;
+      padding: 14px 16px;
       font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .section {
+      padding: 40px 20px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .tag-orange {
+      background: var(--light-orange);
+      color: var(--deep-orange);
+    }
+
+    .tag-gold {
+      border: 2px solid var(--yellow-gold);
+      color: var(--yellow-gold);
+      background: transparent;
+    }
+
+    .tag-blue {
+      border: 2px solid var(--blue-text);
+      color: var(--blue-text);
+      background: transparent;
+    }
+
+    .section-title {
+      font-size: 24px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #FFD700, #B8860B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: bold;
+      font-size: 26px;
+      display: block;
+      margin-bottom: 24px;
+    }
+
+    .blue-text {
+      color: var(--blue-text);
+    }
+
+    .red-text {
+      color: var(--red-highlight);
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: var(--text-gray);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    .line-button {
+      background: var(--line-green);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      padding: 16px 24px;
+      font-size: 17px;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 185, 0, 0.3);
+      margin-bottom: 12px;
+    }
+
+    .line-button:hover {
+      background: #00a000;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 185, 0, 0.4);
+    }
+
+    .line-button:active {
+      transform: translateY(0);
+      opacity: 0.9;
+    }
+
+    .line-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--white);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--line-green);
+      font-size: 14px;
+    }
+
+    .sub-text {
+      font-size: 12px;
+      color: var(--text-gray);
+      text-align: center;
+      margin-top: -8px;
+      margin-bottom: 20px;
+    }
+
+    .basic-section {
+      background: var(--gray-bg);
+    }
+
+    .background-section {
+      background: var(--blue-bg);
+      color: var(--white);
+    }
+
+    .feature-list {
+      list-style: none;
+      margin: 30px 0;
+    }
+
+    .feature-list li {
+      padding: 16px 0;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .feature-emoji {
+      font-size: 24px;
+    }
+
+    .transparent-box {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin-top: 30px;
+    }
+
+    .transparent-box p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.7;
+    }
+
+    .services-section {
+      background: var(--dark-blue-bg);
+      color: var(--white);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin: 30px 0;
+    }
+
+    @media (min-width: 600px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+
+    .service-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .service-card:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .service-card-emoji {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .service-card-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: var(--white);
+    }
+
+    .service-card-desc {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+    }
+
+    .proof-section {
+      background: var(--gray-white);
+    }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    @media (min-width: 769px) {
+      .proof-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+      }
+    }
+
+    .proof-item h3 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    .proof-image {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      background: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      color: var(--text-gray);
+      font-size: 14px;
+    }
+
+    .disclaimer {
+      font-size: 11px;
+      color: var(--text-gray);
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .faq-section {
+      background: linear-gradient(to bottom, var(--white), #f9f9f9);
+      padding-bottom: 200px;
+    }
+
+    .faq-title {
+      font-size: 26px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .faq-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--blue-text);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .faq-item {
+      margin-bottom: 30px;
+      border-left: 4px solid var(--blue-text);
+      padding-left: 20px;
+    }
+
+    .faq-question {
+      font-size: 17px;
       font-weight: bold;
       color: #333;
-      text-shadow: 0 0 4px #000;
-      animation: fly 12s linear forwards;
+      margin-bottom: 12px;
     }
-    @keyframes fly {
-      from {
-        transform: translateX(100%);
+
+    .faq-answer {
+      font-size: 15px;
+      color: var(--text-gray);
+      line-height: 1.8;
+    }
+
+    .fixed-bottom-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: var(--white);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      padding: 16px 20px 20px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+
+    .countdown {
+      display: flex;
+      align-items: center;
+      color: var(--red-highlight);
+      font-weight: bold;
+    }
+
+    .safety {
+      color: var(--text-gray);
+      font-size: 12px;
+    }
+
+    .button-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+    }
+
+    .button-text small {
+      font-size: 12px;
+      font-weight: normal;
+      opacity: 0.9;
+    }
+
+    .button-text strong {
+      font-size: 16px;
+    }
+
+    .copyright {
+      font-size: 11px;
+      color: var(--text-light-gray);
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 480px) {
+      .section {
+        padding: 30px 16px;
       }
-      to {
-        transform: translateX(-100%);
+
+      .section-title {
+        font-size: 20px;
+      }
+
+      .gradient-text {
+        font-size: 22px;
+      }
+
+      .line-button {
+        font-size: 16px;
+        padding: 14px 20px;
+      }
+
+      .button-text strong {
+        font-size: 15px;
+      }
+
+      .button-text small {
+        font-size: 11px;
+      }
+
+      .top-banner {
+        font-size: 13px;
+        padding: 12px 12px;
       }
     }
   </style>
 </head>
-<body style="width: 100%;height: 100vh;background-color: #f8f8f8;max-width: 750px;">
-  <div class="error" style="display: none">
-    <div class="error-content">続行するには、銘柄名またはティッカーを入力してください。</div>
+<body>
+  <input type="hidden" id="code" value="">
+  <input type="hidden" id="jrtext" value="">
+
+  <div class="top-banner">
+    <span class="pulse-dot"></span>
+    <span>2月：AI選定の【最高級・優良株】分析完了</span>
   </div>
-  <div class="box" style="width: 100%;height: 100vh;position: relative;">
-    <div class="p-title" style="font-size:13px">
-      AIが分析・予測｜正確率98%の株式診断ツール
+
+  <section class="section basic-section">
+    <div class="container">
+      <span class="section-tag tag-orange">長期保有を前提に厳選</span>
+
+      <h1 class="section-title">
+        今、注目すべき<br>
+        <span class="blue-text">長く持ち続けたい</span><br>
+        優良株をお届けします。
+      </h1>
+
+      <p class="subtitle">
+        AIが過去30年のデータを学習し、<span class="red-text">高配当</span>・<span class="red-text">成長性</span>・<span class="red-text">安定性</span>を兼ね備えた銘柄を厳選。<br>
+        短期の投機ではなく、<strong>誠実な長期投資</strong>をお考えの方に最適な情報を無料でお届けします。
+      </p>
+
+      <button class="line-button" onclick="addjoin('優良株リスト受け取る', 1)">
+        <span class="line-icon">LINE</span>
+        高配当·優良銘柄リストを受け取る
+      </button>
+      <p class="sub-text">※内容確認用の情報が順次届きます</p>
     </div>
-  </div>
-  <div id="t1" style="position: absolute; top: 38%; z-index: 10; width: 91%; height: auto; left: 4%;">
-    <div class="con-box">
-      <div class="word-box">
-        <div class="con" style="font-size:14px; line-height: 1.7; color: #333; margin-top: 8px;">
-          <span class="stockName" style="font-weight:bold;color:red;">富士通</span> は今後も上昇するのか、それとも売るべきなのか？<br>
-          AIがリアルタイムで診断した結果を今すぐご確認いただけます。<br>
-          データ・モメンタム・複数指標をもとに、<strong style="color:#0078d7;">精度98%</strong>の分析を実現。<br>
-          すでに <span id="n-stock" style="font-weight:bold;color:red;">20474</span> 人以上がこの無料診断を活用しています。<br>
-        </div>
+  </section>
+
+  <section class="section background-section">
+    <div class="container">
+      <span class="section-tag tag-gold">AI分析の根拠</span>
+
+      <h2 class="gradient-text">98%の精度を実現する<br>3つの分析基盤</h2>
+
+      <ul class="feature-list">
+        <li>
+          <span class="feature-emoji">🎯</span>
+          <span><strong>リアルタイムデータ取得</strong> — 市場の最新動向を即座に反映</span>
+        </li>
+        <li>
+          <span class="feature-emoji">🧠</span>
+          <span><strong>過去30年分のパターン学習</strong> — 長期トレンドを深く理解</span>
+        </li>
+        <li>
+          <span class="feature-emoji">⭐</span>
+          <span><strong>複数指標による総合判定</strong> — モメンタム・バリュー・成長性を統合</span>
+        </li>
+      </ul>
+
+      <div class="transparent-box">
+        <p>
+          ※このシステムは、東京証券取引所のデータを基に、機関投資家レベルの分析ロジックを個人投資家様向けに最適化したものです。短期的な値動きではなく、<strong>中長期で資産を増やしたい方</strong>に向けた情報配信を行っています。
+        </p>
       </div>
     </div>
-    <input class="inpur" type="text" id="code" placeholder="銘柄名またはコードを入力（例：7203）"
-      style="margin-top: 14px; padding: 10px; width: 100%; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;">
-    <div class="btu" onclick="startFX()" style="margin-top: 10px;">
-      🚀 無料で診断スタート
+  </section>
+
+  <section class="section services-section">
+    <div class="container">
+      <span class="section-tag tag-blue">サービス内容</span>
+
+      <h2 class="gradient-text">ご提供する4つの特典</h2>
+
+      <div class="card-grid">
+        <div class="service-card">
+          <div class="service-card-emoji">💻</div>
+          <div class="service-card-title">最新AI予測レポート</div>
+          <div class="service-card-desc">毎週更新される銘柄分析と推奨リストをお届けします</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-emoji">📡</div>
+          <div class="service-card-title">限定銘柄情報配信</div>
+          <div class="service-card-desc">一般には出回らない注目銘柄の詳細データを優先配信</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-emoji">📶</div>
+          <div class="service-card-title">相場急変アラート</div>
+          <div class="service-card-desc">重要な市場変動時に即座に通知、適切な判断をサポート</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-emoji">🛡️</div>
+          <div class="service-card-title">個別銘柄診断サポート</div>
+          <div class="service-card-desc">お持ちの銘柄について、AIによる診断結果を無料提供</div>
+        </div>
+      </div>
+
+      <div class="transparent-box">
+        <p>
+          <strong>完全無料</strong>でご利用いただけます。高額な投資顧問サービスと同等の情報を、すべての個人投資家様に平等にお届けすることが私たちの理念です。
+        </p>
+      </div>
     </div>
-    <p style="font-size: 11px; color: #666; text-align: center; margin-top: 8px;">
-      ※診断はすぐに完了し、結果が画面に表示されます。ご安心ください。
-    </p>
-  </div>
-  <div id="t2" style="position: absolute;top:45%;z-index: 10;width: 81%;height: auto;left: 9%;display: none;">
-    <img src="/static/jp_jqr/picture/jiaz.gif" alt="">
-  </div>
-  <div id="t3" style="position: absolute;top: 35%;z-index: 10;width: 92%;height: auto;left: 4%;display: none;">
-    <div class="con-box">
-      <div class="word-box">
-        <div class="con" style="margin-top: 20px;  font-size: 12px; line-height: 1.8; color: #333;">
-          ご入力いただいた <span class="stockName" style="font-weight:bold; color:#e74c3c;">富士通</span> について、
-          モメンタム分析・リアルタイムデータ・AIロジックをもとに診断を行いました。<br>
-          <div id="price-info" style="">
-            現在の株価は <span class="xianjia" style="font-weight: bold; color: rgb(3, 162, 12);">3511.00</span> 円、
-            前日比 <span class="zhangdie" style="color: rgb(3, 162, 12);">-28.00</span> 円（<span class="zhangfu"
-              style="color: rgb(3, 162, 12);">(-0.79%)</span>）<br>
+  </section>
+
+  <section class="section proof-section">
+    <div class="container">
+      <h2 class="section-title" style="text-align: center;">信頼の実績</h2>
+
+      <div class="proof-grid">
+        <div class="proof-item">
+          <h3>過去の実績</h3>
+          <div class="proof-image">
+            <span>📈 チャート画像</span>
           </div>
-          私たちのスタッフ、 「<span class="Pname"
-            style="color:#0078d7; font-weight:bold;">株式投資アドバイザー西野彩羽</span>」のLINEアカウントを追加してください。
-          <br>
-          追加が完了しましたら、詳細な診断レポートを受け取るために、銘柄コード「<span class="stockName"
-            style="color:#d72600; font-weight:bold;">富士通</span>」または「<span id="okcode"
-            style="color:#d72600; font-weight:bold;">6702.T</span>」 と送信してください。<br>
-          <span style="background: #fffbe6; padding: 6px 10px; display: inline-block; border-radius: 6px;">
-            メッセージを送信した瞬間にAI診断が始まり、<strong>最新レポートが即座に届きます。</strong>
-          </span>
+        </div>
+
+        <div class="proof-item">
+          <h3>2025年1月：推奨銘柄TOP1</h3>
+          <div class="proof-image">
+            <span>📊 実績データ</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="disclaimer">※過去の実績であり、将来の成果を保証するものではありません。投資判断は自己責任にてお願いいたします。</p>
+    </div>
+  </section>
+
+  <section class="section faq-section">
+    <div class="container">
+      <h2 class="faq-title">
+        <span>よくあるご質問</span>
+        <span class="faq-icon">?</span>
+      </h2>
+
+      <div class="faq-item">
+        <div class="faq-question">Q1. 本当に無料ですか？</div>
+        <div class="faq-answer">
+          はい、完全無料です。登録料・月額料金・情報料など、一切の費用はかかりません。私たちは「日本の個人投資家を豊かにする」という理念のもと、誠実な情報提供を行っています。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Q2. なぜLINEで配信するのですか？</div>
+        <div class="faq-answer">
+          LINEは日本で最も普及しているメッセージアプリであり、リアルタイムで情報をお届けできるためです。また、双方向のやり取りが可能なため、ご質問や個別銘柄の診断依頼にも柔軟に対応できます。
         </div>
       </div>
     </div>
-    <div class="btu sha"
-      style="font-size: 17px; margin-top: 10px; background-color: #00c300; color: white; font-weight: bold;  text-align: center; cursor: pointer;"
-      onclick="addjoin('受け取る加人')">
-      📩 予測レポートをLINEで受け取る
+  </section>
+
+  <div class="fixed-bottom-cta">
+    <div class="info-row">
+      <div class="countdown">
+        <span class="pulse-dot"></span>
+        <span>本日の特別配布:残り3名</span>
+      </div>
+      <div class="safety">安心·無料·1分完了</div>
     </div>
-    <p style="font-size: 0.6em; color: #666; margin-top: 8px; text-align: center;">
-      ※1分以内にLINEで届きます。ボタンを押すだけで完了します。
-    </p>
+
+    <button class="line-button" onclick="addjoin('無料レポート受け取る', 1)">
+      <span class="line-icon">LINE</span>
+      <div class="button-text">
+        <small>誠実な投資の第一歩をここから</small>
+        <strong>無料の優良株レポートを受け取る</strong>
+      </div>
+    </button>
+
+    <p class="copyright">2026日本株投資·誠実推進ネットワーク｜日本を、もっと豊かに。</p>
   </div>
-  <div id="danmu-layer"></div>
-  <script>
-    function updateJpTime() {
-      const now = new Date();
-      const jpTime = now.toLocaleTimeString('ja-JP', {
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZone: 'Asia/Tokyo'
-      });
-      document.getElementById('current-time-jp').textContent = jpTime;
-    }
-    updateJpTime();
-    setInterval(updateJpTime, 1000);
-  </script>
-  <script>
-    let baseCount = 51203 + Math.floor(Math.random() * 20);
-    let currentCount = baseCount;
-    let userEl;
-
-    function animateUserCount() {
-      userEl = document.querySelector('#dynamicUserCount');
-      if (!userEl) return;
-
-      setInterval(() => {
-        currentCount += Math.floor(Math.random() * 3);
-        userEl.textContent = currentCount.toLocaleString();
-      }, 3000);
-    }
-    let countdownEl;
-    function startCountdown() {
-      const countdownEl = document.getElementById('countdown');
-      if (!countdownEl) return;
-      let remainingSeconds = 60 * 60;
-      function updateCountdown() {
-        if (remainingSeconds <= 0) {
-          countdownEl.textContent = '終了しました';
-          return;
-        }
-        const m = Math.floor((remainingSeconds / 60) % 60);
-        const s = remainingSeconds % 60;
-
-        countdownEl.textContent = `${m}分 ${s.toString().padStart(2, '0')}秒`;
-
-        remainingSeconds--;
-      }
-
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-    }
-    window.addEventListener('DOMContentLoaded', () => {
-      animateUserCount();
-      startCountdown();
-    });
-  </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var currentDomain = window.location.hostname;
-      $(".current-domain").each(function () {
-        $(this).text(currentDomain);
-      });
-    })
-    var pageid = 911562;
-    loadStockData()
-    function upTrackingData(id) {
-      const data = {
-        id: id,
-      };
-      const endpoint = '/app/maike/api/info/uppage_track';
-      fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Success:', data);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-    }
-    function BtnTracking(text, click_type = 0) {
-      console.log(text)
-      if (text == '' || text == undefined || text == null || text == 'null') {
-        text = '点击按钮';
-      }
-      const data = {
-        url: text + window.location.href,
-        timestamp: new Date().toISOString(),
-        click_type: click_type
-      };
-      var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      var language = navigator.language || navigator.userLanguage;
-      const endpoint = '/app/maike/api/info/page_track';
-      fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'timezone': timezone,
-          'language': language
-        },
-        body: JSON.stringify(data)
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Success:', data);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-    }
-    function getQueryVariable(variable) {
-      var query = window.location.search.substring(1);
-      var vars = query.split("&");
-      for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] == variable) {
-          return pair[1];
-        }
-      }
-      return (false);
-    }
-    function loadStockData() {
-      const stockcode = getQueryVariable("code") || '^N225';
-      var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      var language = navigator.language || navigator.userLanguage;
-      $.ajax({
-        url: '/app/maike/api/stock/getinfo',
-        data: {
-          code: stockcode,
-        },
-        headers: {
-          Accept: "application/json; charset=utf-8",
-          timezone: timezone,
-          language: language
-        },
-        type: "get",
-        success: function (res) {
-          $('.Pname').html(res.name);
-          let data = res.chart.result[0];
-          const quote0 = (data?.indicators?.quote?.[0]) || {};
-          const close = Number(quote0.close) || null;
-          $('.xianjia').text(close ?? '--');
-          if (close !== null) {
-            $('#price-info').show();
-          } else {
-            $('#price-info').hide();
-          }
-          $('.gName,.btnBg span,.tcodeName').html(data.meta.stockName);
-          $('.gCode').text('(' + data.meta.stockCode + ')');
-          $('.sCode').text(data.meta.stockCode);
-          $('.xianjia').text(data.indicators.quote[0].close);
-          $('.jinkai').text(data.indicators.quote[0].open);
-          $('.zuigao').text(data.indicators.quote[0].high);
-          $('.zuidi').text(data.indicators.quote[0].low);
-          $('.zuoshou').text(data.meta.chartPreviousClose);
-          $('.chengjiaoliang').text(data.indicators.adjclose[0].adjclose);
-          $('.chengjiaoe').text(data.indicators.quote[0].volume);
-          $('.zhenfu').text(data.meta.lowPrice);
-          const price = data.indicators.quote[0].close;
-          let percentNum = (data.indicators.quote[0].close - data.meta.chartPreviousClose).toFixed(
-            2);
-          let changesPercentage = ((percentNum / data.meta.chartPreviousClose) * 100).toFixed(2);
-          if (percentNum >= 0) {
-            $('.zhang').show();
-            $('.zhangdie').text('+' + percentNum);
-            $('.zhangfu').text('(+' + changesPercentage + '%)');
-            $('.zhangdie,.zhangfu,.xianjia').css('color', '#dc3825');
-            $('.zhishu img').attr('src', "/static/jppicture/arrow.png");
-          } else {
-            $('.die').show();
-            $('.zhangdie').text(percentNum);
-            $('.zhangfu').text('(' + changesPercentage + '%)');
-            $('.zhangdie,.zhangfu,.xianjia').css('color', '#03a20c');
-            $('.zhishu img').attr('src', "/static/jppicture/arrowdown.png");
-          }
-          if (data.meta.stockName === 'Unknown') {
-            $('.stockName').html('銘柄コード:' + data.meta.stockCode);
-            $("#code").val(data.meta.stockCode);
-            $("#okcode").html('受け取る');
-          } else {
-            $('.stockName').html(data.meta.stockName);
-            $("#code").val(data.meta.stockName);
-            $("#okcode").html(data.meta.symbol);
-          }
-        },
-        error: function (e) {
-          console.log('Error loading stock data:', e);
-        }
-      });
-    }
-    upTrackingData(pageid)
-  </script>
 </body>
 </html>
