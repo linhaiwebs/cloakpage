@@ -1,881 +1,588 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>2月：AI選定の 最高級・優良株 分析完了</title>
-  <meta name="description" content="AIが導き出す優良銘柄。日本人投資家のための誠実な株式投資情報。中長期で保有したい優良銘柄リストを無料配布中。">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --black: #000000;
-      --white: #ffffff;
-      --deep-blue: #1a2332;
-      --darker-blue: #0f1824;
-      --gray-bg: #f5f5f5;
-      --silver-gray: #e8e8e8;
-      --light-blue-gray: #8fa3b8;
-      --gold: #ffc107;
-      --gold-dark: #ffb300;
-      --soil-gold: #ff9800;
-      --blue: #2196F3;
-      --red: #f44336;
-      --line-green: #06C755;
-      --orange-light: #ffcc80;
-      --orange-deep: #ff6f00;
-      --text-dark: #333333;
-      --text-gray: #666666;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
-      line-height: 1.7;
-      color: var(--text-dark);
-      background: var(--white);
-      overflow-x: hidden;
-      padding-bottom: 180px;
-    }
-
-    .top-banner {
-      background: var(--black);
-      padding: 16px 20px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-    }
-
-    .pulse-dot {
-      width: 12px;
-      height: 12px;
-      background: var(--red);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-      box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7);
-    }
-
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7);
-      }
-      50% {
-        transform: scale(1.05);
-        box-shadow: 0 0 0 8px rgba(244, 67, 54, 0);
-      }
-    }
-
-    .top-banner-text {
-      color: var(--white);
-      font-size: 15px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-    }
-
-    .base-section {
-      background: var(--gray-bg);
-      padding: 40px 20px;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .tag-label {
-      display: inline-block;
-      background: var(--orange-light);
-      color: var(--orange-deep);
-      padding: 8px 20px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    .main-title {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .main-title-line1 {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--text-dark);
-      margin-bottom: 4px;
-    }
-
-    .main-title-line2 {
-      font-size: 24px;
-      font-weight: bold;
-      color: var(--blue);
-      margin-bottom: 4px;
-    }
-
-    .main-title-line3 {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--text-dark);
-    }
-
-    .subtitle {
-      text-align: center;
-      font-size: 14px;
-      color: var(--text-gray);
-      line-height: 1.8;
-      margin-bottom: 30px;
-    }
-
-    .subtitle .highlight {
-      color: var(--red);
-      font-weight: bold;
-    }
-
-    .cta-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: var(--line-green);
-      color: var(--white);
-      padding: 18px 30px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(6, 199, 85, 0.3);
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto 12px;
-    }
-
-    .cta-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(6, 199, 85, 0.4);
-    }
-
-    .cta-button:active {
-      transform: translateY(0);
-    }
-
-    .line-icon {
-      width: 24px;
-      height: 24px;
-      background: var(--white);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      color: var(--line-green);
-      font-size: 14px;
-    }
-
-    .cta-note {
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-gray);
-      margin-top: 8px;
-    }
-
-    .intro-section {
-      background: var(--deep-blue);
-      padding: 50px 20px;
-      color: var(--white);
-    }
-
-    .intro-tag {
-      display: inline-block;
-      border: 2px solid var(--gold);
-      color: var(--gold);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 13px;
-      margin-bottom: 20px;
-    }
-
-    .intro-title {
-      font-size: 26px;
-      font-weight: bold;
-      background: linear-gradient(135deg, var(--gold) 0%, var(--soil-gold) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 16px;
-      line-height: 1.5;
-    }
-
-    .intro-subtitle {
-      font-size: 14px;
-      font-style: italic;
-      color: var(--light-blue-gray);
-      margin-bottom: 40px;
-    }
-
-    .reason-item {
-      margin-bottom: 40px;
-    }
-
-    .reason-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .reason-icon {
-      font-size: 28px;
-    }
-
-    .reason-title {
-      font-size: 18px;
-      font-weight: bold;
-      color: var(--white);
-    }
-
-    .reason-text {
-      font-size: 14px;
-      color: var(--light-blue-gray);
-      line-height: 1.8;
-      padding-left: 40px;
-    }
-
-    .reason-text .gold-highlight {
-      color: var(--gold);
-      font-weight: 500;
-    }
-
-    .statement-box {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--white);
-      line-height: 1.8;
-      margin-top: 30px;
-    }
-
-    .statement-box .gold-highlight {
-      color: var(--gold);
-      font-weight: 500;
-    }
-
-    .service-section {
-      background: var(--darker-blue);
-      padding: 50px 20px;
-      color: var(--white);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .service-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(33, 150, 243, 0.5), transparent);
-    }
-
-    .service-section::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(33, 150, 243, 0.5), transparent);
-    }
-
-    .service-tag {
-      display: inline-block;
-      border: 2px solid var(--blue);
-      color: var(--blue);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 13px;
-      margin-bottom: 20px;
-    }
-
-    .service-title {
-      font-size: 24px;
-      font-weight: bold;
-      background: linear-gradient(135deg, var(--soil-gold) 0%, var(--gold) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 40px;
-      line-height: 1.6;
-    }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    @media (max-width: 600px) {
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .feature-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 24px 20px;
-      text-align: center;
-      transition: transform 0.3s ease;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-4px);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .card-icon {
-      font-size: 32px;
-      margin-bottom: 8px;
-    }
-
-    .card-title {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 8px;
-    }
-
-    .card-value {
-      font-size: 22px;
-      font-weight: bold;
-      font-style: italic;
-      color: var(--white);
-      margin-bottom: 8px;
-    }
-
-    .card-subtitle {
-      font-size: 11px;
-      color: var(--light-blue-gray);
-    }
-
-    .service-statement {
-      background: rgba(33, 150, 243, 0.1);
-      border: 1px solid rgba(33, 150, 243, 0.2);
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.9);
-      line-height: 1.8;
-    }
-
-    .service-statement .gold-highlight {
-      color: var(--gold);
-      font-weight: 500;
-    }
-
-    .trust-section {
-      background: var(--silver-gray);
-      padding: 50px 20px;
-    }
-
-    .trust-part {
-      margin-bottom: 50px;
-    }
-
-    .trust-small-title {
-      text-align: center;
-      color: var(--blue);
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
-    .trust-big-title {
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
-      color: var(--text-dark);
-      margin-bottom: 30px;
-      line-height: 1.6;
-    }
-
-    .stock-chart-box {
-      position: relative;
-      background: linear-gradient(135deg, #1e3a5f 0%, #0d1f3a 100%);
-      border-radius: 16px;
-      padding: 80px 30px 30px;
-      text-align: center;
-      margin-bottom: 16px;
-      min-height: 280px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    .stock-chart-box::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background:
-        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(0deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-      background-size: 40px 40px;
-      opacity: 0.3;
-    }
-
-    .chart-year {
-      position: relative;
-      color: var(--gold);
-      font-size: 20px;
-      font-weight: bold;
-      font-style: italic;
-      margin-bottom: 16px;
-      z-index: 1;
-    }
-
-    .chart-desc {
-      position: relative;
-      color: var(--white);
-      font-size: 13px;
-      line-height: 1.8;
-      max-width: 400px;
-      z-index: 1;
-    }
-
-    .trust-note {
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-gray);
-      line-height: 1.7;
-    }
-
-    .proof-image {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto 16px;
-      display: block;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .qa-section {
-      background: linear-gradient(180deg, var(--white) 0%, var(--gray-bg) 100%);
-      padding: 50px 20px 20px;
-    }
-
-    .qa-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 40px;
-    }
-
-    .qa-icon {
-      font-size: 28px;
-      color: var(--blue);
-    }
-
-    .qa-header-title {
-      font-size: 24px;
-      font-weight: bold;
-      color: var(--text-dark);
-    }
-
-    .qa-item {
-      margin-bottom: 30px;
-    }
-
-    .qa-question {
-      font-size: 16px;
-      font-weight: bold;
-      color: var(--blue);
-      margin-bottom: 12px;
-      padding-left: 16px;
-      position: relative;
-    }
-
-    .qa-question::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      border-radius: 2px;
-    }
-
-    .qa-question.blue-line::before {
-      background: var(--blue);
-    }
-
-    .qa-question.yellow-line::before {
-      background: var(--gold-dark);
-    }
-
-    .qa-answer {
-      font-size: 14px;
-      color: var(--text-gray);
-      line-height: 1.8;
-      padding-left: 16px;
-    }
-
-    .fixed-bottom-cta {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--white);
-      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
-      padding: 16px 20px;
-      z-index: 1000;
-    }
-
-    .fixed-cta-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      font-size: 12px;
-    }
-
-    .fixed-cta-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--red);
-      font-weight: bold;
-    }
-
-    .breathing-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--red);
-      border-radius: 50%;
-      animation: breathe 2s infinite;
-    }
-
-    @keyframes breathe {
-      0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.4;
-        transform: scale(0.8);
-      }
-    }
-
-    .fixed-cta-right {
-      color: var(--text-gray);
-    }
-
-    .fixed-cta-top-text {
-      font-size: 12px;
-      text-align: center;
-      color: var(--text-gray);
-      margin-bottom: 8px;
-    }
-
-    .fixed-main-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: var(--line-green);
-      color: var(--white);
-      padding: 16px 24px;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(6, 199, 85, 0.3);
-      width: 100%;
-      margin-bottom: 12px;
-    }
-
-    .fixed-main-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(6, 199, 85, 0.4);
-    }
-
-    .fixed-button-text-small {
-      font-size: 12px;
-      font-weight: normal;
-    }
-
-    .fixed-button-text-large {
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    .copyright {
-      text-align: center;
-      font-size: 11px;
-      color: var(--text-gray);
-    }
-
-    .center-content {
-      text-align: center;
-    }
-
-    @media (max-width: 768px) {
-      .top-banner-text {
-        font-size: 13px;
-      }
-
-      .main-title-line1,
-      .main-title-line3 {
-        font-size: 18px;
-      }
-
-      .main-title-line2 {
-        font-size: 22px;
-      }
-
-      .intro-title {
-        font-size: 22px;
-      }
-
-      .service-title {
-        font-size: 20px;
-      }
-
-      .trust-big-title {
-        font-size: 20px;
-      }
-
-      .qa-header-title {
-        font-size: 20px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石川敏夫 - 投資スクール</title>
+    <meta name="description" content="元野村證券シニア・ストラテジストが教える、機関投資家の「勝てる投資の極意」をあなたに。">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="../static/0fb418afbeb1420ea1c2bd21f983da4c.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1D62FE',
+                        accent: '#FF6E3A',
+                        slate: {
+                            850: '#1e293b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
+                        serif: ['"Shippori Mincho"', 'serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 8px 30px -4px rgba(0, 0, 0, 0.08)',
+                        'glow': '0 0 20px rgba(255, 110, 58, 0.5)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #F8FAFC;
+            letter-spacing: 0.02em;
+            font-feature-settings: "palt";
+        }
+
+        .font-heading {
+            font-family: "Shippori Mincho", serif;
+            letter-spacing: 0.08em;
+        }
+
+        .text-premium {
+            font-feature-settings: "palt";
+            text-rendering: optimizeLegibility;
+        }
+
+        .carousel-slide {
+            display: none;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
+        .carousel-slide.active {
+            display: block;
+        }
+
+        @keyframes pulse-orange {
+            0% { box-shadow: 0 0 0 0 rgba(255, 110, 58, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(255, 110, 58, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 110, 58, 0); }
+        }
+        .btn-pulse {
+            animation: pulse-orange 2s infinite;
+        }
+
+        .text-justify-custom {
+            text-align: justify;
+            text-justify: inter-ideograph;
+        }
+    </style>
 </head>
-<body>
+<body class="pb-28 text-slate-800 font-sans">
 
-  <div class="top-banner">
-    <div class="pulse-dot"></div>
-    <div class="top-banner-text">2月：AI選定の [最高級・優良株] 分析完了</div>
-  </div>
+    <main class="container mx-auto px-4 max-w-lg">
 
-  <section class="base-section">
-    <div class="container center-content">
-      <div class="tag-label">長期保有を前提に厳選</div>
+        <!-- Hero Section -->
+        <section class="py-5 text-center">
+            <div class="inline-block bg-blue-50 text-primary text-[10px] font-bold px-3 py-1 rounded-full mb-3 border border-blue-100">
+                期間限定・無料公開中
+            </div>
+            <h1 class="text-[26px] font-extrabold text-slate-900 leading-tight mb-4 font-heading">
+                <span class="text-primary">石川敏夫</span>先生と共に、<br>
+                <span class="bg-gradient-to-r from-orange-100 to-yellow-100 px-1 rounded">資産1億円</span>を目指す旅へ
+            </h1>
+            <p class="text-slate-600 text-sm mb-5 font-medium leading-7 px-2">
+                元野村證券シニア・ストラテジストが教える、<br>
+                機関投資家の<span class="text-accent font-bold border-b-2 border-accent/30">「勝てる投資の極意」</span>をあなたに。
+            </p>
 
-      <div class="main-title">
-        <div class="main-title-line1">個人投資家のための</div>
-        <div class="main-title-line2">長く持ち続けたい</div>
-        <div class="main-title-line3">優良銘柄リスト</div>
-      </div>
+            <!-- Carousel -->
+            <div class="relative w-full rounded-2xl shadow-xl mb-8 overflow-hidden bg-white border border-slate-100">
+                <div id="carousel-container" class="w-full">
+                    <img src="../static/picture/b3.png" alt="スライド 1" class="carousel-slide active">
+                    <img src="../static/picture/2.jpg" alt="スライド 2" class="carousel-slide">
+                    <img src="../static/picture/3.jpg" alt="スライド 3" class="carousel-slide">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
 
-      <div class="subtitle">
-        配当·事業内容·財務デ一タなどを総合的に整理。<br>
-        短期目線ではなく、<br>
-        <span class="highlight">中長期で検討されやすい注目銘柄</span>を<br>
-        まとめました。
-      </div>
+                <div class="absolute bottom-3 left-0 right-0 flex justify-center space-x-2" id="carousel-indicators">
+                    <div class="h-1.5 w-6 bg-accent rounded-full transition-all"></div>
+                    <div class="h-1.5 w-1.5 bg-white/70 rounded-full transition-all"></div>
+                    <div class="h-1.5 w-1.5 bg-white/70 rounded-full transition-all"></div>
+                </div>
+            </div>
 
-      <button class="cta-button" onclick="addjoin(event, '高配当·優良銘柄リストを受け取る', 0)">
-        <span class="line-icon">L</span>
-        <span>高配当·優良銘柄リストを受け取る</span>
-      </button>
+            <!-- Grid Menu -->
+            <div class="grid grid-cols-2 gap-4 mb-10">
+                <div onclick="addjoin(event, '最新市場分析', 0)" class="bg-white p-5 rounded-2xl shadow-soft flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all border border-slate-100 group hover:border-primary/30 hover:shadow-lg">
+                    <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-primary mb-3 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="line-chart" class="w-6 h-6"></i>
+                    </div>
+                    <span class="font-bold text-sm text-slate-700">最新市場分析</span>
+                    <span class="text-[10px] text-slate-400 mt-1">マーケット分析</span>
+                </div>
+                <div onclick="addjoin(event, '優良銘柄推奨', 0)" class="bg-white p-5 rounded-2xl shadow-soft flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all border border-slate-100 group hover:border-accent/30 hover:shadow-lg">
+                    <div class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center text-accent mb-3 group-hover:bg-accent group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="bar-chart-4" class="w-6 h-6"></i>
+                    </div>
+                    <span class="font-bold text-sm text-slate-700">優良銘柄推奨</span>
+                    <span class="text-[10px] text-slate-400 mt-1">厳選銘柄</span>
+                </div>
+                <div onclick="addjoin(event, '経済ニュース', 0)" class="bg-white p-5 rounded-2xl shadow-soft flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all border border-slate-100 group hover:border-accent/30 hover:shadow-lg">
+                    <div class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center text-accent mb-3 group-hover:bg-accent group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="newspaper" class="w-6 h-6"></i>
+                    </div>
+                    <span class="font-bold text-sm text-slate-700">経済ニュース</span>
+                    <span class="text-[10px] text-slate-400 mt-1">最新情報</span>
+                </div>
+                <div onclick="addjoin(event, '投資講座', 0)" class="bg-white p-5 rounded-2xl shadow-soft flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all border border-slate-100 group hover:border-primary/30 hover:shadow-lg">
+                    <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-primary mb-3 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                        <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                    </div>
+                    <span class="font-bold text-sm text-slate-700">投資講座</span>
+                    <span class="text-[10px] text-slate-400 mt-1">学習コース</span>
+                </div>
+            </div>
+        </section>
 
-      <div class="cta-note">※内容確認用の情報が順次届きます</div>
+
+        <!-- Reasons to be Chosen -->
+        <section class="mb-10">
+            <div class="text-center mb-6">
+                <span class="text-accent font-bold text-xs tracking-widest">選ばれる理由</span>
+                <h2 class="text-xl font-bold text-slate-800 mt-1 font-heading">
+                    <span class="text-primary">石川敏夫</span>が選ばれる<br>4つの理由
+                </h2>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Reason 1 -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-start">
+                    <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex-shrink-0 flex items-center justify-center mr-4">
+                        <i data-lucide="trending-up" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-slate-900 mb-1">野村證券で培った実績</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            野村證券支店長、野村アセットマネジメントのシニア・ストラテジストとして、日本最高峰の投資ノウハウを習得。30年以上の実践経験に基づく手法を提供します。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Reason 2 -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-start">
+                    <div class="w-12 h-12 bg-orange-50 text-accent rounded-xl flex-shrink-0 flex items-center justify-center mr-4">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-slate-900 mb-1">国際的な金融資格を保有</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            CFA協会メンバー、日本証券アナリスト協会認定メンバー（CMA）として、国際的に認められた金融専門家。豪州での留学・実務経験も持つグローバル人材です。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Reason 3 -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-start">
+                    <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex-shrink-0 flex items-center justify-center mr-4">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-slate-900 mb-1">LINEでの完全個別サポート</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            一方的な講義ではありません。LINEを通じて直接質問が可能。あなたの資産状況に合わせたアドバイスを行います。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Reason 4 -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-start">
+                    <div class="w-12 h-12 bg-orange-50 text-accent rounded-xl flex-shrink-0 flex items-center justify-center mr-4">
+                        <i data-lucide="gift" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-slate-900 mb-1">豪華な無料特典</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            今ならLINE友だち追加で、「2024年急騰期待銘柄リスト」や「投資初心者マニュアル」を無料でプレゼント中。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services -->
+        <section class="bg-gradient-to-br from-primary to-blue-600 rounded-3xl p-8 mb-10 shadow-xl text-white relative overflow-hidden">
+            <!-- Decorative Elements -->
+            <div class="absolute top-[-50px] right-[-50px] w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
+            <div class="absolute bottom-[-30px] left-[-30px] w-32 h-32 bg-blue-400 opacity-20 rounded-full blur-xl"></div>
+
+            <h2 class="text-xl font-bold mb-6 flex items-center relative z-10 font-heading">
+                <i data-lucide="star" class="w-6 h-6 mr-2 text-yellow-300 fill-current"></i>
+                提供サービス一覧
+            </h2>
+            <div class="space-y-6 relative z-10">
+                <div class="flex items-start">
+                    <div class="bg-white/20 p-2.5 rounded-full mr-4 mt-0.5 backdrop-blur-sm">
+                        <i data-lucide="check" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">無料銘柄推奨サービス</h4>
+                        <p class="text-sm text-blue-50 font-medium leading-relaxed opacity-90">
+                            AI分析とプロのアナリストチームが厳選した、短期で利益が見込める銘柄情報を定期的に配信します。上昇率95%超の実績あり。
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="bg-white/20 p-2.5 rounded-full mr-4 mt-0.5 backdrop-blur-sm">
+                        <i data-lucide="check" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">実践的投資スキル学習</h4>
+                        <p class="text-sm text-blue-50 font-medium leading-relaxed opacity-90">
+                            チャートの読み方からファンダメンタルズ分析まで、初心者から上級者まで対応した体系的なカリキュラムを提供。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Exclusive Services Section -->
+        <section class="mb-10">
+            <div class="text-center mb-6">
+                <span class="text-primary font-bold text-xs tracking-widest">専属サービス</span>
+                <h2 class="text-xl font-bold text-slate-800 mt-1 font-heading">
+                    私たちの<span class="text-accent">専属投資サービス</span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Service 1 -->
+                <div class="bg-white p-4 rounded-2xl shadow-soft border border-slate-100 flex flex-col">
+                    <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center text-primary mb-3">
+                        <i data-lucide="gift" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-900 mb-1">無料銘柄推奨</h3>
+                    <p class="text-[11px] text-slate-500 leading-relaxed mb-3 flex-1">
+                        リアルタイムで潜在力のある銘柄を推奨します
+                    </p>
+                    <button onclick="addjoin(event, '無料銘柄推奨-詳細', 0)" class="w-full bg-primary hover:bg-blue-700 text-white text-[10px] py-2 rounded-lg font-bold transition-colors flex items-center justify-center">
+                        <i data-lucide="arrow-right" class="w-3 h-3 mr-1"></i>詳細を見る
+                    </button>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-white p-4 rounded-2xl shadow-soft border border-slate-100 flex flex-col">
+                    <div class="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center text-accent mb-3">
+                        <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-900 mb-1">無料銘柄選定講座</h3>
+                    <p class="text-[11px] text-slate-500 leading-relaxed mb-3 flex-1">
+                        専門家による銘柄選定スキルを無料で学べます
+                    </p>
+                    <button onclick="addjoin(event, '無料銘柄選定講座-学ぶ', 0)" class="w-full bg-accent hover:bg-orange-600 text-white text-[10px] py-2 rounded-lg font-bold transition-colors flex items-center justify-center">
+                        <i data-lucide="arrow-right" class="w-3 h-3 mr-1"></i>今すぐ学ぶ
+                    </button>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-white p-4 rounded-2xl shadow-soft border border-slate-100 flex flex-col">
+                    <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center text-green-500 mb-3">
+                        <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-900 mb-1">精密分析</h3>
+                    <p class="text-[11px] text-slate-500 leading-relaxed mb-3 flex-1">
+                        強力なデータサポートによる精確な市場分析
+                    </p>
+                    <button onclick="addjoin(event, '精密分析-分析', 0)" class="w-full bg-green-500 hover:bg-green-600 text-white text-[10px] py-2 rounded-lg font-bold transition-colors flex items-center justify-center">
+                        <i data-lucide="arrow-right" class="w-3 h-3 mr-1"></i>分析を見る
+                    </button>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="bg-white p-4 rounded-2xl shadow-soft border border-slate-100 flex flex-col">
+                    <div class="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center text-purple-500 mb-3">
+                        <i data-lucide="zap" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-900 mb-1">高効率実行</h3>
+                    <p class="text-[11px] text-slate-500 leading-relaxed mb-3 flex-1">
+                        すべての投資機会を逃さない迅速な対応
+                    </p>
+                    <button onclick="addjoin(event, '高効率実行-始める', 0)" class="w-full bg-purple-500 hover:bg-purple-600 text-white text-[10px] py-2 rounded-lg font-bold transition-colors flex items-center justify-center">
+                        <i data-lucide="arrow-right" class="w-3 h-3 mr-1"></i>始める
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3 Steps Section -->
+        <section class="mb-10">
+            <div class="text-center mb-6">
+                <span class="text-accent font-bold text-xs tracking-widest">簡単3ステップ</span>
+                <h2 class="text-xl font-bold text-slate-800 mt-1 font-heading">
+                    たった<span class="text-primary">3ステップ</span>で<br>素晴らしい未来を手に入れる
+                </h2>
+            </div>
+
+            <div class="relative">
+                <!-- Connection Line -->
+                <div class="absolute left-7 top-12 bottom-12 w-0.5 bg-gradient-to-b from-primary via-accent to-green-500 hidden sm:block"></div>
+
+                <div class="space-y-4">
+                    <!-- Step 1 -->
+                    <div class="bg-white p-5 rounded-2xl shadow-soft border border-slate-100 flex items-start relative">
+                        <div class="w-14 h-14 bg-gradient-to-br from-primary to-blue-600 text-white rounded-xl flex-shrink-0 flex items-center justify-center mr-4 shadow-lg">
+                            <span class="text-2xl font-black">1</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-base text-slate-900 mb-1 flex items-center">
+                                <i data-lucide="headphones" class="w-4 h-4 mr-2 text-primary"></i>
+                                専門チームに相談する
+                            </h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">
+                                石川先生とその専門チームにお気軽にご連絡ください。あなたの投資の悩みを丁寧にヒアリングします。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="bg-white p-5 rounded-2xl shadow-soft border border-slate-100 flex items-start relative">
+                        <div class="w-14 h-14 bg-gradient-to-br from-accent to-orange-600 text-white rounded-xl flex-shrink-0 flex items-center justify-center mr-4 shadow-lg">
+                            <span class="text-2xl font-black">2</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-base text-slate-900 mb-1 flex items-center">
+                                <i data-lucide="book-open" class="w-4 h-4 mr-2 text-accent"></i>
+                                投資スキルを学ぶ
+                            </h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">
+                                銘柄選定の核心戦略をマスターし、プロの投資テクニックを身につけましょう。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="bg-white p-5 rounded-2xl shadow-soft border border-slate-100 flex items-start relative">
+                        <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-xl flex-shrink-0 flex items-center justify-center mr-4 shadow-lg">
+                            <span class="text-2xl font-black">3</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-base text-slate-900 mb-1 flex items-center">
+                                <i data-lucide="rocket" class="w-4 h-4 mr-2 text-green-500"></i>
+                                投資計画を実行する
+                            </h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">
+                                すべての投資チャンスを逃さず、着実に資産を増やしていきましょう。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <button onclick="addjoin(event, '今すぐ無料相談を始める', 0)" class="w-full bg-gradient-to-r from-primary to-blue-600 text-white py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex justify-center items-center tracking-wide group">
+                    <i data-lucide="message-circle" class="w-5 h-5 mr-2"></i>
+                    今すぐ無料相談を始める
+                    <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section class="bg-white rounded-3xl shadow-soft border border-slate-100 p-7 mb-10 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-50 to-transparent rounded-bl-full -mr-4 -mt-4 z-0"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-orange-50 to-transparent rounded-tr-full -ml-4 -mb-4 z-0"></div>
+
+            <div class="relative z-10">
+                <!-- Profile Header with Circular Image -->
+                <div class="flex flex-col items-center text-center mb-6">
+                    <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-xl mb-4 ring-4 ring-primary/20">
+                        <img src="../static/picture/b1.png" alt="石川敏夫" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center mb-1">
+                        <span class="font-black text-slate-900 text-xl mr-2 font-heading">石川 敏夫</span>
+                    </div>
+                    <span class="text-slate-400 text-xs font-medium">いしかわ としお</span>
+                    <div class="flex items-center mt-2 space-x-2 flex-wrap justify-center gap-1">
+                        <span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded-full">CFA協会メンバー</span>
+                        <span class="bg-accent/10 text-accent text-[10px] font-bold px-2 py-1 rounded-full">CMA認定アナリスト</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center mb-4 pb-3 border-b border-slate-100">
+                    <div class="bg-primary/10 p-2 rounded-lg mr-3">
+                        <i data-lucide="user-check" class="w-5 h-5 text-primary"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-800 font-heading">講師プロフィール</h2>
+                </div>
+
+                <div class="space-y-4 text-sm text-slate-600">
+                    <p class="leading-7 text-justify-custom">
+                        1989年、<span class="font-bold text-slate-800">早稲田大学</span>をご卒業され、学士号を取得されました。1994年に<span class="font-bold text-slate-800">野村證券</span>へ入社され、名古屋駅前支店長を務められた後、<span class="font-bold text-slate-800">野村アセットマネジメント</span>にてシニア・ストラテジストを歴任されました。
+                    </p>
+                    <p class="leading-7 text-justify-custom">
+                        1996年から1999年にかけて、オーストラリアの<span class="font-bold text-slate-800">マッコーリー大学</span>へ留学され、応用金融学修士号を取得されました。その後、<span class="font-bold text-slate-800">バークレイズ・キャピタル（オーストラリア）</span>にて勤務され、クロスボーダーM&A案件において優れた実績を上げられました。
+                    </p>
+                    <p class="leading-7 text-justify-custom">
+                        2000年5月に日本へ帰国され、<span class="font-bold text-slate-800">GCAアセット・マネジメント株式会社</span>にて資産運用本部長に就任されました。債券運用および関連業務の責任者として、<span class="font-bold text-slate-800">20年以上</span>にわたり債券運用に携わり、公的年金および企業年金の運用を中心に、運用商品の開発・管理に注力されております。
+                    </p>
+
+                    <div class="bg-gradient-to-r from-slate-50 to-blue-50 border-l-4 border-primary p-4 rounded-r-lg mt-4">
+                        <p class="text-primary text-xs font-bold leading-relaxed italic">
+                            「長期投資と市場の透明性こそが、個人投資家を守る最良の盾です。正しい知識と戦略で、着実に資産を築きましょう。」
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                     <button onclick="addjoin(event, '石川先生に相談する', 0)" class="w-full bg-gradient-to-r from-slate-800 to-slate-900 text-white py-3.5 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex justify-center items-center tracking-wide group">
+                       <i data-lucide="message-circle" class="w-4 h-4 mr-2"></i>
+                       石川先生に相談する
+                       <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                     </button>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Special Gift Section -->
+        <section class="mb-10">
+            <div class="bg-gradient-to-br from-primary via-blue-600 to-indigo-700 rounded-3xl p-8 shadow-xl text-white relative overflow-hidden">
+                <!-- Decorative Elements -->
+                <div class="absolute top-[-30px] right-[-30px] w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+                <div class="absolute bottom-[-20px] left-[-20px] w-24 h-24 bg-cyan-400 opacity-20 rounded-full blur-xl"></div>
+                <div class="absolute top-4 right-4">
+                    <i data-lucide="gift" class="w-12 h-12 text-white/20"></i>
+                </div>
+
+                <div class="relative z-10">
+                    <div class="text-center mb-6">
+                        <span class="bg-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full backdrop-blur-sm">期間限定特典</span>
+                        <h2 class="text-2xl font-bold mt-3 font-heading">
+                            心を込めた特別プレゼント
+                        </h2>
+                        <p class="text-sm text-blue-100 mt-2 font-medium leading-relaxed">
+                            銘柄選定テクニックを<span class="text-cyan-300 font-bold">無料進呈</span>！<br>
+                            今すぐ参加して、あなたの投資の旅をサポートします
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <!-- Gift 1 -->
+                        <div class="bg-white/15 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                            <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i data-lucide="book-open" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <span class="text-sm font-bold">投資教育</span>
+                            <p class="text-[10px] text-blue-100 mt-1">基礎から応用まで</p>
+                        </div>
+
+                        <!-- Gift 2 -->
+                        <div class="bg-white/15 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                            <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i data-lucide="target" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <span class="text-sm font-bold">銘柄選定術</span>
+                            <p class="text-[10px] text-blue-100 mt-1">プロの選定技術</p>
+                        </div>
+
+                        <!-- Gift 3 -->
+                        <div class="bg-white/15 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                            <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <span class="text-sm font-bold">専門分析</span>
+                            <p class="text-[10px] text-blue-100 mt-1">データに基づく分析</p>
+                        </div>
+
+                        <!-- Gift 4 -->
+                        <div class="bg-white/15 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                            <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i data-lucide="user-check" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <span class="text-sm font-bold">金融専門家</span>
+                            <p class="text-[10px] text-blue-100 mt-1">専任アドバイザー</p>
+                        </div>
+                    </div>
+
+                    <button onclick="addjoin(event, '今すぐ無料で受け取る', 0)" class="w-full bg-white text-primary py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex justify-center items-center tracking-wide group hover:bg-blue-50">
+                        <i data-lucide="gift" class="w-5 h-5 mr-2"></i>
+                        今すぐ無料で受け取る
+                        <i data-lucide="chevron-right" class="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Sticky Bottom Bar -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-200 p-4 z-50 shadow-[0_-4px_20px_-5px_rgba(0,0,0,0.1)]">
+        <div class="container mx-auto max-w-lg flex flex-col items-center">
+            <div class="text-[10px] font-bold text-slate-500 mb-2 animate-bounce">
+                ＼ <span class="text-accent">残り3名</span> 限定募集 ／
+            </div>
+            <div class="w-full flex gap-3">
+                <button
+                    onclick="addjoin(event, '今すぐ相談', 1)"
+                    class="flex-1 bg-gradient-to-r from-primary to-blue-600 text-white py-3.5 rounded-full font-bold shadow-lg hover:shadow-xl transition-all flex justify-center items-center text-base tracking-wide"
+                >
+                    <i data-lucide="message-circle" class="w-4 h-4 mr-1.5"></i>
+                    今すぐ相談
+                </button>
+
+            </div>
+        </div>
     </div>
-  </section>
 
-  <section class="intro-section">
-    <div class="container center-content">
-      <div class="intro-tag">AIが導き出す勝機の真実</div>
+    <!-- Hidden Input Fields -->
+    <input type="hidden" id="jrtext" value="">
+    <input type="hidden" id="code" value="">
 
-      <div class="intro-title">
-        あなたが 「優良株」 で<br>
-        勝てなかった三つの理由。
-      </div>
+    <!-- Core Button Logic Script -->
+    <script src="../static/core/jp_202629.js"></script>
 
-      <div class="intro-subtitle">--その壁は、最新の科学で取り払うことが可能です。</div>
+    <!-- Carousel Script -->
+    <script>
+        (function() {
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.carousel-slide');
+            const indicators = document.querySelectorAll('#carousel-indicators > div');
+            const totalSlides = slides.length;
 
-      <div class="reason-item">
-        <div class="reason-header">
-          <div class="reason-icon">📡</div>
-          <div class="reason-title">一、情報の「鮮度」と「深度」</div>
-        </div>
-        <div class="reason-text">
-          ネットや雑誌の推奨銘柄は、プ口が売り抜けるための「手遅れの情報」です。私たちはAIを用い、<span class="gold-highlight">機関投資家が密かに仕込む数兆円の資金流入</span>をリアルタイムで検知。一般には出回らない「初動の優良株」を特定します。
-        </div>
-      </div>
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
 
-      <div class="reason-item">
-        <div class="reason-header">
-          <div class="reason-icon">🧠</div>
-          <div class="reason-title">二、感情という「最大の敵」</div>
-        </div>
-        <div class="reason-text">
-          「損切りできない」「利確を急ぎすぎる」という心理は、脳の仕組み上避けられません。Alは<span class="gold-highlight">感情を一切排除した冷徹なデ一タ分析</span>により、数学的な最適解となる「出口戦略」を提示。あなたの決断から迷いを取り去ります。
-        </div>
-      </div>
+                indicators.forEach((indicator, i) => {
+                    if (i === index) {
+                        indicator.className = 'h-1.5 w-6 bg-accent rounded-full transition-all';
+                    } else {
+                        indicator.className = 'h-1.5 w-1.5 bg-white/70 rounded-full transition-all';
+                    }
+                });
+            }
 
-      <div class="reason-item">
-        <div class="reason-header">
-          <div class="reason-icon">⭐</div>
-          <div class="reason-title">三、孤立無援の「投資判断」</div>
-        </div>
-        <div class="reason-text">
-          相場が急変したとき、一人で悩むのはもう終わりです。私たちは同じ日本人として、<span class="gold-highlight">暴落の兆候や絶好の買い場</span>をLINEで即座に共有。プロの知見とAlの予測が、あなたの資産を守る「盾」となります。
-        </div>
-      </div>
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                showSlide(currentSlide);
+            }
 
-      <div class="statement-box">
-        「もっと早く、この情報に出会っていれば」多くの利用者がそう語る<span class="gold-highlight">異次元の分析精度</span>を、次はあなたの目でお確かめください。
-      </div>
-    </div>
-  </section>
+            // Auto-rotate carousel every 5 seconds
+            setInterval(nextSlide, 5000);
+        })();
+    </script>
 
-  <section class="service-section">
-    <div class="container center-content">
-      <div class="service-tag">最先端·AI解析システム</div>
-
-      <div class="service-title">
-        「誠実さ」を 「科学」で裏付ける。<br>
-        全三千八百銘柄を、二十四時間監視。
-      </div>
-
-      <div class="cards-grid">
-        <div class="feature-card">
-          <div class="card-icon" style="color: #2196F3;">💻</div>
-          <div class="card-title">膨大デ一タ解析</div>
-          <div class="card-value">99.8%</div>
-          <div class="card-subtitle">不要情報の除去率</div>
-        </div>
-
-        <div class="feature-card">
-          <div class="card-icon" style="color: #4CAF50;">📶</div>
-          <div class="card-title">市場心理の数値化</div>
-          <div class="card-value">即時判定</div>
-          <div class="card-subtitle">感情に流されない判断</div>
-        </div>
-
-        <div class="feature-card">
-          <div class="card-icon" style="color: #FFC107;">📡</div>
-          <div class="card-title">大口資金の追跡</div>
-          <div class="card-value">深層検知</div>
-          <div class="card-subtitle">機関投資家の動きを把握</div>
-        </div>
-
-        <div class="feature-card">
-          <div class="card-icon" style="color: #F44336;">🛡️</div>
-          <div class="card-title">暴落の事前予測</div>
-          <div class="card-value">危機回避</div>
-          <div class="card-subtitle">資産を守る防衛機能</div>
-        </div>
-      </div>
-
-      <div class="service-statement">
-        人間の主観には、必ず 「偏り」が生じます。私たちは独自の投資用AIを駆使し、<span class="gold-highlight">日本人の気質に合わせた優良銘柄の選定</span>を完全に数値化。感情に惑わされない、誠実な投資判断を可能にしました。
-      </div>
-    </div>
-  </section>
-
-  <section class="trust-section">
-    <div class="container">
-      <div class="trust-part">
-        <div class="trust-small-title">確固たる分析結果</div>
-        <div class="trust-big-title">分析の精度が、そのまま「資産の質」に変わる</div>
-
-        <div class="stock-chart-box">
-          <div class="chart-year">2026年度版:厳選さ7た優良銘柄群</div>
-          <div class="chart-desc">
-            「日本人を裏切らない」と誓ったからこそ、AIと共に辿り着いた、妥協なき数字です。
-          </div>
-        </div>
-
-        <div class="trust-note">
-          ※上記は過去の解析デ一タに基づく結果であり、将来を保証するものではありません。しかし、根拠のない夢物語を語ることは、プロの矜持が許しません。
-        </div>
-      </div>
-
-      <div class="trust-part">
-        <div class="trust-big-title">実績が証明する、「優良株」という名の盾。</div>
-
-        <img src="../static/top1.png" alt="実績証明" class="proof-image">
-
-        <div class="trust-note">
-          ※過去の実績であり、将来の結果を保証するものではありません。しかし、根拠のない推測を排除し、誠実なデ一タのみを基軸としています。
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="qa-section">
-    <div class="container">
-      <div class="qa-header">
-        <div class="qa-icon">📋</div>
-        <div class="qa-header-title">核心に触れるお答え</div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-question blue-line">問:なぜ、ここまで有益な情報を無料で出すのか?</div>
-        <div class="qa-answer">
-          答:不透明な投資詐欺が横行する日本で、まずは「本物の基準」を知っていただきたいからです。皆様の成功が私たちの信頼となり、ひいては日本経済の再生に繋がると信じています。
-        </div>
-      </div>
-
-      <div class="qa-item">
-        <div class="qa-question yellow-line">問:優良株、というのはどう証明するのか?</div>
-        <div class="qa-answer">
-          答:公式での配信内容を見ていただければ一目瞭然です。具体的かつ理論的な選定理7由、そしてAIによる数値的な根拠。一切の誤魔化しがないことを、結果で証明します。
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="fixed-bottom-cta">
-    <div class="fixed-cta-top">
-      <div class="fixed-cta-left">
-        <div class="breathing-dot"></div>
-        <span>本日の特別配布:残り3名</span>
-      </div>
-      <div class="fixed-cta-right">安全な通信を保護済み</div>
-    </div>
-
-    <button class="fixed-main-button" onclick="addjoin(event, '無料の優良株レポートを受け取る', 1)">
-      <span class="line-icon">L</span>
-      <div style="display: flex; flex-direction: column; align-items: flex-start;">
-        <div class="fixed-button-text-small">誠実な投資の第一歩をここから</div>
-        <div class="fixed-button-text-large">無料の優良株レポートを受け取る</div>
-      </div>
-    </button>
-
-    <div class="copyright">2026日本株投資·誠実推進ネットワ一ク|日本を、もっと豊かに。</div>
-  </div>
-
-  <input type="hidden" id="jrtext" value="">
-  <input type="hidden" id="code" value="">
-
-  <script src="../static/core/jp_202629.js"></script>
-
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
