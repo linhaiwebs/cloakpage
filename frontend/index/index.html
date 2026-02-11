@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="ja">
 <head>
 <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="robots" content="index,follow"/>
 <meta name="format-detection" content="telephone=no"/>
-<title>免费股票教育学习平台 | 让每个人都能学会投资</title>
-<meta name="description" content="完全免费的股票投资教育平台，为普通投资者提供专业的股票分析课程、财报阅读指导和投资知识。零门槛、无广告、无付费墙，致力于金融知识普惠。"/>
+<title>無料株式教育プラットフォーム | 誰もが投資を学べる</title>
+<meta name="description" content="完全無料の株式投資教育プラットフォーム。一般投資家のための株式分析コース、財務諸表の読み方、投資知識を提供。広告なし、課金なし、金融リテラシーの普及を目指します。"/>
 <style>
 :root{
   --bg:#f8f9fa;
@@ -544,10 +544,16 @@ footer{
 }
 
 .footer-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  display:flex;
+  flex-wrap:wrap;
   gap:40px;
   margin-bottom:40px;
+  justify-content:space-between;
+}
+
+.footer-column{
+  flex:1 1 250px;
+  min-width:250px;
 }
 
 .footer-column h4{
@@ -636,37 +642,37 @@ footer{
 
 <section class="hero">
   <div class="container">
-    <div class="badge">🎓 100% 免费 · 永久开放</div>
-    <h1>让每个人都能学会投资</h1>
-    <p class="subtitle">我们相信金融教育不应该是奢侈品。这是一个完全免费、无广告、无付费墙的股票投资学习平台，致力于为普通投资者提供专业的投资知识</p>
+    <div class="badge">🎓 100%無料 · 永久公開</div>
+    <h1>誰もが投資を学べる</h1>
+    <p class="subtitle">金融教育は贅沢品であってはなりません。完全無料、広告なし、課金なしの株式投資学習プラットフォームで、一般投資家に専門的な投資知識を提供します</p>
 
     <div class="cta-group">
       <a href="#courses" class="btn btn-primary">
         <span>🚀</span>
-        <span>开始免费学习</span>
+        <span>無料で学習を始める</span>
       </a>
       <a href="#mission" class="btn btn-secondary">
         <span>💡</span>
-        <span>了解我们的使命</span>
+        <span>私たちの使命を知る</span>
       </a>
     </div>
 
     <div class="trust-indicators">
       <div class="indicator">
         <span class="indicator-value">15,000+</span>
-        <span class="indicator-label">学员</span>
+        <span class="indicator-label">受講者</span>
       </div>
       <div class="indicator">
         <span class="indicator-value">50+</span>
-        <span class="indicator-label">免费课程</span>
+        <span class="indicator-label">無料コース</span>
       </div>
       <div class="indicator">
         <span class="indicator-value">98%</span>
-        <span class="indicator-label">满意度</span>
+        <span class="indicator-label">満足度</span>
       </div>
       <div class="indicator">
-        <span class="indicator-value">0元</span>
-        <span class="indicator-label">完全免费</span>
+        <span class="indicator-value">0円</span>
+        <span class="indicator-label">完全無料</span>
       </div>
     </div>
   </div>
@@ -675,46 +681,46 @@ footer{
 <section class="section">
   <div class="container">
     <div class="section-header">
-      <span class="section-tag">核心价值</span>
-      <h2>为什么选择我们</h2>
-      <p class="section-subtitle">我们坚持教育平等，用专业知识和真诚态度，帮助每一位投资者成长</p>
+      <span class="section-tag">コアバリュー</span>
+      <h2>選ばれる理由</h2>
+      <p class="section-subtitle">教育の平等を信じ、専門知識と誠実さで、すべての投資家の成長をサポートします</p>
     </div>
 
     <div class="values-grid">
       <div class="value-card">
         <div class="value-icon">🎁</div>
-        <h3>永久免费</h3>
-        <p>所有课程、资料和工具完全免费开放，没有任何隐藏费用。我们相信教育不应该有价格门槛，每个人都有权利学习投资知识。</p>
+        <h3>永久無料</h3>
+        <p>すべてのコース、教材、ツールが完全無料で公開されています。隠れた費用は一切ありません。教育に価格の壁があってはならず、誰もが投資知識を学ぶ権利があると信じています。</p>
       </div>
 
       <div class="value-card">
         <div class="value-icon">🎯</div>
-        <h3>专业内容</h3>
-        <p>由资深投资分析师和财务专家精心编写，涵盖基础知识、财报分析、投资策略等全方位内容，确保学习质量和实用性。</p>
+        <h3>専門的なコンテンツ</h3>
+        <p>経験豊富な投資アナリストと財務の専門家が丁寧に作成。基礎知識、財務諸表分析、投資戦略など、包括的な内容で学習の質と実用性を保証します。</p>
       </div>
 
       <div class="value-card">
         <div class="value-icon">🚫</div>
-        <h3>无广告干扰</h3>
-        <p>纯净的学习环境，没有弹窗广告、没有营销推广、没有付费诱导。我们只专注于提供优质的教育内容。</p>
+        <h3>広告なし</h3>
+        <p>純粋な学習環境を提供。ポップアップ広告、マーケティング、課金への誘導は一切ありません。質の高い教育コンテンツの提供にのみ専念しています。</p>
       </div>
 
       <div class="value-card">
         <div class="value-icon">🔒</div>
-        <h3>隐私保护</h3>
-        <p>我们不会售卖您的个人数据，不会发送营销邮件，不会追踪您的浏览行为。您的隐私安全是我们的承诺。</p>
+        <h3>プライバシー保護</h3>
+        <p>個人データの販売、マーケティングメールの送信、閲覧行動の追跡は一切行いません。あなたのプライバシー保護が私たちの約束です。</p>
       </div>
 
       <div class="value-card">
         <div class="value-icon">📚</div>
-        <h3>持续更新</h3>
-        <p>课程内容定期更新，紧跟市场变化和监管政策。我们的志愿者团队持续为平台贡献新的学习资源。</p>
+        <h3>継続的な更新</h3>
+        <p>コンテンツは定期的に更新され、市場の変化や規制政策に対応しています。ボランティアチームが新しい学習リソースを提供し続けています。</p>
       </div>
 
       <div class="value-card">
         <div class="value-icon">🤝</div>
-        <h3>社区支持</h3>
-        <p>活跃的学习社区，同学之间互相帮助、分享经验。专业导师定期在线答疑，陪伴您的学习之旅。</p>
+        <h3>コミュニティサポート</h3>
+        <p>活発な学習コミュニティで、受講者同士が助け合い、経験を共有。専門の講師が定期的にオンラインで質問に答え、あなたの学習を支援します。</p>
       </div>
     </div>
   </div>
@@ -723,72 +729,72 @@ footer{
 <section class="section bg-light" id="courses">
   <div class="container">
     <div class="section-header">
-      <span class="section-tag">学习路径</span>
-      <h2>系统化的课程体系</h2>
-      <p class="section-subtitle">从零基础到进阶，循序渐进掌握股票投资的核心技能</p>
+      <span class="section-tag">学習パス</span>
+      <h2>体系的なコースシステム</h2>
+      <p class="section-subtitle">基礎から上級まで、段階的に株式投資の核心スキルを習得</p>
     </div>
 
     <div class="courses-grid">
       <div class="course-card">
         <div class="course-header">
-          <span class="course-level">初级</span>
-          <h3>投资基础入门</h3>
+          <span class="course-level">初級</span>
+          <h3>投資基礎入門</h3>
           <div class="course-meta">
-            <span>⏱️ 12课时</span>
-            <span>👥 8,500人学习</span>
+            <span>⏱️ 12レッスン</span>
+            <span>👥 8,500名受講</span>
           </div>
         </div>
         <div class="course-body">
           <ul>
-            <li>股票市场基本概念</li>
-            <li>开户流程与交易规则</li>
-            <li>风险认知与心理建设</li>
-            <li>基本面分析入门</li>
-            <li>技术分析基础</li>
+            <li>株式市場の基本概念</li>
+            <li>口座開設と取引ルール</li>
+            <li>リスク認識と心理構築</li>
+            <li>ファンダメンタル分析入門</li>
+            <li>テクニカル分析基礎</li>
           </ul>
-          <a href="#" class="btn btn-primary" style="width:100%">开始学习</a>
+          <a href="#" class="btn btn-primary" style="width:100%">学習を始める</a>
         </div>
       </div>
 
       <div class="course-card">
         <div class="course-header">
-          <span class="course-level" style="background:var(--secondary)">中级</span>
-          <h3>财报阅读与分析</h3>
+          <span class="course-level" style="background:var(--secondary)">中級</span>
+          <h3>財務諸表の読み方と分析</h3>
           <div class="course-meta">
-            <span>⏱️ 18课时</span>
-            <span>👥 5,200人学习</span>
+            <span>⏱️ 18レッスン</span>
+            <span>👥 5,200名受講</span>
           </div>
         </div>
         <div class="course-body">
           <ul>
-            <li>资产负债表解读</li>
-            <li>利润表深度分析</li>
-            <li>现金流量表要点</li>
-            <li>财务比率计算与应用</li>
-            <li>财报陷阱识别</li>
+            <li>貸借対照表の読み解き</li>
+            <li>損益計算書の詳細分析</li>
+            <li>キャッシュフロー計算書の要点</li>
+            <li>財務比率の計算と応用</li>
+            <li>財務諸表の罠の識別</li>
           </ul>
-          <a href="#" class="btn btn-primary" style="width:100%">开始学习</a>
+          <a href="#" class="btn btn-primary" style="width:100%">学習を始める</a>
         </div>
       </div>
 
       <div class="course-card">
         <div class="course-header">
-          <span class="course-level" style="background:var(--accent)">高级</span>
-          <h3>价值投资策略</h3>
+          <span class="course-level" style="background:var(--accent)">上級</span>
+          <h3>バリュー投資戦略</h3>
           <div class="course-meta">
-            <span>⏱️ 24课时</span>
-            <span>👥 3,800人学习</span>
+            <span>⏱️ 24レッスン</span>
+            <span>👥 3,800名受講</span>
           </div>
         </div>
         <div class="course-body">
           <ul>
-            <li>企业估值方法</li>
-            <li>行业分析框架</li>
-            <li>护城河识别</li>
-            <li>投资组合构建</li>
-            <li>风险管理实战</li>
+            <li>企業評価方法</li>
+            <li>業界分析フレームワーク</li>
+            <li>経済的堀の識別</li>
+            <li>投資ポートフォリオ構築</li>
+            <li>リスク管理実践</li>
           </ul>
-          <a href="#" class="btn btn-primary" style="width:100%">开始学习</a>
+          <a href="#" class="btn btn-primary" style="width:100%">学習を始める</a>
         </div>
       </div>
     </div>
@@ -798,33 +804,33 @@ footer{
 <section class="section stats-section">
   <div class="container">
     <div class="section-header">
-      <h2 style="color:white">我们的社会影响力</h2>
-      <p class="section-subtitle" style="color:rgba(255,255,255,.9)">用数据说话，让知识惠及更多人</p>
+      <h2 style="color:white">私たちの社会的影響力</h2>
+      <p class="section-subtitle" style="color:rgba(255,255,255,.9)">データで語る、より多くの人に知識を届ける</p>
     </div>
 
     <div class="stats-grid">
       <div class="stat-item">
         <span class="stat-number">15,000+</span>
-        <div class="stat-label">学员受益</div>
-        <div class="stat-desc">来自全国各地的投资者</div>
+        <div class="stat-label">受講生の利益</div>
+        <div class="stat-desc">全国各地の投資家</div>
       </div>
 
       <div class="stat-item">
         <span class="stat-number">50+</span>
-        <div class="stat-label">免费课程</div>
-        <div class="stat-desc">持续更新的学习内容</div>
+        <div class="stat-label">無料コース</div>
+        <div class="stat-desc">継続的に更新される学習コンテンツ</div>
       </div>
 
       <div class="stat-item">
         <span class="stat-number">120+</span>
-        <div class="stat-label">志愿导师</div>
-        <div class="stat-desc">专业人士公益贡献</div>
+        <div class="stat-label">ボランティア講師</div>
+        <div class="stat-desc">専門家の公益貢献</div>
       </div>
 
       <div class="stat-item">
         <span class="stat-number">98%</span>
-        <div class="stat-label">学员满意度</div>
-        <div class="stat-desc">获得学员高度认可</div>
+        <div class="stat-label">受講生満足度</div>
+        <div class="stat-desc">高い評価を獲得</div>
       </div>
     </div>
   </div>
@@ -833,39 +839,39 @@ footer{
 <section class="section mission-section" id="mission">
   <div class="container">
     <div class="section-header">
-      <span class="section-tag">我们的使命</span>
-      <h2>为什么创建这个平台</h2>
+      <span class="section-tag">私たちの使命</span>
+      <h2>なぜこのプラットフォームを作ったか</h2>
     </div>
 
     <div class="mission-content">
       <div class="mission-quote">
-        "金融素养不应该是少数人的特权。每个普通人都应该有机会学习如何保护和增值自己的财富。"
+        「金融リテラシーは少数の人々の特権であってはなりません。すべての人が自分の財産を守り、増やす方法を学ぶ機会を持つべきです。」
       </div>
 
       <p class="mission-text">
-        我们看到太多投资者因为缺乏专业知识而蒙受损失，看到太多付费课程以高价兜售基础知识，看到太多平台充斥着广告和营销陷阱。我们决定改变这一切。
+        専門知識の不足により損失を被る投資家が多すぎること、基礎知識を高額で販売する有料コースが多すぎること、広告やマーケティングの罠が蔓延するプラットフォームが多すぎることを目にしてきました。私たちはこれを変えることを決意しました。
       </p>
 
       <p class="mission-text">
-        这个平台由一群金融从业者、资深投资者和教育工作者共同创建，完全出于公益目的。我们相信，通过提升大众的金融素养，可以帮助更多人实现财务自由，促进社会经济的健康发展。
+        このプラットフォームは、金融従事者、経験豊富な投資家、教育者のグループによって完全に公益目的で作成されました。大衆の金融リテラシーを向上させることで、より多くの人が経済的自由を実現し、社会経済の健全な発展を促進できると信じています。
       </p>
 
       <div class="commitment-grid">
         <div class="commitment-item">
           <div class="commitment-icon">🎯</div>
-          <h4>永久免费承诺</h4>
+          <h4>永久無料の約束</h4>
         </div>
         <div class="commitment-item">
           <div class="commitment-icon">🚫</div>
-          <h4>无广告保证</h4>
+          <h4>広告なしの保証</h4>
         </div>
         <div class="commitment-item">
           <div class="commitment-icon">🔒</div>
-          <h4>隐私保护承诺</h4>
+          <h4>プライバシー保護の約束</h4>
         </div>
         <div class="commitment-item">
           <div class="commitment-icon">📖</div>
-          <h4>内容透明公开</h4>
+          <h4>コンテンツの透明性</h4>
         </div>
       </div>
     </div>
@@ -875,47 +881,47 @@ footer{
 <section class="section bg-light">
   <div class="container">
     <div class="section-header">
-      <span class="section-tag">学员反馈</span>
-      <h2>听听他们怎么说</h2>
-      <p class="section-subtitle">真实的学习体验，来自不同背景的投资者</p>
+      <span class="section-tag">受講生の声</span>
+      <h2>受講生の体験談</h2>
+      <p class="section-subtitle">本物の学習体験、様々な背景を持つ投資家から</p>
     </div>
 
     <div class="testimonials-slider">
       <div class="testimonial-card">
         <p class="testimonial-text">
-          "刚开始投资时完全是小白，这个平台的基础课程让我建立了完整的知识体系。最重要的是完全免费，没有任何套路。"
+          「投資を始めたばかりの頃は完全に初心者でしたが、このプラットフォームの基礎コースで完全な知識体系を構築できました。最も重要なのは完全に無料で、何の裏もないことです。」
         </p>
         <div class="testimonial-author">
-          <div class="author-avatar">张</div>
+          <div class="author-avatar">佐</div>
           <div class="author-info">
-            <h5>张女士</h5>
-            <p>投资新手 · 学习6个月</p>
+            <h5>佐藤さん</h5>
+            <p>投資初心者 · 学習6ヶ月</p>
           </div>
         </div>
       </div>
 
       <div class="testimonial-card">
         <p class="testimonial-text">
-          "财报分析课程非常实用，讲解清晰易懂。现在我能够独立分析上市公司的财务状况，做出更明智的投资决策。"
+          「財務諸表分析コースは非常に実用的で、説明が明確で分かりやすいです。今では上場企業の財務状況を独自に分析し、より賢明な投資判断ができるようになりました。」
         </p>
         <div class="testimonial-author">
-          <div class="author-avatar">李</div>
+          <div class="author-avatar">田</div>
           <div class="author-info">
-            <h5>李先生</h5>
-            <p>职场白领 · 学习1年</p>
+            <h5>田中さん</h5>
+            <p>会社員 · 学習1年</p>
           </div>
         </div>
       </div>
 
       <div class="testimonial-card">
         <p class="testimonial-text">
-          "社区氛围很好，大家互相帮助、分享经验。导师答疑也很及时。这种公益性质的平台真的很难得，强烈推荐！"
+          「コミュニティの雰囲気が素晴らしく、皆が助け合い、経験を共有しています。講師の質問への回答も迅速です。このような公益性のプラットフォームは本当に貴重で、強く推薦します！」
         </p>
         <div class="testimonial-author">
-          <div class="author-avatar">王</div>
+          <div class="author-avatar">鈴</div>
           <div class="author-info">
-            <h5>王先生</h5>
-            <p>自由职业者 · 学习2年</p>
+            <h5>鈴木さん</h5>
+            <p>フリーランス · 学習2年</p>
           </div>
         </div>
       </div>
@@ -925,11 +931,11 @@ footer{
 
 <section class="section cta-section">
   <div class="container">
-    <h2>开始您的投资学习之旅</h2>
-    <p>加入我们，和15,000+学员一起成长<br>所有内容永久免费，现在就开始学习</p>
+    <h2>投資学習の旅を始めましょう</h2>
+    <p>15,000名以上の受講生と一緒に成長しましょう<br>すべてのコンテンツが永久無料、今すぐ学習を開始</p>
     <div class="cta-group">
-      <a href="#courses" class="btn btn-primary">免费注册学习</a>
-      <a href="#mission" class="btn btn-secondary">了解更多</a>
+      <a href="#courses" class="btn btn-primary">無料で登録して学習</a>
+      <a href="#mission" class="btn btn-secondary">詳しく見る</a>
     </div>
   </div>
 </section>
@@ -938,9 +944,9 @@ footer{
   <div class="container">
     <div class="footer-grid">
       <div class="footer-column">
-        <h4>关于我们</h4>
+        <h4>私たちについて</h4>
         <p class="footer-about">
-          我们是一个公益性的股票投资教育平台，致力于为普通投资者提供免费、专业的投资知识，促进金融素养的普及和提升。
+          私たちは公益性の株式投資教育プラットフォームであり、一般投資家に無料で専門的な投資知識を提供し、金融リテラシーの普及と向上を促進することを目指しています。
         </p>
         <div class="social-links">
           <a href="#" class="social-link">📧</a>
@@ -950,41 +956,41 @@ footer{
       </div>
 
       <div class="footer-column">
-        <h4>学习内容</h4>
+        <h4>学習内容</h4>
         <ul>
-          <li><a href="#">投资基础入门</a></li>
-          <li><a href="#">财报阅读分析</a></li>
-          <li><a href="#">价值投资策略</a></li>
-          <li><a href="#">风险管理</a></li>
-          <li><a href="#">实战案例分析</a></li>
+          <li><a href="#">投資基礎入門</a></li>
+          <li><a href="#">財務諸表の読解と分析</a></li>
+          <li><a href="#">バリュー投資戦略</a></li>
+          <li><a href="#">リスク管理</a></li>
+          <li><a href="#">実践的ケース分析</a></li>
         </ul>
       </div>
 
       <div class="footer-column">
-        <h4>平台信息</h4>
+        <h4>プラットフォーム情報</h4>
         <ul>
-          <li><a href="#">我们的使命</a></li>
-          <li><a href="#">志愿者团队</a></li>
-          <li><a href="#">联系我们</a></li>
-          <li><a href="#">支持我们</a></li>
-          <li><a href="#">常见问题</a></li>
+          <li><a href="#">私たちの使命</a></li>
+          <li><a href="#">ボランティアチーム</a></li>
+          <li><a href="#">お問い合わせ</a></li>
+          <li><a href="#">サポート</a></li>
+          <li><a href="#">よくある質問</a></li>
         </ul>
       </div>
 
       <div class="footer-column">
-        <h4>重要声明</h4>
+        <h4>重要な通知</h4>
         <ul>
-          <li><a href="#">免责声明</a></li>
-          <li><a href="#">隐私政策</a></li>
-          <li><a href="#">使用条款</a></li>
-          <li><a href="#">投资风险提示</a></li>
+          <li><a href="#">免責事項</a></li>
+          <li><a href="#">プライバシーポリシー</a></li>
+          <li><a href="#">利用規約</a></li>
+          <li><a href="#">投資リスクに関する注意</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <p><strong>风险提示：</strong>股票投资存在风险，投资者应充分了解风险并谨慎决策。本平台提供的内容仅供学习参考，不构成投资建议。</p>
-      <p style="margin-top:20px">© 2024 免费股票教育学习平台 | 纯公益性质 · 永久免费 · 知识共享</p>
+      <p><strong>リスク警告：</strong>株式投資にはリスクが伴います。投資家はリスクを十分に理解し、慎重に判断する必要があります。当プラットフォームが提供するコンテンツは学習参考用であり、投資アドバイスを構成するものではありません。</p>
+      <p style="margin-top:20px">© 2024 無料株式教育プラットフォーム | 純粋な公益性 · 永久無料 · 知識共有</p>
     </div>
   </div>
 </footer>
