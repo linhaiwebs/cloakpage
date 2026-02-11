@@ -385,6 +385,34 @@ th{background:#f6f5ff}
   padding: 1.5rem;
 }
 
+/* Fixed Contact Button */
+.fixed-contact-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+}
+
+.fixed-contact-btn a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, var(--violet), var(--teal));
+  color: white;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+  transition: all 0.3s ease;
+}
+
+.fixed-contact-btn a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(124, 58, 237, 0.4);
+  text-decoration: none;
+}
+
 /* Footer */
 footer{margin-top:24px; border-top:1px solid var(--line); background:linear-gradient(135deg,#0b1220,#1c1230); color:#edf0ff}
 .foot{max-width:var(--maxw); margin:0 auto; padding:24px 16px 40px}
@@ -823,6 +851,16 @@ footer{margin-top:24px; border-top:1px solid var(--line); background:linear-grad
     </div>
   </aside>
 </section>
+
+<!-- Fixed Contact Button -->
+<div class="fixed-contact-btn">
+  <a href="/contact">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+    お問い合わせ
+  </a>
+</div>
 
 <footer>
   <div class="foot">
