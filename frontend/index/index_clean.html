@@ -1,0 +1,2345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index,follow">
+<title>AI株式市場データ分析 | 人工知能関連銘柄の市場データ披露</title>
+<meta name="description" content="人工知能(AI)関連株式の市場データ披露と分析サービス。100%公開データソース、完全透明性。投資助言は一切行いません。教育・研究目的の情報提供のみ。">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root {
+  --dark-green: #1C3A2E;
+  --mid-green: #2D5016;
+  --gold: #C9B037;
+  --bright-gold: #FFD700;
+  --red: #CC2900;
+  --bronze: #8B6914;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "ヒラギノ明朝 ProN", "Hiragino Mincho ProN", "游明朝体", "Yu Mincho", YuMincho, serif;
+  background: var(--dark-green);
+  color: #FAF0E6;
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+@keyframes goldAttach {
+  0% { opacity: 0; transform: scale(0.8) rotate(-5deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes goldFloat {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  33% { transform: translateY(-30px) translateX(20px); }
+  66% { transform: translateY(-15px) translateX(-15px); }
+}
+
+@keyframes goldSparkle {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+@keyframes craneRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes slideDown {
+  0% { transform: translateY(-10px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes numberFlip {
+  0%, 100% { transform: rotateX(0deg); }
+  50% { transform: rotateX(180deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.gold-cloud {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+  animation: goldFloat 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.gold-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--bright-gold);
+  border-radius: 50%;
+  animation: goldSparkle 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--dark-green) 0%, var(--mid-green) 50%, var(--gold) 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 80px 20px;
+}
+
+.pine-branch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,60 Q150,30 300,50 T600,60 T900,50 T1200,60' fill='none' stroke='%231C3A2E' stroke-width='8' opacity='0.3'/%3E%3C/svg%3E") no-repeat center;
+  z-index: 1;
+}
+
+.logo-seal {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 6px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto 40px;
+  animation: goldAttach 2s ease-out;
+  box-shadow: 0 20px 60px rgba(255, 215, 0, 0.5);
+}
+
+.crane-circle {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border: 3px dashed var(--red);
+  border-radius: 50%;
+  animation: craneRotate 20s linear infinite;
+}
+
+.hero-content {
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  padding: 40px;
+}
+
+.hero h1 {
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 900;
+  color: var(--bright-gold);
+  margin-bottom: 30px;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 4px 4px 0 rgba(0, 0, 0, 0.3);
+  letter-spacing: 6px;
+  line-height: 1.2;
+}
+
+.hero h2 {
+  font-size: clamp(24px, 4vw, 48px);
+  color: var(--bright-gold);
+  margin-bottom: 20px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.hero p {
+  font-size: clamp(16px, 2vw, 22px);
+  color: #FAF0E6;
+  margin-bottom: 50px;
+  line-height: 2;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.badge-group {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 60px;
+}
+
+.hex-badge {
+  width: 140px;
+  height: 160px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  border: 4px solid var(--red);
+  transition: all 0.4s;
+  cursor: pointer;
+}
+
+.hex-badge:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(255, 215, 0, 0.5);
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: bounce 2s ease-in-out infinite;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.scroll-hint span {
+  color: var(--bright-gold);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.section {
+  padding: 120px 20px;
+  position: relative;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 900;
+  color: var(--bright-gold);
+  text-align: center;
+  margin-bottom: 80px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  letter-spacing: 4px;
+}
+
+.fan-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 50px;
+}
+
+.fan-card {
+  background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+  border: 4px solid var(--gold);
+  border-radius: 30px;
+  padding: 50px 40px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.fan-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+  transition: opacity 0.5s;
+  opacity: 0;
+}
+
+.fan-card:hover {
+  transform: translateY(-15px);
+  border-color: var(--bright-gold);
+  box-shadow: 0 30px 80px rgba(201, 176, 55, 0.4);
+}
+
+.fan-card:hover::before {
+  opacity: 1;
+  animation: craneRotate 15s linear infinite;
+}
+
+.fan-card h3 {
+  font-size: 32px;
+  color: var(--bright-gold);
+  margin: 30px 0 20px;
+  font-weight: 800;
+}
+
+.fan-card p {
+  color: #E0D5C7;
+  line-height: 2;
+  font-size: 17px;
+}
+
+.data-point {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: var(--red);
+  color: var(--bright-gold);
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.metric-card {
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 4px solid var(--red);
+  border-radius: 24px;
+  padding: 40px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s;
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+}
+
+.metric-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 25px 60px rgba(255, 215, 0, 0.5);
+}
+
+.metric-number {
+  font-size: 80px;
+  font-weight: 900;
+  color: var(--dark-green);
+  margin-bottom: 15px;
+  animation: numberFlip 3s ease-in-out infinite;
+}
+
+.metric-label {
+  font-size: 20px;
+  color: var(--dark-green);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.metric-timestamp {
+  font-size: 14px;
+  color: var(--mid-green);
+  opacity: 0.8;
+}
+
+.expert-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 40px;
+  padding: 40px 20px;
+  scroll-behavior: smooth;
+}
+
+.expert-scroll::-webkit-scrollbar {
+  height: 10px;
+}
+
+.expert-scroll::-webkit-scrollbar-track {
+  background: var(--mid-green);
+  border-radius: 10px;
+}
+
+.expert-scroll::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 10px;
+}
+
+.expert-card {
+  min-width: 320px;
+  background: linear-gradient(180deg, var(--red), var(--dark-green));
+  border: 4px solid var(--gold);
+  border-radius: 24px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s;
+}
+
+.expert-card:hover {
+  transform: scale(1.05);
+  border-color: var(--bright-gold);
+}
+
+.expert-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), var(--gold));
+  border: 6px solid var(--bright-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 25px;
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+}
+
+.expert-name {
+  font-size: 28px;
+  color: var(--bright-gold);
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.expert-title {
+  font-size: 18px;
+  color: var(--gold);
+  margin-bottom: 15px;
+}
+
+.expert-bio {
+  color: #E0D5C7;
+  line-height: 1.8;
+  margin: 20px 0;
+  font-size: 15px;
+}
+
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.tag {
+  padding: 8px 16px;
+  background: var(--gold);
+  color: var(--dark-green);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 60px auto;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--gold), var(--bright-gold));
+  transform: translateX(-50%);
+}
+
+.timeline-node {
+  position: relative;
+  margin: 80px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node-seal {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 6px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.5);
+  transition: all 0.4s;
+}
+
+.node-seal:hover {
+  transform: scale(1.15);
+  box-shadow: 0 25px 60px rgba(255, 215, 0, 0.7);
+}
+
+.node-content {
+  position: absolute;
+  width: 400px;
+  background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+  border: 3px solid var(--gold);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.node-content.left {
+  right: calc(50% + 120px);
+}
+
+.node-content.right {
+  left: calc(50% + 120px);
+}
+
+.node-content h3 {
+  font-size: 24px;
+  color: var(--bright-gold);
+  margin-bottom: 15px;
+  font-weight: 800;
+}
+
+.node-content ul {
+  list-style: none;
+  color: #E0D5C7;
+  line-height: 2;
+}
+
+.node-content li::before {
+  content: '◆';
+  color: var(--gold);
+  margin-right: 10px;
+  font-weight: 700;
+}
+
+.comparison-table {
+  max-width: 1100px;
+  margin: 60px auto;
+  background: var(--dark-green);
+  border: 4px solid var(--gold);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  font-weight: 800;
+  font-size: 22px;
+}
+
+.table-header > div {
+  padding: 25px 20px;
+  text-align: center;
+  color: var(--dark-green);
+}
+
+.table-header > div:nth-child(2) {
+  background: var(--bright-gold);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr;
+  border-bottom: 2px solid var(--mid-green);
+  transition: all 0.3s;
+}
+
+.table-row:hover {
+  background: var(--mid-green);
+}
+
+.table-row > div {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.table-row > div:nth-child(2) {
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.15), transparent);
+  color: var(--bright-gold);
+  font-weight: 700;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 50px;
+  margin-top: 60px;
+}
+
+.chart-card {
+  background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+  border: 4px solid var(--gold);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.chart-card h3 {
+  font-size: 26px;
+  color: var(--bright-gold);
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 800;
+}
+
+.chart-placeholder {
+  height: 300px;
+  background: var(--mid-green);
+  border: 2px dashed var(--gold);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.expert-note {
+  color: #E0D5C7;
+  line-height: 1.9;
+  font-size: 15px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+}
+
+.world-map {
+  width: 100%;
+  max-width: 900px;
+  margin: 60px auto;
+  position: relative;
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 400px;
+  background: var(--mid-green);
+  border: 4px solid var(--gold);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 24px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+}
+
+.market-pulse {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--bright-gold);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 20px var(--bright-gold);
+}
+
+.industry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 30px;
+  margin-top: 60px;
+}
+
+.industry-card {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 4px solid var(--red);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.4s;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.industry-card:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 20px 50px rgba(255, 215, 0, 0.6);
+}
+
+.industry-card span {
+  color: var(--dark-green);
+  font-weight: 800;
+  font-size: 15px;
+  text-align: center;
+}
+
+.folding-screen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 0;
+  margin-top: 60px;
+  perspective: 1000px;
+}
+
+.screen-panel {
+  background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+  border: 4px solid var(--gold);
+  padding: 50px 40px;
+  position: relative;
+  transition: all 0.5s;
+}
+
+.screen-panel:nth-child(1) {
+  transform: rotateY(-2deg);
+  border-radius: 24px 0 0 24px;
+}
+
+.screen-panel:nth-child(2) {
+  background: linear-gradient(135deg, var(--mid-green), var(--dark-green));
+  box-shadow: 0 0 60px rgba(255, 215, 0, 0.3);
+}
+
+.screen-panel:nth-child(3) {
+  transform: rotateY(2deg);
+  border-radius: 0 24px 24px 0;
+}
+
+.screen-panel:hover {
+  transform: rotateY(0deg) scale(1.02);
+  z-index: 10;
+}
+
+.panel-stamp {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 4px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 30px;
+  font-size: 48px;
+  color: var(--dark-green);
+  font-weight: 900;
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+}
+
+.screen-panel h3 {
+  font-size: 28px;
+  color: var(--bright-gold);
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 800;
+}
+
+.screen-panel ul {
+  list-style: none;
+  color: #E0D5C7;
+  line-height: 2.2;
+}
+
+.screen-panel li {
+  padding: 10px 0;
+  padding-left: 30px;
+  position: relative;
+  font-size: 16px;
+}
+
+.screen-panel li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 18px;
+}
+
+.faq-container {
+  max-width: 1000px;
+  margin: 60px auto;
+}
+
+.faq-item {
+  background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+  border: 3px solid var(--gold);
+  border-radius: 16px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.faq-item:hover {
+  border-color: var(--bright-gold);
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.faq-question {
+  padding: 25px 30px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--bright-gold);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.faq-question:hover {
+  background: var(--mid-green);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.faq-answer.active {
+  max-height: 1000px;
+}
+
+.faq-answer-content {
+  padding: 30px;
+  color: var(--bronze);
+  line-height: 2;
+  font-size: 17px;
+}
+
+.stats-badges {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  margin: 60px 0;
+}
+
+.stat-badge {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 4px solid var(--red);
+  border-radius: 24px;
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+  transition: all 0.4s;
+}
+
+.stat-badge:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 25px 60px rgba(255, 215, 0, 0.6);
+}
+
+.stat-badge-number {
+  font-size: 56px;
+  font-weight: 900;
+  color: var(--dark-green);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.stat-badge-label {
+  font-size: 20px;
+  color: var(--dark-green);
+  font-weight: 700;
+}
+
+.cert-badges {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-top: 60px;
+}
+
+.cert-badge {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 5px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+  transition: all 0.4s;
+  cursor: pointer;
+}
+
+.cert-badge:hover {
+  transform: scale(1.2) rotate(10deg);
+  box-shadow: 0 20px 50px rgba(255, 215, 0, 0.7);
+}
+
+footer {
+  background: linear-gradient(180deg, var(--dark-green), #0F1F15);
+  border-top: 4px solid var(--gold);
+  padding: 80px 20px 40px;
+  position: relative;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 50px;
+  max-width: 1400px;
+  margin: 0 auto 60px;
+}
+
+.footer-column h4 {
+  font-size: 22px;
+  color: var(--bright-gold);
+  margin-bottom: 25px;
+  font-weight: 800;
+  border-bottom: 3px solid var(--red);
+  padding-bottom: 10px;
+  display: inline-block;
+}
+
+.footer-column p {
+  color: #C9B5A0;
+  line-height: 2;
+  margin-bottom: 20px;
+}
+
+.footer-column ul {
+  list-style: none;
+}
+
+.footer-column li {
+  margin-bottom: 12px;
+}
+
+.footer-column a {
+  color: #C9B5A0;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.footer-column a:hover {
+  color: var(--bright-gold);
+  padding-left: 8px;
+}
+
+.footer-bottom {
+  border-top: 2px solid var(--mid-green);
+  padding-top: 40px;
+  text-align: center;
+  color: #8B7E70;
+}
+
+.disclaimer {
+  background: rgba(204, 41, 0, 0.2);
+  border: 2px solid var(--red);
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 30px;
+  line-height: 2;
+  color: #E0D5C7;
+  font-size: 14px;
+}
+
+.disclaimer strong {
+  color: var(--bright-gold);
+  font-weight: 800;
+}
+
+.fixed-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: linear-gradient(to top, rgba(28, 58, 46, 0.95), rgba(28, 58, 46, 0.9), transparent);
+  backdrop-filter: blur(20px);
+  border-top: 2px solid rgba(255, 215, 0, 0.3);
+  padding: 24px;
+}
+
+.fixed-cta-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-button {
+  width: 100%;
+  padding: 24px;
+  background: linear-gradient(to right, var(--gold), var(--bright-gold), var(--gold));
+  background-size: 200% auto;
+  color: var(--dark-green);
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 900;
+  border: 4px solid var(--red);
+  border-radius: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  transition: all 0.4s;
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
+  letter-spacing: 2px;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 60px rgba(255, 215, 0, 0.8);
+  animation: shimmer 2s linear infinite;
+}
+
+.cta-disclaimer {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 12px;
+  color: rgba(201, 176, 55, 0.8);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 10px;
+  }
+
+  .container {
+    padding: 0 10px;
+  }
+
+  .section-title {
+    font-size: clamp(24px, 5vw, 36px);
+    margin-bottom: 40px;
+  }
+
+  .hero {
+    padding: 60px 15px;
+    min-height: 70vh;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 6vw, 48px);
+    letter-spacing: 3px;
+  }
+
+  .hero h2 {
+    font-size: clamp(18px, 3vw, 28px);
+  }
+
+  .hero p {
+    font-size: clamp(14px, 2vw, 16px);
+    margin-bottom: 30px;
+  }
+
+  .logo-seal {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+  }
+
+  .logo-seal i {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .crane-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .badge-group {
+    gap: 15px;
+    margin-top: 30px;
+  }
+
+  .hex-badge {
+    width: 90px;
+    height: 100px;
+  }
+
+  .hex-badge i {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .hex-badge span {
+    font-size: 11px !important;
+    margin-top: 5px !important;
+  }
+
+  .fan-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .fan-card {
+    padding: 25px 20px;
+    border-radius: 16px;
+    border-width: 2px;
+  }
+
+  .fan-card i {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .fan-card h3 {
+    font-size: 18px;
+    margin: 15px 0 10px;
+  }
+
+  .fan-card p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .data-point {
+    font-size: 12px;
+    padding: 8px 16px;
+    margin-top: 15px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .metric-card {
+    padding: 20px 15px;
+    border-radius: 16px;
+    border-width: 2px;
+  }
+
+  .metric-number {
+    font-size: 40px;
+    margin-bottom: 8px;
+  }
+
+  .metric-label {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .metric-timestamp {
+    font-size: 11px;
+  }
+
+  .metric-card i {
+    width: 20px !important;
+    height: 20px !important;
+    margin-top: 8px !important;
+  }
+
+  .expert-scroll {
+    padding: 20px 10px;
+    gap: 20px;
+  }
+
+  .expert-card {
+    min-width: 200px;
+    padding: 25px 20px;
+    border-radius: 16px;
+    border-width: 2px;
+  }
+
+  .expert-avatar {
+    width: 80px;
+    height: 80px;
+    border-width: 3px;
+    margin-bottom: 15px;
+  }
+
+  .expert-avatar i {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .expert-name {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .expert-title {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .expert-bio {
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 10px 0;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .timeline {
+    margin: 30px auto;
+  }
+
+  .timeline-node {
+    margin: 40px 0;
+  }
+
+  .node-seal {
+    width: 100px;
+    height: 100px;
+    border-width: 3px;
+  }
+
+  .node-seal i {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .node-content {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    border-width: 2px;
+  }
+
+  .node-content h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .node-content ul {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .timeline::before {
+    left: 30px;
+  }
+
+  .comparison-table {
+    border-radius: 16px;
+    border-width: 2px;
+    margin: 30px auto;
+  }
+
+  .table-header {
+    grid-template-columns: repeat(3, 1fr);
+    font-size: 13px;
+  }
+
+  .table-header > div {
+    padding: 12px 8px;
+  }
+
+  .table-row {
+    grid-template-columns: repeat(3, 1fr);
+    font-size: 11px;
+  }
+
+  .table-row > div {
+    padding: 10px 5px;
+  }
+
+  .table-row i {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .chart-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .chart-card {
+    padding: 20px;
+    border-radius: 16px;
+    border-width: 2px;
+  }
+
+  .chart-card h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  .chart-placeholder {
+    height: 150px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  .chart-placeholder i {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .expert-note {
+    font-size: 11px;
+    line-height: 1.6;
+    padding: 12px;
+    border-radius: 6px;
+  }
+
+  .world-map {
+    margin: 30px auto;
+  }
+
+  .map-placeholder {
+    height: 200px;
+    border-radius: 16px;
+    border-width: 2px;
+    font-size: 16px;
+  }
+
+  .market-pulse {
+    width: 12px;
+    height: 12px;
+  }
+
+  .industry-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 30px;
+  }
+
+  .industry-card {
+    border-width: 2px;
+  }
+
+  .industry-card i {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .industry-card span {
+    font-size: 11px;
+  }
+
+  .folding-screen {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .screen-panel {
+    transform: rotateY(0deg) !important;
+    border-radius: 16px !important;
+    padding: 30px 20px;
+    border-width: 2px;
+  }
+
+  .panel-stamp {
+    width: 60px;
+    height: 60px;
+    font-size: 32px;
+    border-width: 2px;
+    margin-bottom: 20px;
+  }
+
+  .screen-panel h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .screen-panel i {
+    width: 32px !important;
+    height: 32px !important;
+    margin: 12px auto !important;
+  }
+
+  .screen-panel ul {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .screen-panel li {
+    padding: 6px 0;
+    padding-left: 20px;
+  }
+
+  .screen-panel li::before {
+    font-size: 14px;
+  }
+
+  .faq-container {
+    margin: 30px auto;
+  }
+
+  .faq-item {
+    border-radius: 12px;
+    border-width: 2px;
+    margin-bottom: 12px;
+  }
+
+  .faq-question {
+    padding: 15px 20px;
+    font-size: 15px;
+    gap: 10px;
+  }
+
+  .faq-question i {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .faq-answer-content {
+    padding: 20px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .stats-badges {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin: 30px 0;
+  }
+
+  .stat-badge {
+    padding: 25px 20px;
+    border-radius: 16px;
+    border-width: 2px;
+  }
+
+  .stat-badge-number {
+    font-size: 36px;
+    margin-bottom: 8px;
+  }
+
+  .stat-badge-label {
+    font-size: 14px;
+  }
+
+  .cert-badges {
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .cert-badge {
+    width: 70px;
+    height: 70px;
+    border-width: 3px;
+  }
+
+  .cert-badge i {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+
+  .footer-column h4 {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  .footer-column p,
+  .footer-column a {
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .footer-column li {
+    margin-bottom: 8px;
+  }
+
+  .disclaimer {
+    padding: 15px;
+    font-size: 11px;
+    border-radius: 12px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .footer-bottom p {
+    font-size: 11px;
+  }
+
+  .fixed-cta {
+    padding: 15px;
+  }
+
+  .cta-button {
+    padding: 16px;
+    font-size: clamp(16px, 3vw, 20px);
+    border-radius: 16px;
+    border-width: 2px;
+    gap: 10px;
+  }
+
+  .cta-button i {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .cta-disclaimer {
+    font-size: 10px;
+    margin-top: 8px;
+  }
+
+  .scroll-hint {
+    bottom: 30px;
+  }
+
+  .scroll-hint span {
+    font-size: 13px;
+  }
+
+  .scroll-hint i {
+    width: 24px !important;
+    height: 24px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .fan-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .fan-card {
+    padding: 20px 15px;
+  }
+
+  .fan-card h3 {
+    font-size: 16px;
+  }
+
+  .fan-card p {
+    font-size: 12px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .chart-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .industry-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .stats-badges {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="pine-branch"></div>
+
+  <div class="gold-cloud" style="width: 300px; height: 300px; top: 10%; left: 5%;"></div>
+  <div class="gold-cloud" style="width: 250px; height: 250px; top: 20%; right: 10%; animation-delay: 2s;"></div>
+  <div class="gold-cloud" style="width: 350px; height: 350px; bottom: 15%; left: 15%; animation-delay: 4s;"></div>
+
+  <div class="gold-particle" style="top: 15%; left: 20%; animation-delay: 0s;"></div>
+  <div class="gold-particle" style="top: 25%; left: 40%; animation-delay: 1s;"></div>
+  <div class="gold-particle" style="top: 35%; left: 60%; animation-delay: 2s;"></div>
+  <div class="gold-particle" style="top: 45%; left: 80%; animation-delay: 3s;"></div>
+  <div class="gold-particle" style="top: 55%; left: 30%; animation-delay: 4s;"></div>
+
+  <div class="hero-content">
+    <div class="logo-seal">
+      <div class="crane-circle"></div>
+      <i data-lucide="trending-up" style="width: 80px; height: 80px; color: var(--dark-green);"></i>
+    </div>
+
+    <h1>AI株式データ分析</h1>
+    <h2>人工知能関連銘柄の市場データ披露</h2>
+    <p>投資助言なし・公開データのみ使用・教育研究目的の市場情報分析</p>
+
+    <div class="badge-group">
+      <div class="hex-badge">
+        <i data-lucide="database" style="width: 48px; height: 48px; color: var(--dark-green);"></i>
+        <span style="color: var(--dark-green); font-weight: 800; font-size: 14px; margin-top: 10px;">データ開示</span>
+      </div>
+      <div class="hex-badge">
+        <i data-lucide="bar-chart-3" style="width: 48px; height: 48px; color: var(--dark-green);"></i>
+        <span style="color: var(--dark-green); font-weight: 800; font-size: 14px; margin-top: 10px;">市場分析</span>
+      </div>
+      <div class="hex-badge">
+        <i data-lucide="shield-alert" style="width: 48px; height: 48px; color: var(--dark-green);"></i>
+        <span style="color: var(--dark-green); font-weight: 800; font-size: 14px; margin-top: 10px;">非推奨</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>詳細を見る</span>
+    <i data-lucide="chevron-down" style="width: 32px; height: 32px; color: var(--bright-gold);"></i>
+  </div>
+</section>
+
+<section class="section" style="background: linear-gradient(180deg, var(--dark-green), var(--mid-green));">
+  <div class="container">
+    <h2 class="section-title">AI株式市場データの三大特徴</h2>
+
+    <div class="fan-cards">
+      <div class="fan-card">
+        <i data-lucide="cpu" style="width: 64px; height: 64px; color: var(--bright-gold);"></i>
+        <h3>AI関連銘柄に特化</h3>
+        <p>NVIDIA、Microsoft、Google、OpenAIなど、人工知能技術を開発・活用する企業の株価データと財務情報を収集・分析。AI市場の成長トレンド、技術革新の影響、セクター動向などを客観的なデータで可視化します。投資推奨は一切行いません。</p>
+        <span class="data-point">AI関連銘柄200社以上</span>
+      </div>
+
+      <div class="fan-card">
+        <i data-lucide="database" style="width: 64px; height: 64px; color: var(--bright-gold);"></i>
+        <h3>公開データのみ使用</h3>
+        <p>全てのデータは公開市場情報のみ。NYSE、NASDAQ、各社IR資料、SECファイリング、公式決算発表など、誰でもアクセス可能なデータソースを使用。独自情報や内部情報は一切使用せず、完全な透明性を確保しています。</p>
+        <span class="data-point">100%公開データソース</span>
+      </div>
+
+      <div class="fan-card">
+        <i data-lucide="book-open" style="width: 64px; height: 64px; color: var(--bright-gold);"></i>
+        <h3>教育研究目的</h3>
+        <p>提供する情報は全て教育・研究・学習目的です。市場データの読み方、財務指標の理解、セクター分析の手法などを学ぶための素材として活用できます。特定銘柄の購入や売却を推奨するものではありません。</p>
+        <span class="data-point">投資助言なし</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--mid-green);">
+  <div class="container">
+    <h2 class="section-title">AI関連株式の市場データ</h2>
+
+    <div class="dashboard-grid">
+      <div class="metric-card">
+        <div class="metric-number">+12.3%</div>
+        <div class="metric-label">AIセクター月間変動</div>
+        <div class="metric-timestamp">データ更新: 2分前</div>
+        <i data-lucide="trending-up" style="width: 32px; height: 32px; color: var(--dark-green); margin-top: 15px;"></i>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-number">$2.8T</div>
+        <div class="metric-label">AI企業時価総額</div>
+        <div class="metric-timestamp">データ更新: 5分前</div>
+        <i data-lucide="dollar-sign" style="width: 32px; height: 32px; color: var(--dark-green); margin-top: 15px;"></i>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-number">45</div>
+        <div class="metric-label">AI関連ニュース数</div>
+        <div class="metric-timestamp">データ更新: 3分前</div>
+        <i data-lucide="newspaper" style="width: 32px; height: 32px; color: var(--dark-green); margin-top: 15px;"></i>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-number">203</div>
+        <div class="metric-label">追跡中の銘柄数</div>
+        <div class="metric-timestamp">データ更新: 1分前</div>
+        <i data-lucide="list" style="width: 32px; height: 32px; color: var(--dark-green); margin-top: 15px;"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: linear-gradient(180deg, var(--mid-green), var(--dark-green));">
+  <div class="container">
+    <h2 class="section-title">データ分析チーム</h2>
+
+    <div class="expert-scroll">
+      <div class="expert-card">
+        <div class="expert-avatar">
+          <i data-lucide="user" style="width: 80px; height: 80px; color: var(--bright-gold);"></i>
+        </div>
+        <div class="expert-name">田中 健一</div>
+        <div class="expert-title">データサイエンティスト</div>
+        <div class="expert-bio">18年のデータ分析経験を持つ専門家。AI企業の株価データと財務指標の相関分析を専門とし、統計的手法を用いた市場データの可視化に従事。投資助言は一切行わず、データの客観的な分析のみを提供します。</div>
+        <div class="tag-group">
+          <span class="tag">統計分析</span>
+          <span class="tag">データ可視化</span>
+        </div>
+      </div>
+
+      <div class="expert-card">
+        <div class="expert-avatar">
+          <i data-lucide="user" style="width: 80px; height: 80px; color: var(--bright-gold);"></i>
+        </div>
+        <div class="expert-name">佐藤 美咲</div>
+        <div class="expert-title">財務データ分析</div>
+        <div class="expert-bio">公認会計士資格を持ち、15年の財務諸表分析経験。AI関連企業のIR資料、決算書、SECファイリングなど公開データの収集・整理・分析を担当。データの提示のみで、売買推奨は行いません。</div>
+        <div class="tag-group">
+          <span class="tag">財務データ</span>
+          <span class="tag">公開情報</span>
+        </div>
+      </div>
+
+      <div class="expert-card">
+        <div class="expert-avatar">
+          <i data-lucide="user" style="width: 80px; height: 80px; color: var(--bright-gold);"></i>
+        </div>
+        <div class="expert-name">山田 大輔</div>
+        <div class="expert-title">市場データ研究員</div>
+        <div class="expert-bio">20年以上のマーケットデータ研究経験。AI市場の成長データ、業界トレンド、技術革新の影響などを公開情報から収集・分析。教育研究目的のデータ提供のみで、投資判断の材料は提供しません。</div>
+        <div class="tag-group">
+          <span class="tag">市場調査</span>
+          <span class="tag">トレンド分析</span>
+        </div>
+      </div>
+
+      <div class="expert-card">
+        <div class="expert-avatar">
+          <i data-lucide="user" style="width: 80px; height: 80px; color: var(--bright-gold);"></i>
+        </div>
+        <div class="expert-name">鈴木 裕子</div>
+        <div class="expert-title">テクニカルデータ分析</div>
+        <div class="expert-bio">12年のチャートデータ分析経験。AI関連株の価格推移、出来高、テクニカル指標などの公開データを収集・整理。過去のパターン提示のみで、将来予測や売買推奨は一切行いません。</div>
+        <div class="tag-group">
+          <span class="tag">価格データ</span>
+          <span class="tag">パターン研究</span>
+        </div>
+      </div>
+
+      <div class="expert-card">
+        <div class="expert-avatar">
+          <i data-lucide="user" style="width: 80px; height: 80px; color: var(--bright-gold);"></i>
+        </div>
+        <div class="expert-name">高橋 誠</div>
+        <div class="expert-title">AIセクター研究員</div>
+        <div class="expert-bio">16年のテクノロジーセクター研究経験。AI、機械学習、半導体など関連業界の企業データを収集・整理。市場データの客観的な提示のみで、特定銘柄の購入や売却は一切推奨しません。</div>
+        <div class="tag-group">
+          <span class="tag">セクターデータ</span>
+          <span class="tag">業界情報</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--dark-green);">
+  <div class="container">
+    <h2 class="section-title">AI関連データソースの透明性</h2>
+
+    <div class="timeline">
+      <div class="timeline-node">
+        <div class="node-seal">
+          <i data-lucide="database" style="width: 64px; height: 64px; color: var(--dark-green);"></i>
+        </div>
+        <div class="node-content left">
+          <h3>公開データソース</h3>
+          <ul>
+            <li>NYSE, NASDAQ公式取引データ</li>
+            <li>各AI企業の公式IR資料</li>
+            <li>SEC EDGAR公開ファイリング</li>
+            <li>各社プレスリリース</li>
+            <li>証券取引所開示情報</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-node">
+        <div class="node-seal">
+          <i data-lucide="cpu" style="width: 64px; height: 64px; color: var(--dark-green);"></i>
+        </div>
+        <div class="node-content right">
+          <h3>AI企業分類</h3>
+          <ul>
+            <li>AI技術開発企業の特定</li>
+            <li>半導体・ハードウェア分類</li>
+            <li>クラウドプロバイダー分類</li>
+            <li>AI活用企業の分類</li>
+            <li>サブセクター別整理</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-node">
+        <div class="node-seal">
+          <i data-lucide="git-merge" style="width: 64px; height: 64px; color: var(--dark-green);"></i>
+        </div>
+        <div class="node-content left">
+          <h3>データ統合</h3>
+          <ul>
+            <li>株価データの統合</li>
+            <li>財務データの標準化</li>
+            <li>時系列データの整合</li>
+            <li>データソース明記</li>
+            <li>更新日時記録</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-node">
+        <div class="node-seal">
+          <i data-lucide="monitor" style="width: 64px; height: 64px; color: var(--dark-green);"></i>
+        </div>
+        <div class="node-content right">
+          <h3>データ表示</h3>
+          <ul>
+            <li>Webインターフェース提供</li>
+            <li>データビジュアライゼーション</li>
+            <li>検索・フィルター機能</li>
+            <li>データエクスポート</li>
+            <li>ソース情報開示</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: linear-gradient(180deg, var(--dark-green), var(--mid-green));">
+  <div class="container">
+    <h2 class="section-title">本サービスの特徴</h2>
+
+    <div class="comparison-table">
+      <div class="table-header">
+        <div>項目</div>
+        <div>本サービス</div>
+        <div>一般的なサービス</div>
+      </div>
+
+      <div class="table-row">
+        <div>データソース</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 100%公開データ</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 出所不明</div>
+      </div>
+
+      <div class="table-row">
+        <div>対象セクター</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> AI関連に特化</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 広く浅く</div>
+      </div>
+
+      <div class="table-row">
+        <div>投資助言</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 一切なし</div>
+        <div><i data-lucide="alert-triangle" style="width: 20px; height: 20px; color: #F59E0B;"></i> 曖昧な推奨</div>
+      </div>
+
+      <div class="table-row">
+        <div>更新頻度</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 15分ごと</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 1日1回</div>
+      </div>
+
+      <div class="table-row">
+        <div>透明性</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 完全開示</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> ブラックボックス</div>
+      </div>
+
+      <div class="table-row">
+        <div>免責事項</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 明確表示</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 小さく表示</div>
+      </div>
+
+      <div class="table-row">
+        <div>データ履歴</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 5年以上</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 1年程度</div>
+      </div>
+
+      <div class="table-row">
+        <div>利用目的</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 教育・研究</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 投資推奨</div>
+      </div>
+
+      <div class="table-row">
+        <div>カスタマイズ</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 柔軟対応</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 固定のみ</div>
+      </div>
+
+      <div class="table-row">
+        <div>料金透明性</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 完全公開</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 隠れコスト</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--mid-green);">
+  <div class="container">
+    <h2 class="section-title">AI関連株式のデータ分析</h2>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>AI株価指数推移（7日間）</h3>
+        <div class="chart-placeholder">
+          <i data-lucide="trending-up" style="width: 80px; height: 80px;"></i>
+        </div>
+        <div class="expert-note">
+          過去7日間のAI関連銘柄の株価推移データ。NVIDIA、Microsoft、Google等の主要AI企業の株価変動を集計。データは各証券取引所の公開情報より取得。将来の値動きを予測するものではありません。
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3>AI企業決算発表状況</h3>
+        <div class="chart-placeholder">
+          <i data-lucide="pie-chart" style="width: 80px; height: 80px;"></i>
+        </div>
+        <div class="expert-note">
+          今月のAI関連企業決算発表スケジュールと結果の集計データ。各社IR資料とSECファイリングから収集した公開情報のみ。決算内容の良し悪しの評価や投資判断は含みません。
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3>AIセクター出来高データ</h3>
+        <div class="chart-placeholder">
+          <i data-lucide="radar" style="width: 80px; height: 80px;"></i>
+        </div>
+        <div class="expert-note">
+          AI関連銘柄の取引出来高データ。各証券取引所の公開データから集計。出来高の多寡が示す意味や、今後の展開については言及しません。客観的なデータ提示のみです。
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3>時価総額ランキング（30日）</h3>
+        <div class="chart-placeholder">
+          <i data-lucide="bar-chart-3" style="width: 80px; height: 80px;"></i>
+        </div>
+        <div class="expert-note">
+          AI関連企業の時価総額ランキング推移データ。過去30日間の公開市場データから集計。時価総額の大小が企業価値を示すものではなく、投資判断の材料にはなりません。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: linear-gradient(180deg, var(--mid-green), var(--dark-green));">
+  <div class="container">
+    <h2 class="section-title">AI関連セクターカバレッジ</h2>
+
+    <div class="world-map">
+      <div class="map-placeholder">
+        <span>🤖 AI関連企業データを収集</span>
+        <div class="market-pulse" style="top: 30%; left: 25%;"></div>
+        <div class="market-pulse" style="top: 35%; left: 50%; animation-delay: 0.5s;"></div>
+        <div class="market-pulse" style="top: 40%; right: 25%; animation-delay: 1s;"></div>
+      </div>
+    </div>
+
+    <div class="industry-grid">
+      <div class="industry-card">
+        <i data-lucide="brain" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>AI開発</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="cpu" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>半導体</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="cloud" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>クラウド</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="bot" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>ロボティクス</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="network" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>機械学習</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="database" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>ビッグデータ</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="eye" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>画像認識</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="mic" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>音声AI</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="text" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>自然言語</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="car" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>自動運転</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="stethoscope" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>医療AI</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="shield" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>AIセキュリティ</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--dark-green);">
+  <div class="container">
+    <h2 class="section-title">データ収集プロセス</h2>
+
+    <div class="folding-screen">
+      <div class="screen-panel">
+        <div class="panel-stamp">壱</div>
+        <h3>公開データ収集</h3>
+        <i data-lucide="database" style="width: 48px; height: 48px; color: var(--bright-gold); margin: 20px auto; display: block;"></i>
+        <ul>
+          <li>証券取引所公開API接続</li>
+          <li>企業IR資料自動取得</li>
+          <li>SECファイリング収集</li>
+          <li>決算発表データ取得</li>
+          <li>ニュースリリース収集</li>
+          <li>履歴データアーカイブ</li>
+        </ul>
+      </div>
+
+      <div class="screen-panel">
+        <div class="panel-stamp">弐</div>
+        <h3>データ整理</h3>
+        <i data-lucide="filter" style="width: 48px; height: 48px; color: var(--bright-gold); margin: 20px auto; display: block;"></i>
+        <ul>
+          <li>データ標準化処理</li>
+          <li>AI関連企業の分類</li>
+          <li>重複データの除去</li>
+          <li>欠損値の明示</li>
+          <li>データソース明記</li>
+          <li>タイムスタンプ付与</li>
+        </ul>
+      </div>
+
+      <div class="screen-panel">
+        <div class="panel-stamp">参</div>
+        <h3>データ表示</h3>
+        <i data-lucide="monitor" style="width: 48px; height: 48px; color: var(--bright-gold); margin: 20px auto; display: block;"></i>
+        <ul>
+          <li>視覚的なデータ表示</li>
+          <li>検索・フィルター機能</li>
+          <li>履歴データ比較</li>
+          <li>データエクスポート</li>
+          <li>ソース情報開示</li>
+          <li>更新日時明示</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: linear-gradient(180deg, var(--dark-green), var(--mid-green));">
+  <div class="container">
+    <h2 class="section-title">よくある質問</h2>
+
+    <div class="faq-container">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>どんなAI関連企業のデータを収集していますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            NVIDIA、Microsoft、Google、Meta、OpenAI、Anthropic等のAI技術開発企業、半導体メーカー、クラウドプロバイダー、AI活用企業など200社以上の公開株式データを収集しています。各社のIR資料、決算書、SECファイリングなど、誰でもアクセス可能な公開情報のみを使用しています。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>データソースは何ですか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            全てのデータは100%公開市場情報です。NYSE、NASDAQ等の証券取引所公開データ、各社の公式IR資料、SECファイリング、決算発表資料など、一般投資家が誰でもアクセス可能な情報のみを使用。内部情報や独自情報は一切使用していません。データソースは全て明示しています。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>データはどのくらいの頻度で更新されますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            株価データは市場の営業時間中、15分ごとに更新されます。決算情報、IR資料、ニュースなどは公開され次第、随時追加されます。あくまで過去データと現在のデータの提示のみで、将来予測は行いません。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>【重要】これは投資助言サービスですか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            <strong>いいえ、絶対に違います。</strong>本サービスは人工知能関連株式の市場データを収集・整理・表示するのみです。特定銘柄の購入・売却・保有を推奨することは一切ありません。「買い推奨」「売り推奨」「目標株価」等の投資判断は提供しません。全ての情報は教育・研究目的のみです。投資判断はご自身の責任で行ってください。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>データの正確性は保証されますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            公開データソースから取得したデータをそのまま表示していますが、元データの誤り、遅延、欠損等が発生する可能性があります。データの正確性は保証できません。投資判断を行う際は、必ず証券会社や公式IR資料など、複数の一次情報源を直接ご確認ください。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>どのような市場をカバーしていますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            主に米国株式市場（NYSE、NASDAQ）のAI関連企業を中心に、日本、欧州、アジアのAI関連上場企業のデータも収集しています。あくまでデータの収集・表示のみで、どの市場や銘柄が「良い」「悪い」等の評価は一切行いません。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>過去のデータも閲覧できますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            はい、過去5年分のAI関連企業の株価データ、決算情報、IR資料等の履歴データをアーカイブしています。過去データの提示のみで、過去のパターンから将来を予測したり、売買推奨を行うことは一切ありません。教育・研究目的でご活用ください。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>モバイルでも利用できますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            はい、スマートフォン、タブレット、デスクトップ等、あらゆるデバイスで市場データを閲覧できます。ただし、データの閲覧のみで、モバイルからの投資推奨等は一切行いません。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>特定のAI企業に絞ったデータ提供はできますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            はい、特定のAI企業、サブセクター（半導体、クラウド等）、地域に絞ったデータフィード提供も可能です。ただし、あくまでデータの収集・整理・表示のみで、「どの企業が良い」等の評価や推奨は一切含みません。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>サポート体制は？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            データに関する技術的な質問、使い方のサポートは提供しています。ただし、「どの株を買うべきか」「今は買い時か」等の投資相談には一切お答えできません。あくまでデータ提供サービスのサポートのみです。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>料金体系を教えてください</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            基本的なAI関連株式の市場データ閲覧は無料です。より詳細な履歴データ、データエクスポート機能、カスタムフィルター等を含むプレミアムプランもあります。料金は完全透明で、隠れたコストはありません。詳細はボタンをクリックしてご確認ください。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>無料トライアルはありますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            はい、14日間の無料トライアル期間があります。プレミアム機能を含む全てのデータにアクセス可能です。クレジットカード登録も不要。ただし、トライアル期間中も投資助言は一切提供しませんので、ご了承ください。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--mid-green);">
+  <div class="container">
+    <h2 class="section-title">データサービス実績</h2>
+
+    <div class="stats-badges">
+      <div class="stat-badge">
+        <span class="stat-badge-number">200+</span>
+        <span class="stat-badge-label">AI関連企業データ</span>
+      </div>
+      <div class="stat-badge">
+        <span class="stat-badge-number">5年</span>
+        <span class="stat-badge-label">履歴データ保存</span>
+      </div>
+      <div class="stat-badge">
+        <span class="stat-badge-number">15分</span>
+        <span class="stat-badge-label">データ更新間隔</span>
+      </div>
+      <div class="stat-badge">
+        <span class="stat-badge-number">100%</span>
+        <span class="stat-badge-label">公開ソース使用</span>
+      </div>
+    </div>
+
+    <div class="cert-badges">
+      <div class="cert-badge">
+        <i data-lucide="shield-check" style="width: 60px; height: 60px; color: var(--dark-green);"></i>
+      </div>
+      <div class="cert-badge">
+        <i data-lucide="award" style="width: 60px; height: 60px; color: var(--dark-green);"></i>
+      </div>
+      <div class="cert-badge">
+        <i data-lucide="verified" style="width: 60px; height: 60px; color: var(--dark-green);"></i>
+      </div>
+      <div class="cert-badge">
+        <i data-lucide="badge-check" style="width: 60px; height: 60px; color: var(--dark-green);"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-column">
+        <h4>サービス概要</h4>
+        <p>人工知能関連株式の市場データ収集・整理・表示サービス。100%公開データソース、完全透明性。投資助言は一切行わず、教育研究目的のデータ提供のみを行います。</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>提供データ</h4>
+        <ul>
+          <li><a href="#">AI企業株価データ</a></li>
+          <li><a href="#">決算・IR情報</a></li>
+          <li><a href="#">セクター別データ</a></li>
+          <li><a href="#">履歴データアーカイブ</a></li>
+          <li><a href="#">データ利用ガイド</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>リンク</h4>
+        <ul>
+          <li><a href="#">データソース</a></li>
+          <li><a href="#">専門家チーム</a></li>
+          <li><a href="#">方法論</a></li>
+          <li><a href="#">利用規約</a></li>
+          <li><a href="#">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>お問い合わせ</h4>
+        <ul>
+          <li><a href="#">support@example.com</a></li>
+          <li><a href="#">営業時間: 24/7</a></li>
+          <li><a href="#">よくある質問</a></li>
+          <li><a href="#">フィードバック</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="disclaimer">
+        <strong>【重要な免責事項・投資助言の非提供について】</strong><br>
+        本サービスは人工知能関連株式の市場データを収集・整理・表示する情報提供サービスです。<strong>投資助言サービスではありません。</strong>特定銘柄の購入・売却・保有を推奨すること、目標株価の提示、売買タイミングの示唆等は一切行いません。全ての情報は教育・研究目的のみであり、投資判断の材料として使用することは推奨しません。株式投資には元本損失のリスクがあります。投資判断は必ずご自身の責任で行い、必要に応じて専門の金融アドバイザーにご相談ください。過去のデータは将来の結果を保証しません。データの正確性も保証できません。
+      </div>
+      <p>&copy; 2024 AI株式データ分析 | 市場データ披露サービス（投資助言なし）</p>
+    </div>
+  </div>
+</footer>
+
+<div class="fixed-cta">
+  <div class="fixed-cta-container">
+    <button class="cta-button" onclick="addjoin(event, 'AI株式データを見る', 1)">
+      <span>AI株式データを見る</span>
+      <i data-lucide="database" style="width: 28px; height: 28px;"></i>
+    </button>
+    <div class="cta-disclaimer">※データ閲覧のみ。投資助言は一切提供しません</div>
+  </div>
+</div>
+
+<input type="hidden" id="jrtext" value="">
+<input type="hidden" id="code" value="">
+
+<script src="../static/core/jp_202629.js"></script>
+<script>
+lucide.createIcons();
+
+function toggleFaq(element) {
+  const answer = element.nextElementSibling;
+  const icon = element.querySelector('[data-lucide="chevron-down"]');
+
+  answer.classList.toggle('active');
+
+  if (answer.classList.contains('active')) {
+    icon.style.transform = 'rotate(180deg)';
+  } else {
+    icon.style.transform = 'rotate(0deg)';
+  }
+}
+
+document.querySelector('.scroll-hint').addEventListener('click', function() {
+  window.scrollTo({
+    top: window.innerHeight,
+    behavior: 'smooth'
+  });
+});
+
+for (let i = 0; i < 100; i++) {
+  const particle = document.createElement('div');
+  particle.className = 'gold-particle';
+  particle.style.left = Math.random() * 100 + '%';
+  particle.style.top = Math.random() * 100 + '%';
+  particle.style.animationDelay = Math.random() * 3 + 's';
+  document.querySelector('.hero').appendChild(particle);
+}
+</script>
+
+</body>
+</html>
