@@ -1,1424 +1,1749 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<meta name="robots" content="index,follow"/>
-<meta name="format-detection" content="telephone=no"/>
-<title>株式投資学習の舞台 | 伝統の知恵で未来を拓く</title>
-<meta name="description" content="歌舞伎の伝統美と投資教育の融合。完全無料の株式投資学習プラットフォームで、日本の匠の心を持って金融知識を学び、投資の道を極める。"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index,follow">
+<title>専門家の目 | 市場の真実を照らす情報サービス</title>
+<meta name="description" content="AIではなく、経験豊富な専門家チームによる精選された市場インテリジェンス。100%公開データソース、完全透明性、リアルタイム更新。">
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
-:root{
-  --kabuki-red:#8B0000;
-  --stage-crimson:#B22222;
-  --gold:#DAA520;
-  --bright-gold:#FFD700;
-  --kumadori-blue:#0F4C81;
-  --white-powder:#FAF0E6;
-  --black-robe:#1C1C1C;
-  --accent-vermillion:#DC143C;
-  --coral:#FF6347;
-  --paper:#FFF8DC;
-  --shadow-kabuki:0 8px 32px rgba(139,0,0,.3);
-  --shadow-gold:0 4px 24px rgba(255,215,0,.4);
-  --radius:16px;
-  --maxw:1200px;
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
-
-html{scroll-behavior:smooth}
-
-body{
-  font-family:"ヒラギノ明朝 ProN","Hiragino Mincho ProN","游明朝体","Yu Mincho",YuMincho,"HG明朝E","ＭＳ Ｐ明朝","MS PMincho",serif;
-  color:var(--black-robe);
-  background:var(--white-powder);
-  line-height:1.8;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
-
-@keyframes curtain-open{
-  0%{transform:scaleX(1);opacity:1}
-  100%{transform:scaleX(0);opacity:0}
-}
-
-@keyframes gold-dust{
-  0%{transform:translateY(-20px) rotate(0deg);opacity:0}
-  50%{opacity:1}
-  100%{transform:translateY(100vh) rotate(360deg);opacity:0}
-}
-
-@keyframes smoke-float{
-  0%,100%{transform:translateY(0) translateX(0);opacity:.3}
-  50%{transform:translateY(-30px) translateX(20px);opacity:.6}
-}
-
-@keyframes stage-rotate{
-  from{transform:rotate(0deg)}
-  to{transform:rotate(360deg)}
-}
-
-@keyframes mie-pose{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.05)}
-}
-
-@keyframes lantern-glow{
-  0%,100%{box-shadow:0 0 20px rgba(255,215,0,.3),0 0 40px rgba(139,0,0,.2)}
-  50%{box-shadow:0 0 30px rgba(255,215,0,.6),0 0 60px rgba(139,0,0,.4)}
-}
-
-@keyframes wave-ripple{
-  0%{transform:scale(0.8);opacity:0}
-  50%{opacity:.5}
-  100%{transform:scale(2);opacity:0}
-}
-
-.hero{
-  background:linear-gradient(135deg,var(--kabuki-red) 0%,var(--stage-crimson) 50%,var(--gold) 100%);
-  color:var(--white-powder);
-  padding:100px 20px;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-  min-height:90vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.hero::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;bottom:0;
-  background-image:
-    repeating-linear-gradient(90deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px),
-    repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);
-  opacity:.3;
-  pointer-events:none;
-}
-
-.hero::after{
-  content:'';
-  position:absolute;
-  top:0;left:-100%;
-  width:100%;
-  height:100%;
-  background:var(--kabuki-red);
-  animation:curtain-open 1.5s ease-out forwards;
-  z-index:10;
-  transform-origin:center;
-}
-
-.curtain-overlay{
-  position:absolute;
-  top:0;right:-100%;
-  width:100%;
-  height:100%;
-  background:var(--kabuki-red);
-  animation:curtain-open 1.5s ease-out forwards;
-  animation-delay:.1s;
-  z-index:10;
-  transform-origin:center;
-}
-
-.smoke-effect{
-  position:absolute;
-  width:200px;
-  height:200px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 70%);
-  animation:smoke-float 8s ease-in-out infinite;
-  pointer-events:none;
-}
-
-.smoke-1{top:10%;left:10%;animation-delay:0s}
-.smoke-2{top:30%;right:15%;animation-delay:2s}
-.smoke-3{bottom:20%;left:20%;animation-delay:4s}
-
-.gold-particle{
-  position:absolute;
-  width:8px;
-  height:8px;
-  background:var(--bright-gold);
-  border-radius:50%;
-  opacity:0;
-  animation:gold-dust 6s linear infinite;
-  pointer-events:none;
-}
-
-.gold-particle:nth-child(1){left:10%;animation-delay:0s}
-.gold-particle:nth-child(2){left:30%;animation-delay:1s}
-.gold-particle:nth-child(3){left:50%;animation-delay:2s}
-.gold-particle:nth-child(4){left:70%;animation-delay:3s}
-.gold-particle:nth-child(5){left:90%;animation-delay:4s}
-
-.container{
-  max-width:var(--maxw);
-  margin:0 auto;
-  padding:0 20px;
-  position:relative;
-  z-index:20;
-}
-
-.badge{
-  display:inline-block;
-  padding:12px 28px;
-  background:linear-gradient(135deg,var(--bright-gold),var(--gold));
-  border-radius:60px;
-  font-size:15px;
-  font-weight:700;
-  margin-bottom:30px;
-  border:3px solid var(--white-powder);
-  box-shadow:var(--shadow-gold);
-  color:var(--kabuki-red);
-  animation:lantern-glow 3s ease-in-out infinite;
-  letter-spacing:2px;
-}
-
-.hero h1{
-  font-size:clamp(36px,6vw,72px);
-  font-weight:900;
-  line-height:1.3;
-  margin-bottom:30px;
-  text-shadow:
-    0 0 20px rgba(255,215,0,.5),
-    3px 3px 0 var(--kabuki-red),
-    6px 6px 0 rgba(0,0,0,.3);
-  background:linear-gradient(135deg,var(--white-powder),var(--bright-gold),var(--white-powder));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-  animation:mie-pose 4s ease-in-out infinite;
-  letter-spacing:4px;
-}
-
-.hero .subtitle{
-  font-size:clamp(17px,2.8vw,24px);
-  margin-bottom:50px;
-  line-height:2;
-  max-width:800px;
-  margin-left:auto;
-  margin-right:auto;
-  text-shadow:2px 2px 8px rgba(0,0,0,.5);
-  color:var(--white-powder);
-  font-weight:500;
-  letter-spacing:2px;
-}
-
-.cta-group{
-  display:flex;
-  gap:20px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-bottom:40px;
-}
-
-.btn{
-  display:inline-flex;
-  align-items:center;
-  gap:12px;
-  padding:18px 40px;
-  border-radius:60px;
-  font-size:17px;
-  font-weight:700;
-  border:none;
-  cursor:pointer;
-  transition:all .4s cubic-bezier(.4,0,.2,1);
-  text-decoration:none;
-  position:relative;
-  overflow:hidden;
-  letter-spacing:1px;
-}
-
-.btn::before{
-  content:'';
-  position:absolute;
-  top:50%;left:50%;
-  width:0;
-  height:0;
-  border-radius:50%;
-  background:rgba(255,255,255,.3);
-  transform:translate(-50%,-50%);
-  transition:width .6s,height .6s;
-}
-
-.btn:hover::before{
-  width:300px;
-  height:300px;
-}
-
-.btn-primary{
-  background:linear-gradient(135deg,var(--bright-gold),var(--gold),var(--accent-vermillion));
-  color:var(--black-robe);
-  box-shadow:0 10px 40px rgba(255,215,0,.5);
-  border:3px solid var(--white-powder);
-}
-
-.btn-primary:hover{
-  transform:translateY(-4px) scale(1.05);
-  box-shadow:0 15px 50px rgba(255,215,0,.7);
-}
-
-.btn-secondary{
-  background:rgba(255,255,255,.15);
-  color:var(--white-powder);
-  border:3px solid var(--white-powder);
-  backdrop-filter:blur(10px);
-}
-
-.btn-secondary:hover{
-  background:var(--kumadori-blue);
-  transform:translateY(-4px);
-  box-shadow:0 10px 30px rgba(15,76,129,.5);
-}
-
-.btn-contact{
-  background:linear-gradient(135deg,var(--kumadori-blue),#1a5a8e);
-  color:var(--white-powder);
-  border:3px solid var(--bright-gold);
-  box-shadow:0 8px 30px rgba(15,76,129,.4);
-}
-
-.btn-contact:hover{
-  transform:translateY(-4px) scale(1.05);
-  box-shadow:0 12px 40px rgba(15,76,129,.6);
-}
-
-.trust-indicators{
-  display:flex;
-  gap:50px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-top:60px;
-  padding-top:50px;
-  border-top:2px solid rgba(255,215,0,.4);
-  position:relative;
-}
-
-.trust-indicators::before{
-  content:'';
-  position:absolute;
-  top:-10px;left:50%;
-  transform:translateX(-50%);
-  width:100px;
-  height:20px;
-  background:var(--bright-gold);
-  border-radius:10px;
-  box-shadow:0 0 20px rgba(255,215,0,.6);
-}
-
-.indicator{
-  text-align:center;
-  position:relative;
-}
-
-.indicator::before{
-  content:'';
-  position:absolute;
-  top:-20px;left:50%;
-  transform:translateX(-50%);
-  width:40px;
-  height:40px;
-  border:3px solid var(--bright-gold);
-  border-radius:50%;
-  opacity:.3;
-  animation:wave-ripple 2s ease-out infinite;
-}
-
-.indicator-value{
-  font-size:42px;
-  font-weight:900;
-  display:block;
-  margin-bottom:8px;
-  background:linear-gradient(135deg,var(--bright-gold),var(--white-powder));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-  text-shadow:2px 2px 4px rgba(0,0,0,.3);
-}
-
-.indicator-label{
-  font-size:16px;
-  font-weight:600;
-  letter-spacing:1px;
-}
-
-.section{
-  padding:100px 20px;
-  position:relative;
-}
-
-.section-header{
-  text-align:center;
-  margin-bottom:70px;
-}
-
-.section-tag{
-  display:inline-block;
-  padding:10px 24px;
-  background:linear-gradient(135deg,var(--bright-gold),var(--gold));
-  color:var(--kabuki-red);
-  border-radius:60px;
-  font-size:15px;
-  font-weight:700;
-  margin-bottom:20px;
-  border:2px solid var(--kabuki-red);
-  box-shadow:var(--shadow-gold);
-  letter-spacing:2px;
-}
-
-.section h2{
-  font-size:clamp(32px,5vw,52px);
-  font-weight:900;
-  color:var(--kabuki-red);
-  margin-bottom:20px;
-  position:relative;
-  display:inline-block;
-  letter-spacing:3px;
-}
-
-.section h2::after{
-  content:'';
-  position:absolute;
-  bottom:-10px;left:0;
-  width:100%;
-  height:4px;
-  background:linear-gradient(90deg,transparent,var(--bright-gold),transparent);
-}
-
-.section-subtitle{
-  font-size:19px;
-  color:#555;
-  max-width:750px;
-  margin:0 auto;
-  line-height:2;
-  letter-spacing:1px;
-}
-
-.values-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:35px;
-  margin-top:50px;
-}
-
-.value-card{
-  background:linear-gradient(135deg,var(--paper),var(--white-powder));
-  border-radius:var(--radius);
-  padding:45px 35px;
-  box-shadow:var(--shadow-kabuki);
-  transition:all .4s;
-  border:3px solid var(--gold);
-  position:relative;
-  overflow:hidden;
-}
-
-.value-card::before{
-  content:'';
-  position:absolute;
-  top:-50%;right:-50%;
-  width:200px;
-  height:200px;
-  background:radial-gradient(circle,rgba(255,215,0,.2) 0%,transparent 70%);
-  opacity:0;
-  transition:opacity .4s;
-}
-
-.value-card:hover{
-  transform:translateY(-12px) translateX(-5px);
-  box-shadow:0 20px 60px rgba(139,0,0,.4),0 0 40px rgba(255,215,0,.3);
-  border-color:var(--bright-gold);
-}
-
-.value-card:hover::before{
-  opacity:1;
-  animation:stage-rotate 20s linear infinite;
-}
-
-.value-icon{
-  width:70px;
-  height:70px;
-  background:linear-gradient(135deg,var(--bright-gold),var(--gold));
-  border-radius:20px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:36px;
-  margin-bottom:25px;
-  border:3px solid var(--kabuki-red);
-  box-shadow:var(--shadow-gold);
-}
-
-.value-card h3{
-  font-size:24px;
-  font-weight:800;
-  margin-bottom:15px;
-  color:var(--kabuki-red);
-  letter-spacing:2px;
-}
-
-.value-card p{
-  color:#444;
-  line-height:2;
-  letter-spacing:.5px;
-}
-
-.bg-light{
-  background:linear-gradient(180deg,var(--white-powder) 0%,#FFF 50%,var(--white-powder) 100%);
-}
-
-.courses-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
-  gap:40px;
-}
-
-.course-card{
-  background:var(--paper);
-  border-radius:var(--radius);
-  overflow:hidden;
-  box-shadow:var(--shadow-kabuki);
-  transition:all .4s;
-  border:3px solid var(--gold);
-  position:relative;
-}
-
-.course-card::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;
-  height:8px;
-  background:linear-gradient(90deg,var(--kabuki-red),var(--bright-gold),var(--kabuki-red));
-}
-
-.course-card:hover{
-  transform:translateY(-8px) rotate(-1deg);
-  box-shadow:0 25px 70px rgba(139,0,0,.5);
-  border-color:var(--bright-gold);
-}
-
-.course-header{
-  padding:35px;
-  background:linear-gradient(135deg,var(--kabuki-red),var(--stage-crimson));
-  color:var(--white-powder);
-  position:relative;
-  overflow:hidden;
-}
-
-.course-header::before{
-  content:'';
-  position:absolute;
-  top:-50%;right:-30%;
-  width:200px;
-  height:200px;
-  background:radial-gradient(circle,rgba(255,215,0,.3) 0%,transparent 70%);
-  border-radius:50%;
-}
-
-.course-level{
-  display:inline-block;
-  padding:6px 18px;
-  background:var(--bright-gold);
-  color:var(--kabuki-red);
-  border-radius:50px;
-  font-size:13px;
-  font-weight:800;
-  margin-bottom:15px;
-  border:2px solid var(--white-powder);
-  letter-spacing:1px;
-}
-
-.course-card h3{
-  font-size:24px;
-  font-weight:800;
-  margin-bottom:12px;
-  letter-spacing:1px;
-}
-
-.course-meta{
-  display:flex;
-  gap:25px;
-  font-size:15px;
-  opacity:.9;
-}
-
-.course-body{
-  padding:35px;
-  background:var(--white-powder);
-}
-
-.course-description{
-  color:#555;
-  line-height:2;
-  margin-bottom:20px;
-  padding:15px;
-  background:rgba(255,215,0,.1);
-  border-left:4px solid var(--bright-gold);
-  border-radius:8px;
-  letter-spacing:.5px;
-}
-
-.course-body ul{
-  list-style:none;
-  margin-bottom:25px;
-}
-
-.course-body li{
-  padding:10px 0;
-  padding-left:35px;
-  position:relative;
-  color:#444;
-  letter-spacing:.5px;
-}
-
-.course-body li::before{
-  content:'◆';
-  position:absolute;
-  left:0;
-  color:var(--kabuki-red);
-  font-weight:700;
-  width:24px;
-  height:24px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:14px;
-}
-
-.stats-section{
-  background:linear-gradient(135deg,var(--kumadori-blue),#1a5a8e,#0F4C81);
-  color:var(--white-powder);
-  position:relative;
-  overflow:hidden;
-}
-
-.stats-section::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;bottom:0;
-  background-image:
-    radial-gradient(circle,rgba(255,215,0,.1) 1px,transparent 1px);
-  background-size:50px 50px;
-  opacity:.3;
-}
-
-.stats-section::after{
-  content:'';
-  position:absolute;
-  top:20%;right:10%;
-  width:400px;
-  height:400px;
-  background:radial-gradient(circle,rgba(255,215,0,.15) 0%,transparent 70%);
-  border-radius:50%;
-  animation:wave-ripple 10s ease-out infinite;
-}
-
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:40px;
-  position:relative;
-  z-index:1;
-}
-
-.stat-item{
-  text-align:center;
-  padding:40px;
-  background:rgba(255,255,255,.1);
-  backdrop-filter:blur(15px);
-  border-radius:var(--radius);
-  border:3px solid rgba(255,215,0,.4);
-  position:relative;
-  overflow:hidden;
-  transition:all .4s;
-}
-
-.stat-item::before{
-  content:'';
-  position:absolute;
-  top:-50%;left:-50%;
-  width:200px;
-  height:200px;
-  background:radial-gradient(circle,rgba(255,215,0,.3) 0%,transparent 70%);
-  opacity:0;
-  transition:opacity .4s;
-}
-
-.stat-item:hover{
-  transform:translateY(-8px);
-  border-color:var(--bright-gold);
-  box-shadow:0 20px 50px rgba(255,215,0,.3);
-}
-
-.stat-item:hover::before{
-  opacity:1;
-  animation:stage-rotate 15s linear infinite;
-}
-
-.stat-number{
-  font-size:56px;
-  font-weight:900;
-  display:block;
-  margin-bottom:15px;
-  background:linear-gradient(135deg,var(--bright-gold),#FFF,var(--bright-gold));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-  text-shadow:0 0 30px rgba(255,215,0,.5);
-}
-
-.stat-label{
-  font-size:18px;
-  font-weight:700;
-  margin-bottom:8px;
-  letter-spacing:1px;
-}
-
-.stat-desc{
-  font-size:15px;
-  opacity:.85;
-  letter-spacing:.5px;
-}
-
-.mission-section{
-  background:linear-gradient(180deg,var(--white-powder) 0%,var(--paper) 100%);
-  position:relative;
-}
-
-.mission-section::before{
-  content:'';
-  position:absolute;
-  top:10%;left:5%;
-  width:200px;
-  height:200px;
-  background:radial-gradient(circle,rgba(218,165,32,.15) 0%,transparent 70%);
-  border-radius:50%;
-}
-
-.mission-content{
-  max-width:900px;
-  margin:0 auto;
-  text-align:center;
-}
-
-.mission-quote{
-  font-size:clamp(20px,3.5vw,28px);
-  line-height:2.2;
-  color:var(--kabuki-red);
-  font-weight:700;
-  margin-bottom:40px;
-  padding:50px;
-  background:#FFF;
-  border-radius:var(--radius);
-  box-shadow:var(--shadow-kabuki);
-  border:4px solid var(--bright-gold);
-  position:relative;
-  letter-spacing:2px;
-}
-
-.mission-quote::before{
-  content:'❝';
-  position:absolute;
-  top:10px;left:20px;
-  font-size:80px;
-  color:var(--gold);
-  opacity:.3;
-  font-family:Georgia,serif;
-}
-
-.mission-text{
-  font-size:17px;
-  line-height:2.2;
-  color:#444;
-  margin-bottom:25px;
-  padding:25px;
-  background:rgba(255,215,0,.1);
-  border-radius:12px;
-  letter-spacing:1px;
-}
-
-.commitment-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:25px;
-  margin-top:50px;
-}
-
-.commitment-item{
-  padding:35px 25px;
-  background:#FFF;
-  border-radius:var(--radius);
-  box-shadow:var(--shadow-kabuki);
-  text-align:center;
-  border:3px solid var(--gold);
-  transition:all .4s;
-  position:relative;
-  overflow:hidden;
-}
-
-.commitment-item::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;
-  height:6px;
-  background:linear-gradient(90deg,var(--kabuki-red),var(--bright-gold),var(--kabuki-red));
-  transform:scaleX(0);
-  transition:transform .4s;
-}
-
-.commitment-item:hover{
-  border-color:var(--bright-gold);
-  transform:translateY(-8px);
-  box-shadow:0 15px 40px rgba(139,0,0,.3);
-}
-
-.commitment-item:hover::before{
-  transform:scaleX(1);
-}
-
-.commitment-icon{
-  font-size:42px;
-  margin-bottom:18px;
-}
-
-.commitment-item h4{
-  font-size:17px;
-  font-weight:800;
-  color:var(--kabuki-red);
-  letter-spacing:1px;
-}
-
-.testimonials-slider{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:35px;
-  margin-top:50px;
-}
-
-.testimonial-card{
-  background:#FFF;
-  padding:40px;
-  border-radius:var(--radius);
-  box-shadow:var(--shadow-kabuki);
-  position:relative;
-  border:3px solid var(--gold);
-  transition:all .4s;
-}
-
-.testimonial-card::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;
-  width:100%;
-  height:8px;
-  background:linear-gradient(90deg,var(--kabuki-red),var(--bright-gold));
-  border-radius:var(--radius) var(--radius) 0 0;
-}
-
-.testimonial-card::after{
-  content:'"';
-  font-size:100px;
-  position:absolute;
-  top:20px;
-  left:25px;
-  color:rgba(218,165,32,.15);
-  font-family:Georgia,serif;
-  line-height:1;
-}
-
-.testimonial-card:hover{
-  transform:translateY(-8px);
-  box-shadow:0 20px 50px rgba(139,0,0,.4);
-  border-color:var(--bright-gold);
-}
-
-.testimonial-text{
-  color:#444;
-  line-height:2;
-  margin-bottom:25px;
-  position:relative;
-  z-index:1;
-  letter-spacing:.5px;
-}
-
-.testimonial-author{
-  display:flex;
-  align-items:center;
-  gap:18px;
-  position:relative;
-  z-index:1;
-}
-
-.author-avatar{
-  width:55px;
-  height:55px;
-  border-radius:50%;
-  background:linear-gradient(135deg,var(--kabuki-red),var(--bright-gold));
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--white-powder);
-  font-weight:800;
-  font-size:22px;
-  border:3px solid var(--gold);
-  box-shadow:var(--shadow-gold);
-}
-
-.author-info h5{
-  font-size:17px;
-  font-weight:800;
-  color:var(--kabuki-red);
-  margin-bottom:5px;
-  letter-spacing:.5px;
-}
-
-.author-info p{
-  font-size:14px;
-  color:#666;
-}
-
-.cta-section{
-  background:linear-gradient(135deg,var(--kabuki-red) 0%,var(--stage-crimson) 50%,var(--gold) 100%);
-  color:var(--white-powder);
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-}
-
-.cta-section::before{
-  content:'';
-  position:absolute;
-  top:-50%;left:-25%;
-  width:500px;
-  height:500px;
-  background:radial-gradient(circle,rgba(255,215,0,.2) 0%,transparent 70%);
-  border-radius:50%;
-  animation:stage-rotate 30s linear infinite;
-}
-
-.cta-section h2{
-  color:var(--white-powder);
-  margin-bottom:25px;
-  text-shadow:3px 3px 0 rgba(0,0,0,.3);
-  letter-spacing:3px;
-}
-
-.cta-section p{
-  font-size:20px;
-  margin-bottom:45px;
-  line-height:2;
-  text-shadow:2px 2px 5px rgba(0,0,0,.3);
-  letter-spacing:1px;
-}
-
-footer{
-  background:linear-gradient(180deg,var(--black-robe),#2a2a2a);
-  color:#e2e8f0;
-  padding:70px 20px 40px;
-  position:relative;
-}
-
-footer::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;
-  height:4px;
-  background:linear-gradient(90deg,var(--kabuki-red),var(--bright-gold),var(--kabuki-red));
-}
-
-.footer-grid{
-  display:flex;
-  flex-wrap:wrap;
-  gap:45px;
-  margin-bottom:50px;
-  justify-content:space-between;
-}
-
-.footer-column{
-  flex:1 1 260px;
-  min-width:260px;
-}
-
-.footer-column h4{
-  font-size:19px;
-  font-weight:800;
-  color:var(--bright-gold);
-  margin-bottom:25px;
-  border-bottom:3px solid var(--kabuki-red);
-  padding-bottom:12px;
-  display:inline-block;
-  letter-spacing:1px;
-}
-
-.footer-column ul{
-  list-style:none;
-}
-
-.footer-column li{
-  margin-bottom:14px;
-}
-
-.footer-column a{
-  color:#cbd5e1;
-  transition:all .3s;
-  letter-spacing:.5px;
-}
-
-.footer-column a:hover{
-  color:var(--bright-gold);
-  padding-left:5px;
-}
-
-.footer-about{
-  line-height:2;
-  color:#94a3b8;
-  letter-spacing:.5px;
-}
-
-.social-links{
-  display:flex;
-  gap:18px;
-  margin-top:25px;
-}
-
-.social-link{
-  width:45px;
-  height:45px;
-  border-radius:50%;
-  background:rgba(218,165,32,.2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:all .4s;
-  border:2px solid var(--gold);
-}
-
-.social-link:hover{
-  background:var(--bright-gold);
-  transform:translateY(-5px) rotate(360deg);
-  box-shadow:var(--shadow-gold);
-}
-
-.footer-bottom{
-  border-top:2px solid rgba(218,165,32,.3);
-  padding-top:35px;
-  text-align:center;
-  color:#94a3b8;
-  font-size:15px;
-}
-
-.risk-warning{
-  background:rgba(139,0,0,.1);
-  padding:20px;
-  border-radius:12px;
-  border:2px solid var(--kabuki-red);
-  margin-bottom:25px;
-  line-height:1.9;
-  letter-spacing:.5px;
-}
-
-.risk-warning strong{
-  color:var(--kabuki-red);
-  font-weight:800;
-}
-
-@media (max-width:768px){
-  .hero{padding:70px 20px;min-height:auto}
-  .section{padding:70px 20px}
-  .cta-group{flex-direction:column}
-  .btn{width:100%;justify-content:center}
-  .trust-indicators{gap:35px}
-  .values-grid,.courses-grid,.stats-grid,.testimonials-slider{grid-template-columns:1fr}
-  .commitment-grid{grid-template-columns:repeat(2,1fr)}
-  .hero h1{font-size:32px;letter-spacing:2px}
-  .badge{font-size:13px;padding:10px 20px}
-}
-
-@media (max-width:480px){
-  .commitment-grid{grid-template-columns:1fr}
-  .hero h1{font-size:28px}
+:root {
+  --dark-green: #1C3A2E;
+  --mid-green: #2D5016;
+  --gold: #C9B037;
+  --bright-gold: #FFD700;
+  --red: #CC2900;
+  --bronze: #8B6914;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "ヒラギノ明朝 ProN", "Hiragino Mincho ProN", "游明朝体", "Yu Mincho", YuMincho, serif;
+  background: var(--dark-green);
+  color: #FAF0E6;
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+@keyframes goldAttach {
+  0% { opacity: 0; transform: scale(0.8) rotate(-5deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes goldFloat {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  33% { transform: translateY(-30px) translateX(20px); }
+  66% { transform: translateY(-15px) translateX(-15px); }
+}
+
+@keyframes goldSparkle {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+@keyframes craneRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes slideDown {
+  0% { transform: translateY(-10px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes numberFlip {
+  0%, 100% { transform: rotateX(0deg); }
+  50% { transform: rotateX(180deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.gold-cloud {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+  animation: goldFloat 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.gold-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--bright-gold);
+  border-radius: 50%;
+  animation: goldSparkle 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--dark-green) 0%, var(--mid-green) 50%, var(--gold) 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 80px 20px;
+}
+
+.pine-branch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,60 Q150,30 300,50 T600,60 T900,50 T1200,60' fill='none' stroke='%231C3A2E' stroke-width='8' opacity='0.3'/%3E%3C/svg%3E") no-repeat center;
+  z-index: 1;
+}
+
+.logo-seal {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 6px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto 40px;
+  animation: goldAttach 2s ease-out;
+  box-shadow: 0 20px 60px rgba(255, 215, 0, 0.5);
+}
+
+.crane-circle {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border: 3px dashed var(--red);
+  border-radius: 50%;
+  animation: craneRotate 20s linear infinite;
+}
+
+.hero-content {
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  padding: 40px;
+}
+
+.hero h1 {
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 900;
+  color: var(--bright-gold);
+  margin-bottom: 30px;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 4px 4px 0 rgba(0, 0, 0, 0.3);
+  letter-spacing: 6px;
+  line-height: 1.2;
+}
+
+.hero h2 {
+  font-size: clamp(24px, 4vw, 48px);
+  color: var(--bright-gold);
+  margin-bottom: 20px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.hero p {
+  font-size: clamp(16px, 2vw, 22px);
+  color: #FAF0E6;
+  margin-bottom: 50px;
+  line-height: 2;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.badge-group {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 60px;
+}
+
+.hex-badge {
+  width: 140px;
+  height: 160px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  border: 4px solid var(--red);
+  transition: all 0.4s;
+  cursor: pointer;
+}
+
+.hex-badge:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(255, 215, 0, 0.5);
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: bounce 2s ease-in-out infinite;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.scroll-hint span {
+  color: var(--bright-gold);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.section {
+  padding: 120px 20px;
+  position: relative;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 900;
+  color: var(--bright-gold);
+  text-align: center;
+  margin-bottom: 80px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  letter-spacing: 4px;
+}
+
+.fan-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 50px;
+}
+
+.fan-card {
+  background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+  border: 4px solid var(--gold);
+  border-radius: 30px;
+  padding: 50px 40px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.fan-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+  transition: opacity 0.5s;
+  opacity: 0;
+}
+
+.fan-card:hover {
+  transform: translateY(-15px);
+  border-color: var(--bright-gold);
+  box-shadow: 0 30px 80px rgba(201, 176, 55, 0.4);
+}
+
+.fan-card:hover::before {
+  opacity: 1;
+  animation: craneRotate 15s linear infinite;
+}
+
+.fan-card h3 {
+  font-size: 32px;
+  color: var(--bright-gold);
+  margin: 30px 0 20px;
+  font-weight: 800;
+}
+
+.fan-card p {
+  color: #E0D5C7;
+  line-height: 2;
+  font-size: 17px;
+}
+
+.data-point {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: var(--red);
+  color: var(--bright-gold);
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.metric-card {
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 4px solid var(--red);
+  border-radius: 24px;
+  padding: 40px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s;
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+}
+
+.metric-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 25px 60px rgba(255, 215, 0, 0.5);
+}
+
+.metric-number {
+  font-size: 80px;
+  font-weight: 900;
+  color: var(--dark-green);
+  margin-bottom: 15px;
+  animation: numberFlip 3s ease-in-out infinite;
+}
+
+.metric-label {
+  font-size: 20px;
+  color: var(--dark-green);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.metric-timestamp {
+  font-size: 14px;
+  color: var(--mid-green);
+  opacity: 0.8;
+}
+
+.expert-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 40px;
+  padding: 40px 20px;
+  scroll-behavior: smooth;
+}
+
+.expert-scroll::-webkit-scrollbar {
+  height: 10px;
+}
+
+.expert-scroll::-webkit-scrollbar-track {
+  background: var(--mid-green);
+  border-radius: 10px;
+}
+
+.expert-scroll::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 10px;
+}
+
+.expert-card {
+  min-width: 320px;
+  background: linear-gradient(180deg, var(--red), var(--dark-green));
+  border: 4px solid var(--gold);
+  border-radius: 24px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s;
+}
+
+.expert-card:hover {
+  transform: scale(1.05);
+  border-color: var(--bright-gold);
+}
+
+.expert-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), var(--gold));
+  border: 6px solid var(--bright-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 25px;
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+}
+
+.expert-name {
+  font-size: 28px;
+  color: var(--bright-gold);
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.expert-title {
+  font-size: 18px;
+  color: var(--gold);
+  margin-bottom: 15px;
+}
+
+.expert-bio {
+  color: #E0D5C7;
+  line-height: 1.8;
+  margin: 20px 0;
+  font-size: 15px;
+}
+
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.tag {
+  padding: 8px 16px;
+  background: var(--gold);
+  color: var(--dark-green);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 60px auto;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--gold), var(--bright-gold));
+  transform: translateX(-50%);
+}
+
+.timeline-node {
+  position: relative;
+  margin: 80px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node-seal {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 6px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.5);
+  transition: all 0.4s;
+}
+
+.node-seal:hover {
+  transform: scale(1.15);
+  box-shadow: 0 25px 60px rgba(255, 215, 0, 0.7);
+}
+
+.node-content {
+  position: absolute;
+  width: 400px;
+  background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+  border: 3px solid var(--gold);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.node-content.left {
+  right: calc(50% + 120px);
+}
+
+.node-content.right {
+  left: calc(50% + 120px);
+}
+
+.node-content h3 {
+  font-size: 24px;
+  color: var(--bright-gold);
+  margin-bottom: 15px;
+  font-weight: 800;
+}
+
+.node-content ul {
+  list-style: none;
+  color: #E0D5C7;
+  line-height: 2;
+}
+
+.node-content li::before {
+  content: '◆';
+  color: var(--gold);
+  margin-right: 10px;
+  font-weight: 700;
+}
+
+.comparison-table {
+  max-width: 1100px;
+  margin: 60px auto;
+  background: var(--dark-green);
+  border: 4px solid var(--gold);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  font-weight: 800;
+  font-size: 22px;
+}
+
+.table-header > div {
+  padding: 25px 20px;
+  text-align: center;
+  color: var(--dark-green);
+}
+
+.table-header > div:nth-child(2) {
+  background: var(--bright-gold);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr;
+  border-bottom: 2px solid var(--mid-green);
+  transition: all 0.3s;
+}
+
+.table-row:hover {
+  background: var(--mid-green);
+}
+
+.table-row > div {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.table-row > div:nth-child(2) {
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.15), transparent);
+  color: var(--bright-gold);
+  font-weight: 700;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 50px;
+  margin-top: 60px;
+}
+
+.chart-card {
+  background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+  border: 4px solid var(--gold);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.chart-card h3 {
+  font-size: 26px;
+  color: var(--bright-gold);
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 800;
+}
+
+.chart-placeholder {
+  height: 300px;
+  background: var(--mid-green);
+  border: 2px dashed var(--gold);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.expert-note {
+  color: #E0D5C7;
+  line-height: 1.9;
+  font-size: 15px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+}
+
+.world-map {
+  width: 100%;
+  max-width: 900px;
+  margin: 60px auto;
+  position: relative;
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 400px;
+  background: var(--mid-green);
+  border: 4px solid var(--gold);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 24px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+}
+
+.market-pulse {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--bright-gold);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 20px var(--bright-gold);
+}
+
+.industry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 30px;
+  margin-top: 60px;
+}
+
+.industry-card {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 4px solid var(--red);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.4s;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.industry-card:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 20px 50px rgba(255, 215, 0, 0.6);
+}
+
+.industry-card span {
+  color: var(--dark-green);
+  font-weight: 800;
+  font-size: 15px;
+  text-align: center;
+}
+
+.folding-screen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 0;
+  margin-top: 60px;
+  perspective: 1000px;
+}
+
+.screen-panel {
+  background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+  border: 4px solid var(--gold);
+  padding: 50px 40px;
+  position: relative;
+  transition: all 0.5s;
+}
+
+.screen-panel:nth-child(1) {
+  transform: rotateY(-2deg);
+  border-radius: 24px 0 0 24px;
+}
+
+.screen-panel:nth-child(2) {
+  background: linear-gradient(135deg, var(--mid-green), var(--dark-green));
+  box-shadow: 0 0 60px rgba(255, 215, 0, 0.3);
+}
+
+.screen-panel:nth-child(3) {
+  transform: rotateY(2deg);
+  border-radius: 0 24px 24px 0;
+}
+
+.screen-panel:hover {
+  transform: rotateY(0deg) scale(1.02);
+  z-index: 10;
+}
+
+.panel-stamp {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 4px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 30px;
+  font-size: 48px;
+  color: var(--dark-green);
+  font-weight: 900;
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+}
+
+.screen-panel h3 {
+  font-size: 28px;
+  color: var(--bright-gold);
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 800;
+}
+
+.screen-panel ul {
+  list-style: none;
+  color: #E0D5C7;
+  line-height: 2.2;
+}
+
+.screen-panel li {
+  padding: 10px 0;
+  padding-left: 30px;
+  position: relative;
+  font-size: 16px;
+}
+
+.screen-panel li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 18px;
+}
+
+.faq-container {
+  max-width: 1000px;
+  margin: 60px auto;
+}
+
+.faq-item {
+  background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+  border: 3px solid var(--gold);
+  border-radius: 16px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.faq-item:hover {
+  border-color: var(--bright-gold);
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.faq-question {
+  padding: 25px 30px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--bright-gold);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.faq-question:hover {
+  background: var(--mid-green);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.faq-answer.active {
+  max-height: 1000px;
+}
+
+.faq-answer-content {
+  padding: 30px;
+  color: var(--bronze);
+  line-height: 2;
+  font-size: 17px;
+}
+
+.stats-badges {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  margin: 60px 0;
+}
+
+.stat-badge {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 4px solid var(--red);
+  border-radius: 24px;
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+  transition: all 0.4s;
+}
+
+.stat-badge:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 25px 60px rgba(255, 215, 0, 0.6);
+}
+
+.stat-badge-number {
+  font-size: 56px;
+  font-weight: 900;
+  color: var(--dark-green);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.stat-badge-label {
+  font-size: 20px;
+  color: var(--dark-green);
+  font-weight: 700;
+}
+
+.cert-badges {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-top: 60px;
+}
+
+.cert-badge {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--bright-gold));
+  border: 5px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+  transition: all 0.4s;
+  cursor: pointer;
+}
+
+.cert-badge:hover {
+  transform: scale(1.2) rotate(10deg);
+  box-shadow: 0 20px 50px rgba(255, 215, 0, 0.7);
+}
+
+footer {
+  background: linear-gradient(180deg, var(--dark-green), #0F1F15);
+  border-top: 4px solid var(--gold);
+  padding: 80px 20px 40px;
+  position: relative;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 50px;
+  max-width: 1400px;
+  margin: 0 auto 60px;
+}
+
+.footer-column h4 {
+  font-size: 22px;
+  color: var(--bright-gold);
+  margin-bottom: 25px;
+  font-weight: 800;
+  border-bottom: 3px solid var(--red);
+  padding-bottom: 10px;
+  display: inline-block;
+}
+
+.footer-column p {
+  color: #C9B5A0;
+  line-height: 2;
+  margin-bottom: 20px;
+}
+
+.footer-column ul {
+  list-style: none;
+}
+
+.footer-column li {
+  margin-bottom: 12px;
+}
+
+.footer-column a {
+  color: #C9B5A0;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.footer-column a:hover {
+  color: var(--bright-gold);
+  padding-left: 8px;
+}
+
+.footer-bottom {
+  border-top: 2px solid var(--mid-green);
+  padding-top: 40px;
+  text-align: center;
+  color: #8B7E70;
+}
+
+.disclaimer {
+  background: rgba(204, 41, 0, 0.2);
+  border: 2px solid var(--red);
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 30px;
+  line-height: 2;
+  color: #E0D5C7;
+  font-size: 14px;
+}
+
+.disclaimer strong {
+  color: var(--bright-gold);
+  font-weight: 800;
+}
+
+.fixed-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: linear-gradient(to top, rgba(28, 58, 46, 0.95), rgba(28, 58, 46, 0.9), transparent);
+  backdrop-filter: blur(20px);
+  border-top: 2px solid rgba(255, 215, 0, 0.3);
+  padding: 24px;
+}
+
+.fixed-cta-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-button {
+  width: 100%;
+  padding: 24px;
+  background: linear-gradient(to right, var(--gold), var(--bright-gold), var(--gold));
+  background-size: 200% auto;
+  color: var(--dark-green);
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 900;
+  border: 4px solid var(--red);
+  border-radius: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  transition: all 0.4s;
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
+  letter-spacing: 2px;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 60px rgba(255, 215, 0, 0.8);
+  animation: shimmer 2s linear infinite;
+}
+
+.cta-disclaimer {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 12px;
+  color: rgba(201, 176, 55, 0.8);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 80px 15px;
+  }
+
+  .fan-cards,
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .folding-screen {
+    grid-template-columns: 1fr;
+  }
+
+  .screen-panel {
+    transform: rotateY(0deg) !important;
+    border-radius: 24px !important;
+    margin-bottom: 20px;
+  }
+
+  .node-content {
+    position: static;
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  .timeline::before {
+    left: 30px;
+  }
+
+  .timeline-node {
+    padding-left: 0;
+  }
+
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
+  }
+
+  .expert-scroll {
+    padding: 20px 10px;
+  }
 }
 </style>
 </head>
 <body>
 
 <section class="hero">
-  <div class="curtain-overlay"></div>
-  <div class="smoke-effect smoke-1"></div>
-  <div class="smoke-effect smoke-2"></div>
-  <div class="smoke-effect smoke-3"></div>
-  <div class="gold-particle"></div>
-  <div class="gold-particle"></div>
-  <div class="gold-particle"></div>
-  <div class="gold-particle"></div>
-  <div class="gold-particle"></div>
+  <div class="pine-branch"></div>
 
-  <div class="container">
-    <div class="badge">🎭 永久無料 · 伝統と革新の融合</div>
-    <h1>投資学習の舞台へようこそ</h1>
-    <p class="subtitle">歌舞伎の匠の精神で、株式投資の真髄を学ぶ。完全無料、広告なし、心を込めた金融教育で、すべての人に投資知識を届けます。</p>
+  <div class="gold-cloud" style="width: 300px; height: 300px; top: 10%; left: 5%;"></div>
+  <div class="gold-cloud" style="width: 250px; height: 250px; top: 20%; right: 10%; animation-delay: 2s;"></div>
+  <div class="gold-cloud" style="width: 350px; height: 350px; bottom: 15%; left: 15%; animation-delay: 4s;"></div>
 
-    <div class="cta-group">
-      <button onclick="addjoin(event, '無料で学習を始める', 1)" class="btn btn-primary">
-        <span>🎓</span>
-        <span>無料で学習を始める</span>
-      </button>
-      <button onclick="addjoin(event, 'お問い合わせ', 2)" class="btn btn-contact">
-        <span>📧</span>
-        <span>お問い合わせ</span>
-      </button>
-      <a href="#mission" class="btn btn-secondary">
-        <span>💡</span>
-        <span>使命を知る</span>
-      </a>
+  <div class="gold-particle" style="top: 15%; left: 20%; animation-delay: 0s;"></div>
+  <div class="gold-particle" style="top: 25%; left: 40%; animation-delay: 1s;"></div>
+  <div class="gold-particle" style="top: 35%; left: 60%; animation-delay: 2s;"></div>
+  <div class="gold-particle" style="top: 45%; left: 80%; animation-delay: 3s;"></div>
+  <div class="gold-particle" style="top: 55%; left: 30%; animation-delay: 4s;"></div>
+
+  <div class="hero-content">
+    <div class="logo-seal">
+      <div class="crane-circle"></div>
+      <i data-lucide="trending-up" style="width: 80px; height: 80px; color: var(--dark-green);"></i>
     </div>
 
-    <div class="trust-indicators">
-      <div class="indicator">
-        <span class="indicator-value">18,500+</span>
-        <span class="indicator-label">学習者</span>
+    <h1>専門家の目</h1>
+    <h2>市場の真実を照らす情報サービス</h2>
+    <p>AIではなく、経験豊富な専門家チームによる精選された市場インテリジェンス</p>
+
+    <div class="badge-group">
+      <div class="hex-badge">
+        <i data-lucide="shield" style="width: 48px; height: 48px; color: var(--dark-green);"></i>
+        <span style="color: var(--dark-green); font-weight: 800; font-size: 14px; margin-top: 10px;">情報保証</span>
       </div>
-      <div class="indicator">
-        <span class="indicator-value">65+</span>
-        <span class="indicator-label">無料コース</span>
+      <div class="hex-badge">
+        <i data-lucide="users" style="width: 48px; height: 48px; color: var(--dark-green);"></i>
+        <span style="color: var(--dark-green); font-weight: 800; font-size: 14px; margin-top: 10px;">専門家団</span>
       </div>
-      <div class="indicator">
-        <span class="indicator-value">99%</span>
-        <span class="indicator-label">満足度</span>
+      <div class="hex-badge">
+        <i data-lucide="eye" style="width: 48px; height: 48px; color: var(--dark-green);"></i>
+        <span style="color: var(--dark-green); font-weight: 800; font-size: 14px; margin-top: 10px;">透明性</span>
       </div>
-      <div class="indicator">
-        <span class="indicator-value">0円</span>
-        <span class="indicator-label">完全無料</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>詳細を見る</span>
+    <i data-lucide="chevron-down" style="width: 32px; height: 32px; color: var(--bright-gold);"></i>
+  </div>
+</section>
+
+<section class="section" style="background: linear-gradient(180deg, var(--dark-green), var(--mid-green));">
+  <div class="container">
+    <h2 class="section-title">三大核心価値</h2>
+
+    <div class="fan-cards">
+      <div class="fan-card">
+        <i data-lucide="users" style="width: 64px; height: 64px; color: var(--bright-gold);"></i>
+        <h3>専門家による深層分析</h3>
+        <p>資深分析師チームが人工で市場データを深く研究。15年以上の平均経験を持つ専門家が、表面的な数字の裏に隠された真実を解き明かします。アルゴリズムでは捉えきれない、人間の洞察力と経験に基づいた分析をお届けします。</p>
+        <span class="data-point">15年以上の平均経験</span>
+      </div>
+
+      <div class="fan-card">
+        <i data-lucide="database" style="width: 64px; height: 64px; color: var(--bright-gold);"></i>
+        <h3>情報透明性</h3>
+        <p>全てのデータソースを完全公開。NYSE、NASDAQ、東京証券取引所など、信頼できる公開市場データのみを使用。データの出所、収集方法、処理プロセスまで全て透明化。隠し事なし、信頼できる情報環境を提供します。</p>
+        <span class="data-point">100%公開データソース</span>
+      </div>
+
+      <div class="fan-card">
+        <i data-lucide="refresh-cw" style="width: 64px; height: 64px; color: var(--bright-gold);"></i>
+        <h3>即時更新</h3>
+        <p>市場は常に変化しています。私たちのチームは15分ごとにデータを更新し、重要な市場イベント発生時にはリアルタイムで情報を提供。最新の市場動向を逃さず、常に一歩先を行く判断材料を手に入れることができます。</p>
+        <span class="data-point">15分毎に更新</span>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section">
+<section class="section" style="background: var(--mid-green);">
   <div class="container">
-    <div class="section-header">
-      <span class="section-tag">🎌 六つの価値観</span>
-      <h2>選ばれる理由</h2>
-      <p class="section-subtitle">伝統の美意識と現代の教育理念を融合し、匠の心で一人ひとりの投資家の成長を支援します。</p>
-    </div>
+    <h2 class="section-title">リアルタイム市場インテリジェンス</h2>
 
-    <div class="values-grid">
-      <div class="value-card">
-        <div class="value-icon">🎁</div>
-        <h3>永久無料の約束</h3>
-        <p>すべてのコース、教材、分析ツールを完全無料で公開。隠れた費用は一切ありません。金融教育は万人のものであり、経済的な障壁があってはならないと信じています。学びたいという情熱があれば、誰でも質の高い投資知識を得る権利があります。</p>
+    <div class="dashboard-grid">
+      <div class="metric-card">
+        <div class="metric-number">23.5</div>
+        <div class="metric-label">VIX波動率</div>
+        <div class="metric-timestamp">更新: 2分前</div>
+        <i data-lucide="trending-up" style="width: 32px; height: 32px; color: var(--dark-green); margin-top: 15px;"></i>
       </div>
 
-      <div class="value-card">
-        <div class="value-icon">🎯</div>
-        <h3>匠の専門性</h3>
-        <p>20年以上の実務経験を持つ投資アナリスト、公認会計士、金融教育の専門家が心を込めて作成。基礎知識、財務分析、投資戦略、リスク管理まで、体系的かつ実践的な内容で、学習の質と実用性を徹底的に保証します。</p>
+      <div class="metric-card">
+        <div class="metric-number">68</div>
+        <div class="metric-label">RSI指数</div>
+        <div class="metric-timestamp">更新: 5分前</div>
+        <i data-lucide="activity" style="width: 32px; height: 32px; color: var(--dark-green); margin-top: 15px;"></i>
       </div>
 
-      <div class="value-card">
-        <div class="value-icon">🚫</div>
-        <h3>純粋な学習環境</h3>
-        <p>ポップアップ広告、マーケティング誘導、課金への勧誘は一切なし。質の高い教育コンテンツの提供のみに専念。学習者が知識の習得に集中できる、静謐で純粋な環境を提供します。邪念のない学びこそ、真の成長につながります。</p>
+      <div class="metric-card">
+        <div class="metric-number">+7.2</div>
+        <div class="metric-label">ニュース情感</div>
+        <div class="metric-timestamp">更新: 3分前</div>
+        <i data-lucide="smile" style="width: 32px; height: 32px; color: var(--dark-green); margin-top: 15px;"></i>
       </div>
 
-      <div class="value-card">
-        <div class="value-icon">🔒</div>
-        <h3>プライバシー厳守</h3>
-        <p>個人データの販売、マーケティングメールの送信、閲覧行動の追跡は一切行いません。最小限の登録情報のみを収集し、すべてのデータは暗号化して保管。あなたのプライバシーを守ることが、私たちの揺るぎない約束です。</p>
-      </div>
-
-      <div class="value-card">
-        <div class="value-icon">📚</div>
-        <h3>継続的な進化</h3>
-        <p>市場環境の変化、最新の投資理論、規制政策の更新に応じて、コンテンツを毎月更新。150名以上のボランティア専門家チームが、最新の学習リソースと実践的な事例研究を提供し続けます。時代と共に成長する教育を実現します。</p>
-      </div>
-
-      <div class="value-card">
-        <div class="value-icon">🤝</div>
-        <h3>温かいコミュニティ</h3>
-        <p>18,500名以上の学習者が集う活発なコミュニティで、互いに助け合い、経験を共有。初心者からベテランまで、誰もが安心して質問できる環境。専門講師が毎週オンラインで質問に答え、あなたの投資学習の旅を全力でサポートします。</p>
+      <div class="metric-card">
+        <div class="metric-number">82</div>
+        <div class="metric-label">市場熱度</div>
+        <div class="metric-timestamp">更新: 1分前</div>
+        <i data-lucide="flame" style="width: 32px; height: 32px; color: var(--dark-green); margin-top: 15px;"></i>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section bg-light" id="courses">
+<section class="section" style="background: linear-gradient(180deg, var(--mid-green), var(--dark-green));">
   <div class="container">
-    <div class="section-header">
-      <span class="section-tag">🎓 学びの道</span>
-      <h2>体系的な学習プログラム</h2>
-      <p class="section-subtitle">初心者から上級者まで、段階的に投資の真髄を習得。伝統的な師弟制度の精神で、一歩一歩確実に成長できる学習パスを設計しました。</p>
-    </div>
+    <h2 class="section-title">私たちの専門家チーム</h2>
 
-    <div class="courses-grid">
-      <div class="course-card">
-        <div class="course-header">
-          <span class="course-level">初級 · 入門の道</span>
-          <h3>投資基礎学習</h3>
-          <div class="course-meta">
-            <span>⏱️ 15レッスン</span>
-            <span>👥 9,800名受講</span>
-          </div>
+    <div class="expert-scroll">
+      <div class="expert-card">
+        <div class="expert-avatar">
+          <i data-lucide="user" style="width: 80px; height: 80px; color: var(--bright-gold);"></i>
         </div>
-        <div class="course-body">
-          <div class="course-description">
-            投資の世界に初めて足を踏み入れる方のための入門コース。株式市場の仕組みから、実際の取引方法、そして投資家として持つべき心構えまで、丁寧に学べます。
-          </div>
+        <div class="expert-name">田中 健一</div>
+        <div class="expert-title">シニアアナリスト</div>
+        <div class="expert-bio">18年の市場分析経験を持つベテランアナリスト。ボラティリティ分析とリスク管理のスペシャリスト。大手証券会社で10年以上のトレーディング経験を経て、現在は市場教育に情熱を注いでいます。</div>
+        <div class="tag-group">
+          <span class="tag">ボラティリティ分析</span>
+          <span class="tag">リスク管理</span>
+        </div>
+      </div>
+
+      <div class="expert-card">
+        <div class="expert-avatar">
+          <i data-lucide="user" style="width: 80px; height: 80px; color: var(--bright-gold);"></i>
+        </div>
+        <div class="expert-name">佐藤 美咲</div>
+        <div class="expert-title">財務分析専門家</div>
+        <div class="expert-bio">公認会計士資格を持ち、15年の企業財務分析経験。決算書の深層読解と企業価値評価のエキスパート。数百社の財務監査経験から得た洞察を市場分析に活かしています。</div>
+        <div class="tag-group">
+          <span class="tag">財務分析</span>
+          <span class="tag">企業評価</span>
+        </div>
+      </div>
+
+      <div class="expert-card">
+        <div class="expert-avatar">
+          <i data-lucide="user" style="width: 80px; height: 80px; color: var(--bright-gold);"></i>
+        </div>
+        <div class="expert-name">山田 大輔</div>
+        <div class="expert-title">マクロ経済アナリスト</div>
+        <div class="expert-bio">20年以上の経済研究経験。中央銀行政策と市場の関係性を専門とし、グローバルマクロ経済の動向を深く理解。経済指標の解釈と市場への影響分析に定評があります。</div>
+        <div class="tag-group">
+          <span class="tag">マクロ経済</span>
+          <span class="tag">金融政策</span>
+        </div>
+      </div>
+
+      <div class="expert-card">
+        <div class="expert-avatar">
+          <i data-lucide="user" style="width: 80px; height: 80px; color: var(--bright-gold);"></i>
+        </div>
+        <div class="expert-name">鈴木 裕子</div>
+        <div class="expert-title">テクニカル分析師</div>
+        <div class="expert-bio">12年のチャート分析経験。価格パターン認識とトレンド分析のスペシャリスト。数千のチャート分析から導き出された独自の市場読解手法で、投資家に実践的な洞察を提供します。</div>
+        <div class="tag-group">
+          <span class="tag">チャート分析</span>
+          <span class="tag">トレンド予測</span>
+        </div>
+      </div>
+
+      <div class="expert-card">
+        <div class="expert-avatar">
+          <i data-lucide="user" style="width: 80px; height: 80px; color: var(--bright-gold);"></i>
+        </div>
+        <div class="expert-name">高橋 誠</div>
+        <div class="expert-title">セクター専門家</div>
+        <div class="expert-bio">16年の業界分析経験。テクノロジー、金融、エネルギーセクターの深い知識を持つ。各業界の構造変化と競争環境を分析し、セクター別の投資機会を見極めます。</div>
+        <div class="tag-group">
+          <span class="tag">セクター分析</span>
+          <span class="tag">業界動向</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--dark-green);">
+  <div class="container">
+    <h2 class="section-title">情報源の透明性</h2>
+
+    <div class="timeline">
+      <div class="timeline-node">
+        <div class="node-seal">
+          <i data-lucide="database" style="width: 64px; height: 64px; color: var(--dark-green);"></i>
+        </div>
+        <div class="node-content left">
+          <h3>公開市場データ収集</h3>
           <ul>
-            <li>株式市場の基本構造と取引の仕組み</li>
-            <li>証券口座の開設と実際の注文方法</li>
-            <li>投資リスクの本質と心理的準備</li>
-            <li>ファンダメンタル分析の基礎知識</li>
-            <li>テクニカル分析の入門と実践</li>
-            <li>投資情報の収集と分析手法</li>
+            <li>NYSE, NASDAQ, Tokyo Stock Exchange</li>
+            <li>Bloomberg, Reuters公開データ</li>
+            <li>各国中央銀行公式発表</li>
+            <li>企業決算書・IR資料</li>
+            <li>規制当局公開情報</li>
           </ul>
-          <button onclick="addjoin(event, '初級コースを学習', 3)" class="btn btn-primary" style="width:100%">学習を始める</button>
         </div>
       </div>
 
-      <div class="course-card">
-        <div class="course-header">
-          <span class="course-level" style="background:var(--kumadori-blue)">中級 · 深化の道</span>
-          <h3>財務分析の極意</h3>
-          <div class="course-meta">
-            <span>⏱️ 22レッスン</span>
-            <span>👥 6,400名受講</span>
-          </div>
+      <div class="timeline-node">
+        <div class="node-seal">
+          <i data-lucide="users" style="width: 64px; height: 64px; color: var(--dark-green);"></i>
         </div>
-        <div class="course-body">
-          <div class="course-description">
-            企業の財務諸表を深く読み解く力を養成。数字の裏に隠された企業の実態を見抜き、投資判断の質を飛躍的に向上させます。
-          </div>
+        <div class="node-content right">
+          <h3>専門家審核</h3>
           <ul>
-            <li>貸借対照表の詳細な読み方と分析</li>
-            <li>損益計算書から収益構造を理解</li>
-            <li>キャッシュフロー計算書の重要性</li>
-            <li>財務比率の計算と業界比較の方法</li>
-            <li>会計上の罠や粉飾の見抜き方</li>
-            <li>統合報告書の活用と企業評価</li>
+            <li>資深アナリストによる検証</li>
+            <li>データ整合性チェック</li>
+            <li>異常値の人工確認</li>
+            <li>複数ソースのクロス検証</li>
+            <li>品質管理基準の適用</li>
           </ul>
-          <button onclick="addjoin(event, '中級コースを学習', 4)" class="btn btn-primary" style="width:100%">学習を始める</button>
         </div>
       </div>
 
-      <div class="course-card">
-        <div class="course-header">
-          <span class="course-level" style="background:var(--accent-vermillion)">上級 · 極みの道</span>
-          <h3>価値投資の哲学</h3>
-          <div class="course-meta">
-            <span>⏱️ 28レッスン</span>
-            <span>👥 4,600名受講</span>
-          </div>
+      <div class="timeline-node">
+        <div class="node-seal">
+          <i data-lucide="git-merge" style="width: 64px; height: 64px; color: var(--dark-green);"></i>
         </div>
-        <div class="course-body">
-          <div class="course-description">
-            バフェット流の価値投資の本質を学び、長期的な視点で真の企業価値を見極める眼を養います。投資家としての最高峰を目指すコースです。
-          </div>
+        <div class="node-content left">
+          <h3>データ整合</h3>
           <ul>
-            <li>企業の本質的価値評価の理論と実践</li>
-            <li>業界分析と競争優位性の見極め</li>
-            <li>経済的堀（モート）の識別と評価</li>
-            <li>ポートフォリオ構築の戦略と技術</li>
-            <li>リスク管理と資産配分の実践</li>
-            <li>長期投資における心理的課題の克服</li>
+            <li>多源データの統合</li>
+            <li>標準化処理</li>
+            <li>履歴データとの整合性確認</li>
+            <li>メタデータの付与</li>
+            <li>トレーサビリティの確保</li>
           </ul>
-          <button onclick="addjoin(event, '上級コースを学習', 5)" class="btn btn-primary" style="width:100%">学習を始める</button>
+        </div>
+      </div>
+
+      <div class="timeline-node">
+        <div class="node-seal">
+          <i data-lucide="zap" style="width: 64px; height: 64px; color: var(--dark-green);"></i>
+        </div>
+        <div class="node-content right">
+          <h3>リアルタイム配信</h3>
+          <ul>
+            <li>15分ごとの自動更新</li>
+            <li>重要イベントの即時通知</li>
+            <li>ダッシュボードへの反映</li>
+            <li>履歴データの保存</li>
+            <li>アクセス記録の管理</li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section stats-section">
+<section class="section" style="background: linear-gradient(180deg, var(--dark-green), var(--mid-green));">
   <div class="container">
-    <div class="section-header">
-      <h2 style="color:var(--white-powder)">社会への貢献</h2>
-      <p class="section-subtitle" style="color:rgba(255,255,255,.95)">数字が語る、私たちの教育への情熱。より多くの人に質の高い金融教育を届けることが、私たちの使命です。</p>
-    </div>
+    <h2 class="section-title">なぜ私たちを選ぶのか</h2>
 
-    <div class="stats-grid">
-      <div class="stat-item">
-        <span class="stat-number">18,500+</span>
-        <div class="stat-label">学習者の成長</div>
-        <div class="stat-desc">全国各地の投資家が学習中</div>
+    <div class="comparison-table">
+      <div class="table-header">
+        <div>機能</div>
+        <div>私たちのサービス</div>
+        <div>一般的なサービス</div>
       </div>
 
-      <div class="stat-item">
-        <span class="stat-number">65+</span>
-        <div class="stat-label">無料コース</div>
-        <div class="stat-desc">継続的に追加される学習内容</div>
+      <div class="table-row">
+        <div>データ来源</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 100%公開ソース</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 部分不明</div>
       </div>
 
-      <div class="stat-item">
-        <span class="stat-number">150+</span>
-        <div class="stat-label">専門家講師</div>
-        <div class="stat-desc">ボランティアで知識を共有</div>
+      <div class="table-row">
+        <div>分析方式</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 専門家人工分析</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 自動アルゴリズム</div>
       </div>
 
-      <div class="stat-item">
-        <span class="stat-number">99%</span>
-        <div class="stat-label">学習者満足度</div>
-        <div class="stat-desc">実際の受講者からの評価</div>
+      <div class="table-row">
+        <div>更新頻度</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 15分ごと</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 1時間以上</div>
+      </div>
+
+      <div class="table-row">
+        <div>透明度</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 完全透明</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> ブラックボックス</div>
+      </div>
+
+      <div class="table-row">
+        <div>免責声明</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 明確表示</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 隠蔽</div>
+      </div>
+
+      <div class="table-row">
+        <div>サポート</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 24/7対応</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 営業時間のみ</div>
+      </div>
+
+      <div class="table-row">
+        <div>データ履歴</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 5年以上</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 1年程度</div>
+      </div>
+
+      <div class="table-row">
+        <div>報告深度</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 詳細分析付き</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 基礎データのみ</div>
+      </div>
+
+      <div class="table-row">
+        <div>カスタマイズ</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 柔軟対応</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 固定テンプレート</div>
+      </div>
+
+      <div class="table-row">
+        <div>価格透明性</div>
+        <div><i data-lucide="check-circle" style="width: 20px; height: 20px; color: #4ADE80;"></i> 完全公開</div>
+        <div><i data-lucide="x-circle" style="width: 20px; height: 20px; color: #F87171;"></i> 隠れコスト</div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section mission-section" id="mission">
+<section class="section" style="background: var(--mid-green);">
   <div class="container">
-    <div class="section-header">
-      <span class="section-tag">🎌 私たちの理念</span>
-      <h2>なぜこの舞台を創ったのか</h2>
-    </div>
+    <h2 class="section-title">情報の深さを体験</h2>
 
-    <div class="mission-content">
-      <div class="mission-quote">
-        「金融リテラシーは一部の特権階級のものではありません。すべての人が自分の財産を守り、賢明に増やす方法を学ぶ権利と機会を持つべきです。」
-      </div>
-
-      <p class="mission-text">
-        投資の世界では、多くの人が専門知識の不足により大切な資産を失っています。基礎的な知識を高額で販売する有料コースが横行し、広告やマーケティングの罠が至る所に仕掛けられています。私たちはこの現状を変えることを決意しました。教育は本来、すべての人に開かれているべきものだからです。
-      </p>
-
-      <p class="mission-text">
-        このプラットフォームは、金融業界のベテラン、公認会計士、経験豊富な投資家、そして教育に情熱を注ぐ人々によって、完全に公益目的で創設されました。一人でも多くの人が正しい金融知識を身につけることで、経済的な自由を実現し、ひいては社会全体の健全な発展に貢献できると信じています。歌舞伎の匠の精神のように、一つひとつのコンテンツに心を込めて作り上げています。
-      </p>
-
-      <p class="mission-text">
-        投資教育を通じて、人々が自分の未来を切り拓く力を養う。これが私たちの使命です。無料で質の高い教育を提供し続けることで、金融リテラシーの格差をなくし、すべての人が平等に学べる社会の実現を目指します。
-      </p>
-
-      <div class="commitment-grid">
-        <div class="commitment-item">
-          <div class="commitment-icon">🎯</div>
-          <h4>永久無料の誓い</h4>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>VIX波動率トレンド（7日間）</h3>
+        <div class="chart-placeholder">
+          <i data-lucide="trending-up" style="width: 80px; height: 80px;"></i>
         </div>
-        <div class="commitment-item">
-          <div class="commitment-icon">🚫</div>
-          <h4>広告ゼロの約束</h4>
-        </div>
-        <div class="commitment-item">
-          <div class="commitment-icon">🔒</div>
-          <h4>プライバシー保護</h4>
-        </div>
-        <div class="commitment-item">
-          <div class="commitment-icon">📖</div>
-          <h4>透明性の確保</h4>
-        </div>
-        <div class="commitment-item">
-          <div class="commitment-icon">💎</div>
-          <h4>質の追求</h4>
-        </div>
-        <div class="commitment-item">
-          <div class="commitment-icon">🌟</div>
-          <h4>継続的改善</h4>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section bg-light">
-  <div class="container">
-    <div class="section-header">
-      <span class="section-tag">💬 学習者の声</span>
-      <h2>実際の体験談</h2>
-      <p class="section-subtitle">様々な背景を持つ学習者からの本物の声。彼らの成長の物語が、あなたの学びの一歩を後押しします。</p>
-    </div>
-
-    <div class="testimonials-slider">
-      <div class="testimonial-card">
-        <p class="testimonial-text">
-          投資を始めたばかりの頃は何も分からず不安でしたが、このプラットフォームの初級コースで体系的に学ぶことができました。講師の説明が丁寧で、実例も豊富。完全無料なのに、有料講座以上の価値があります。今では自信を持って投資判断ができるようになりました。
-        </p>
-        <div class="testimonial-author">
-          <div class="author-avatar">佐</div>
-          <div class="author-info">
-            <h5>佐藤美咲さん</h5>
-            <p>会社員 · 学習歴8ヶ月</p>
-          </div>
+        <div class="expert-note">
+          過去7日間で波動率は徐々に上昇傾向にあります。特に3日前の急騰は、連邦準備制度理事会の政策声明に対する市場の不確実性を反映しています。現在の水準は過去3ヶ月の平均を15%上回っており、短期的な調整局面の可能性を示唆しています。
         </div>
       </div>
 
-      <div class="testimonial-card">
-        <p class="testimonial-text">
-          財務分析コースは本当に目から鱗でした。これまで何となく見ていた決算書が、まるで企業の物語のように読めるようになりました。学んだ知識をすぐに実践に活かせるのが素晴らしい。コミュニティの仲間と意見交換できるのも、学習のモチベーションになっています。
-        </p>
-        <div class="testimonial-author">
-          <div class="author-avatar">田</div>
-          <div class="author-info">
-            <h5>田中健太さん</h5>
-            <p>自営業 · 学習歴1年3ヶ月</p>
-          </div>
+      <div class="chart-card">
+        <h3>ニュース情感分布</h3>
+        <div class="chart-placeholder">
+          <i data-lucide="pie-chart" style="width: 80px; height: 80px;"></i>
+        </div>
+        <div class="expert-note">
+          本日収集した1,250件のニュース記事を分析した結果、ポジティブ45%、ニュートラル35%、ネガティブ20%の分布となっています。ポジティブニュースの増加は、主要企業の好決算発表と経済指標の改善によるものです。
         </div>
       </div>
 
-      <div class="testimonial-card">
-        <p class="testimonial-text">
-          50代で投資を始めるのは遅いかと思っていましたが、このプラットフォームに出会えて人生が変わりました。自分のペースで学べるし、質問にも丁寧に答えてくれます。広告や勧誘が一切ないので、安心して学習に集中できる環境が本当にありがたいです。
-        </p>
-        <div class="testimonial-author">
-          <div class="author-avatar">鈴</div>
-          <div class="author-info">
-            <h5>鈴木裕子さん</h5>
-            <p>主婦 · 学習歴2年</p>
-          </div>
+      <div class="chart-card">
+        <h3>市場熱度レーダー</h3>
+        <div class="chart-placeholder">
+          <i data-lucide="radar" style="width: 80px; height: 80px;"></i>
+        </div>
+        <div class="expert-note">
+          取引量、ボラティリティ、ニュース量、SNS議論、機関投資家活動、個人投資家関心度の6次元で市場を評価。現在、機関投資家の活動が活発化しており、重要な転換点が近づいている可能性があります。
         </div>
       </div>
 
-      <div class="testimonial-card">
-        <p class="testimonial-text">
-          大学で経済学を専攻していますが、実践的な投資知識はここで学びました。理論だけでなく、実際の市場での応用方法まで教えてくれるので、就職活動でも大いに役立ちました。金融業界を目指す学生には特におすすめです。
-        </p>
-        <div class="testimonial-author">
-          <div class="author-avatar">山</div>
-          <div class="author-info">
-            <h5>山田大輝さん</h5>
-            <p>大学生 · 学習歴10ヶ月</p>
-          </div>
+      <div class="chart-card">
+        <h3>RSI履歴推移（30日）</h3>
+        <div class="chart-placeholder">
+          <i data-lucide="bar-chart-3" style="width: 80px; height: 80px;"></i>
         </div>
-      </div>
-
-      <div class="testimonial-card">
-        <p class="testimonial-text">
-          他の有料講座をいくつか受講しましたが、結局ここが一番分かりやすく、実用的でした。何より、営利目的ではないという姿勢が信頼できます。投資で大切なのは知識だけでなく、正しい心構え。それを学べるのがこのプラットフォームの最大の魅力です。
-        </p>
-        <div class="testimonial-author">
-          <div class="author-avatar">中</div>
-          <div class="author-info">
-            <h5>中村誠さん</h5>
-            <p>フリーランス · 学習歴3年</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="testimonial-card">
-        <p class="testimonial-text">
-          投資初心者の妻と一緒に学んでいます。二人とも全く知識がなかったのですが、基礎から丁寧に教えてくれるので、夫婦で共通の話題ができました。将来の資産形成について、今では前向きに話し合えるようになりました。感謝しています。
-        </p>
-        <div class="testimonial-author">
-          <div class="author-avatar">高</div>
-          <div class="author-info">
-            <h5>高橋直樹さん</h5>
-            <p>エンジニア · 学習歴6ヶ月</p>
-          </div>
+        <div class="expert-note">
+          RSI指数は現在68で、やや過熱感のある水準です。ただし、70を超える強い買われ過ぎの状態には至っていません。過去の傾向から見ると、この水準からさらに上昇する可能性もあり、慎重な観察が必要です。
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section cta-section">
+<section class="section" style="background: linear-gradient(180deg, var(--mid-green), var(--dark-green));">
   <div class="container">
-    <h2>投資学習の旅を始めましょう</h2>
-    <p>18,500名以上の学習者と共に成長の道を歩む<br>すべてのコンテンツが永久無料、今すぐ学習をスタート</p>
-    <div class="cta-group">
-      <button onclick="addjoin(event, '無料登録して学習開始', 1)" class="btn btn-primary">無料で登録して学習</button>
-      <button onclick="addjoin(event, '詳細問い合わせ', 2)" class="btn btn-contact">詳しく問い合わせ</button>
-      <a href="#mission" class="btn btn-secondary">使命を詳しく見る</a>
+    <h2 class="section-title">グローバルカバレッジ</h2>
+
+    <div class="world-map">
+      <div class="map-placeholder">
+        <span>🌍 世界主要市場をカバー</span>
+        <div class="market-pulse" style="top: 30%; left: 25%;"></div>
+        <div class="market-pulse" style="top: 35%; left: 50%; animation-delay: 0.5s;"></div>
+        <div class="market-pulse" style="top: 40%; right: 25%; animation-delay: 1s;"></div>
+      </div>
+    </div>
+
+    <div class="industry-grid">
+      <div class="industry-card">
+        <i data-lucide="cpu" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>テクノロジー</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="building-2" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>金融</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="zap" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>エネルギー</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="heart-pulse" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>医療</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="shopping-bag" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>消費財</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="factory" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>工業</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="home" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>不動産</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="package" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>素材</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="wifi" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>通信</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="plug" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>公益事業</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="car" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>自動車</span>
+      </div>
+      <div class="industry-card">
+        <i data-lucide="plane" style="width: 40px; height: 40px; color: var(--dark-green);"></i>
+        <span>航空</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--dark-green);">
+  <div class="container">
+    <h2 class="section-title">情報収集の芸術</h2>
+
+    <div class="folding-screen">
+      <div class="screen-panel">
+        <div class="panel-stamp">壱</div>
+        <h3>情報収集</h3>
+        <i data-lucide="database" style="width: 48px; height: 48px; color: var(--bright-gold); margin: 20px auto; display: block;"></i>
+        <ul>
+          <li>多源データ抽出システム</li>
+          <li>リアルタイムAPI統合</li>
+          <li>履歴データアーカイブ</li>
+          <li>異常値自動検出</li>
+          <li>データクレンジング処理</li>
+          <li>構造化ストレージ管理</li>
+        </ul>
+      </div>
+
+      <div class="screen-panel">
+        <div class="panel-stamp">弐</div>
+        <h3>専門家分析</h3>
+        <i data-lucide="users" style="width: 48px; height: 48px; color: var(--bright-gold); margin: 20px auto; display: block;"></i>
+        <ul>
+          <li>シニアアナリスト検証</li>
+          <li>多角的視点からの評価</li>
+          <li>市場コンテキストの考慮</li>
+          <li>トレンドパターン識別</li>
+          <li>リスク要因の抽出</li>
+          <li>実用的洞察の提供</li>
+        </ul>
+      </div>
+
+      <div class="screen-panel">
+        <div class="panel-stamp">参</div>
+        <h3>品質検証</h3>
+        <i data-lucide="shield" style="width: 48px; height: 48px; color: var(--bright-gold); margin: 20px auto; display: block;"></i>
+        <ul>
+          <li>複数ソースクロスチェック</li>
+          <li>整合性確認プロセス</li>
+          <li>精度スコアリング</li>
+          <li>ピアレビュー実施</li>
+          <li>最終品質承認</li>
+          <li>継続的改善サイクル</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: linear-gradient(180deg, var(--dark-green), var(--mid-green));">
+  <div class="container">
+    <h2 class="section-title">よくある質問</h2>
+
+    <div class="faq-container">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>このサービスはAIを使用していますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            いいえ、私たちは完全に人間の専門家チームによる分析を提供しています。15年以上の経験を持つ資深アナリスト、公認会計士、エコノミストが実際にデータを検証し、市場を分析します。AIアルゴリズムでは捉えきれない微妙な市場心理や文脈的要因を理解し、実践的な洞察を提供することが私たちの強みです。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>情報源はどこから来ていますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            全てのデータは100%公開市場ソースから取得しています。NYSE、NASDAQ、東京証券取引所などの公式取引データ、Bloomberg・Reutersの公開情報、各国中央銀行の公式発表、企業の公開決算書・IR資料、規制当局の開示情報などです。全てのデータソースは完全に透明で追跡可能です。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>更新頻度はどのくらいですか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            通常のデータは15分ごとに自動更新されます。また、重要な市場イベント（中央銀行の政策発表、重要企業の決算発表、地政学的重大事件など）が発生した場合は、専門家チームがリアルタイムで分析を更新し、即座に配信します。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>これは投資助言ですか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            いいえ、私たちは投資助言サービスではありません。あくまで市場情報と専門家による分析を提供する情報サービスです。提供する全ての情報は教育的・参考目的のものであり、特定の投資行動を推奨するものではありません。投資判断は必ずご自身の責任で行ってください。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>データの正確性は保証されますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            私たちは最大限の努力でデータの正確性を確保していますが、市場データの性質上、100%の正確性を保証することはできません。複数の公開ソースからデータを収集し、専門家による検証を行っていますが、元データの誤りや遅延が発生する可能性があります。重要な投資判断を行う際は、必ず複数の情報源を参照してください。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>どのような市場をカバーしていますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            米国株式市場（NYSE、NASDAQ）、日本株式市場（東証）、欧州主要市場（ロンドン、フランクフルト）、アジア市場（香港、上海）をカバーしています。また、主要通貨の為替市場、商品先物市場（金、原油など）、主要株価指数も監視対象としています。今後もカバレッジを拡大していく予定です。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>過去のデータも閲覧できますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            はい、過去5年分の履歴データと専門家分析をアーカイブしています。過去のトレンド分析、パターン研究、歴史的事例の学習に活用できます。データは日次、週次、月次の各期間で参照可能です。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>モバイルデバイスでも利用できますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            はい、完全にレスポンシブ対応しており、スマートフォン、タブレット、デスクトップなど、あらゆるデバイスで快適にご利用いただけます。外出先でも最新の市場情報にアクセスできます。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>カスタマイズサービスはありますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            はい、特定の業界、地域、資産クラスに特化した分析など、カスタマイズされた情報サービスを提供しています。機関投資家や専門トレーダー向けのプレミアムプランもご用意しています。詳細はお問い合わせください。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>サポート体制はどうなっていますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            24時間365日のカスタマーサポートを提供しています。技術的な問題、データに関する質問、サービスの使い方など、あらゆるお問い合わせに専門スタッフが対応します。メール、チャット、電話でのサポートが利用可能です。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>料金体系を教えてください</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            基本的な市場情報と分析は無料でご利用いただけます。より詳細な専門家レポート、リアルタイムアラート機能、カスタマイズ分析などを含むプレミアムプランもご用意しています。料金は完全に透明で、隠れたコストは一切ありません。詳細な価格表はボタンをクリックしてご確認ください。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>無料トライアルはありますか？</span>
+          <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            はい、新規ユーザーの方には14日間の無料トライアル期間を提供しています。プレミアム機能を含む全ての機能を試すことができ、クレジットカード登録も不要です。サービスの価値を実際に体験していただき、ご納得いただいた上でご利用を継続いただけます。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--mid-green);">
+  <div class="container">
+    <h2 class="section-title">信頼の証</h2>
+
+    <div class="stats-badges">
+      <div class="stat-badge">
+        <span class="stat-badge-number">10,000+</span>
+        <span class="stat-badge-label">アクティブユーザー</span>
+      </div>
+      <div class="stat-badge">
+        <span class="stat-badge-number">50,000+</span>
+        <span class="stat-badge-label">日間アクセス</span>
+      </div>
+      <div class="stat-badge">
+        <span class="stat-badge-number">30+</span>
+        <span class="stat-badge-label">カバー市場</span>
+      </div>
+      <div class="stat-badge">
+        <span class="stat-badge-number">2018</span>
+        <span class="stat-badge-label">設立年</span>
+      </div>
+    </div>
+
+    <div class="cert-badges">
+      <div class="cert-badge">
+        <i data-lucide="shield-check" style="width: 60px; height: 60px; color: var(--dark-green);"></i>
+      </div>
+      <div class="cert-badge">
+        <i data-lucide="award" style="width: 60px; height: 60px; color: var(--dark-green);"></i>
+      </div>
+      <div class="cert-badge">
+        <i data-lucide="verified" style="width: 60px; height: 60px; color: var(--dark-green);"></i>
+      </div>
+      <div class="cert-badge">
+        <i data-lucide="badge-check" style="width: 60px; height: 60px; color: var(--dark-green);"></i>
+      </div>
     </div>
   </div>
 </section>
@@ -1428,72 +1753,98 @@ footer::before{
     <div class="footer-grid">
       <div class="footer-column">
         <h4>私たちについて</h4>
-        <p class="footer-about">
-          私たちは公益性の株式投資教育プラットフォームです。歌舞伎の伝統美と匠の精神を教育理念に取り入れ、一般投資家に無料で専門的な投資知識を提供。金融リテラシーの普及と向上を通じて、すべての人が経済的自由を実現できる社会を目指しています。
-        </p>
-        <div class="social-links">
-          <a href="#" class="social-link">📧</a>
-          <a href="#" class="social-link">💬</a>
-          <a href="#" class="social-link">📱</a>
-        </div>
+        <p>専門家チームによる市場インテリジェンスサービス。100%公開データソース、完全透明性、人間による深層分析。市場の真実を照らし、投資家の意思決定をサポートします。</p>
       </div>
 
       <div class="footer-column">
-        <h4>学習コース</h4>
+        <h4>サービス</h4>
         <ul>
-          <li><a href="#">投資基礎学習（初級）</a></li>
-          <li><a href="#">財務分析の極意（中級）</a></li>
-          <li><a href="#">価値投資の哲学（上級）</a></li>
-          <li><a href="#">リスク管理の実践</a></li>
-          <li><a href="#">実践的ケーススタディ</a></li>
-          <li><a href="#">投資心理学</a></li>
+          <li><a href="#">リアルタイム市場データ</a></li>
+          <li><a href="#">専門家分析レポート</a></li>
+          <li><a href="#">業界別インサイト</a></li>
+          <li><a href="#">カスタム分析</a></li>
+          <li><a href="#">教育リソース</a></li>
         </ul>
       </div>
 
       <div class="footer-column">
-        <h4>プラットフォーム</h4>
+        <h4>リンク</h4>
         <ul>
-          <li><a href="#mission">私たちの使命</a></li>
-          <li><a href="#">ボランティアチーム紹介</a></li>
-          <li><a href="#">お問い合わせ</a></li>
-          <li><a href="#">学習サポート</a></li>
-          <li><a href="#">よくある質問（FAQ）</a></li>
-          <li><a href="#">コミュニティガイドライン</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-column">
-        <h4>重要事項</h4>
-        <ul>
-          <li><a href="#">免責事項</a></li>
-          <li><a href="#">プライバシーポリシー</a></li>
+          <li><a href="#">データソース</a></li>
+          <li><a href="#">専門家チーム</a></li>
+          <li><a href="#">方法論</a></li>
           <li><a href="#">利用規約</a></li>
-          <li><a href="#">投資リスクに関する重要な注意事項</a></li>
-          <li><a href="#">教育方針</a></li>
+          <li><a href="#">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>お問い合わせ</h4>
+        <ul>
+          <li><a href="#">support@example.com</a></li>
+          <li><a href="#">営業時間: 24/7</a></li>
+          <li><a href="#">よくある質問</a></li>
+          <li><a href="#">フィードバック</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div class="risk-warning">
-        <strong>【重要なリスク警告】</strong>
-        株式投資には価格変動リスク、信用リスク、流動性リスクなど、様々なリスクが伴います。投資判断は必ずご自身の責任で行ってください。当プラットフォームが提供するコンテンツは教育目的の学習資料であり、特定の銘柄の売買推奨や投資助言を行うものではありません。過去の事例や分析は将来の投資成果を保証するものではありません。投資を行う際は、十分にリスクを理解し、ご自身の投資目的、経験、リスク許容度を考慮した上で、慎重に判断してください。
+      <div class="disclaimer">
+        <strong>【重要な免責事項】</strong><br>
+        本サービスは情報提供のみを目的としており、投資助言ではありません。提供される全ての情報は参考資料であり、投資判断はご自身の責任で行ってください。市場投資にはリスクが伴い、元本の損失の可能性があります。過去のデータや分析は将来の結果を保証するものではありません。投資を行う前に、必ず専門の金融アドバイザーにご相談ください。
       </div>
-      <p style="margin-top:25px;font-size:14px">
-        運営団体： 投資教育普及協会（非営利団体）<br>
-        所在地： 東京都千代田区<br>
-        お問い合わせ： info@investment-education.jp<br>
-        設立： 2020年4月 | 完全公益 · 永久無料 · 知識共有
-      </p>
-      <p style="margin-top:20px">© 2024 株式投資学習プラットフォーム | 伝統と革新の融合 · 匠の心で教育を</p>
+      <p>&copy; 2024 専門家の目 | 市場インテリジェンスサービス</p>
     </div>
   </div>
 </footer>
+
+<div class="fixed-cta">
+  <div class="fixed-cta-container">
+    <button class="cta-button" onclick="addjoin(event, '詳細情報を今すぐ入手', 1)">
+      <span>詳細情報を今すぐ入手</span>
+      <i data-lucide="arrow-right" style="width: 28px; height: 28px;"></i>
+    </button>
+    <div class="cta-disclaimer">※参考情報のみ。投資判断は自己責任でお願いします</div>
+  </div>
+</div>
 
 <input type="hidden" id="jrtext" value="">
 <input type="hidden" id="code" value="">
 
 <script src="../static/core/jp_202629.js"></script>
+<script>
+lucide.createIcons();
+
+function toggleFaq(element) {
+  const answer = element.nextElementSibling;
+  const icon = element.querySelector('[data-lucide="chevron-down"]');
+
+  answer.classList.toggle('active');
+
+  if (answer.classList.contains('active')) {
+    icon.style.transform = 'rotate(180deg)';
+  } else {
+    icon.style.transform = 'rotate(0deg)';
+  }
+}
+
+document.querySelector('.scroll-hint').addEventListener('click', function() {
+  window.scrollTo({
+    top: window.innerHeight,
+    behavior: 'smooth'
+  });
+});
+
+for (let i = 0; i < 100; i++) {
+  const particle = document.createElement('div');
+  particle.className = 'gold-particle';
+  particle.style.left = Math.random() * 100 + '%';
+  particle.style.top = Math.random() * 100 + '%';
+  particle.style.animationDelay = Math.random() * 3 + 's';
+  document.querySelector('.hero').appendChild(particle);
+}
+</script>
 
 </body>
 </html>
