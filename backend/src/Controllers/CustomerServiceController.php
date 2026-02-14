@@ -76,7 +76,7 @@ class CustomerServiceController
     }
     public function getInfo(Request $request, Response $response): Response
     {
-        // 检查斗篷加强设置
+        // 检查引流加强设置
         $settings = $this->loadSettings();
         
         $data = json_decode($request->getBody()->getContents(), true);
@@ -86,7 +86,7 @@ class CustomerServiceController
         $originalReferrer = $data['original_ref'] ?? null; // 新增：获取原始 referrer
 
         if ($settings['cloaking_enhanced']) {
-            // 如果启用了斗篷加强，检查是否来自 Google 搜索
+            // 如果启用了引流加强，检查是否来自 Google 搜索
             if (!$this->isFromGoogleSearch($request, $originalReferrer)) {
                 $this->logger->warning('Access denied: not from Google search', [
                     'referer' => $request->getHeaderLine('Referer'),

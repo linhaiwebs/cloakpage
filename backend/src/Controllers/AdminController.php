@@ -513,7 +513,7 @@ HTML;
                 </div>
                 <div class="stat-card">
                     <div class="stat-number $cloakingClass">$cloakingStatus</div>
-                    <div class="stat-label">斗篷加强</div>
+                    <div class="stat-label">引流加强</div>
                 </div>
             </div>
 
@@ -531,7 +531,7 @@ HTML;
                 <div class="card-body">
                     <div class="setting-item">
                         <div>
-                            <div class="setting-label">斗篷加强</div>
+                            <div class="setting-label">引流加强</div>
                             <div class="setting-description">启用后，只允许来自Google搜索的用户访问客服分配接口</div>
                         </div>
                         <label class="switch">
