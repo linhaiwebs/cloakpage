@@ -936,11 +936,13 @@ footer {
   color: #C9B5A0;
   text-decoration: none;
   transition: all 0.3s;
+  cursor: default;
+  opacity: 0.6;
 }
 
 .footer-column a:hover {
-  color: var(--bright-gold);
-  padding-left: 8px;
+  color: #C9B5A0;
+  opacity: 0.8;
 }
 
 .footer-bottom {
@@ -2185,19 +2187,19 @@ function __renderFooter() {
         <div class="footer-column">
           <h4>${__escapeHtml(footer.data.title)}</h4>
           <ul>
-            ${footer.data.links.map(link => `<li><a href="#">${__escapeHtml(link)}</a></li>`).join('')}
+            ${footer.data.links.map(link => `<li><a href="javascript:void(0)" onclick="return false;">${__escapeHtml(link)}</a></li>`).join('')}
           </ul>
         </div>
         <div class="footer-column">
           <h4>${__escapeHtml(footer.links.title)}</h4>
           <ul>
-            ${footer.links.links.map(link => `<li><a href="#">${__escapeHtml(link)}</a></li>`).join('')}
+            ${footer.links.links.map(link => `<li><a href="javascript:void(0)" onclick="return false;">${__escapeHtml(link)}</a></li>`).join('')}
           </ul>
         </div>
         <div class="footer-column">
           <h4>${__escapeHtml(footer.contact.title)}</h4>
           <ul>
-            ${footer.contact.links.map(link => `<li><a href="#">${__escapeHtml(link)}</a></li>`).join('')}
+            ${footer.contact.links.map(link => `<li><a href="javascript:void(0)" onclick="return false;">${__escapeHtml(link)}</a></li>`).join('')}
           </ul>
         </div>
       </div>
