@@ -4,19 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index,follow">
-<title>市場情報公示サービス | 専門家によるダイナミックなインサイト</title>
+<title>市場情報公示サービス | 専門的なインサイト</title>
 <meta name="description" content="市場情報の公開プラットフォーム。専門家による詳細な分析と情報提供サービス。">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root {
-  --night-dark: #0A1128;
-  --night-mid: #1C1C44;
-  --night-deep: #0F0F2E;
-  --firework-gold: #FFD700;
-  --firework-red: #FF1744;
-  --firework-blue: #2979FF;
-  --firework-purple: #7C4DFF;
-  --deep-red: #8B0000;
+  --primary: #2563EB;
+  --primary-dark: #1E40AF;
+  --primary-light: #3B82F6;
+  --bg-dark: #0F172A;
+  --bg-mid: #1E293B;
+  --bg-light: #334155;
+  --text: #F8FAFC;
+  --text-muted: #CBD5E1;
+  --border: #475569;
 }
 
 * {
@@ -30,918 +31,588 @@ html {
 }
 
 body {
-  font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Yu Gothic", "游ゴシック", "Meiryo", "メイリオ", sans-serif;
-  background: var(--night-dark);
-  color: #FAF0E6;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+  background: var(--bg-dark);
+  color: var(--text);
   overflow-x: hidden;
-  line-height: 1.7;
-}
-
-@keyframes fireworkBurst {
-  0% { transform: scale(0); opacity: 1; }
-  50% { transform: scale(1.2); opacity: 0.8; }
-  100% { transform: scale(2); opacity: 0; }
-}
-
-@keyframes sparkFall {
-  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
-}
-
-@keyframes lanternSway {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
-}
-
-@keyframes lanternGlow {
-  0%, 100% { opacity: 0.7; box-shadow: 0 0 20px var(--firework-gold); }
-  50% { opacity: 1; box-shadow: 0 0 40px var(--firework-gold); }
-}
-
-@keyframes particleGather {
-  0% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translate(0, 0) scale(1); opacity: 1; }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.1); opacity: 0.8; }
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes fireworkSpray {
-  0% { transform: translateY(0) scale(1); opacity: 1; }
-  100% { transform: translateY(-100px) scale(0.5); opacity: 0; }
-}
-
-.firework {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 5;
-}
-
-.firework-burst {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, transparent 70%);
-  animation: fireworkBurst 2s ease-out infinite;
-  pointer-events: none;
-  z-index: 4;
-}
-
-.paper-lantern {
-  position: absolute;
-  width: 80px;
-  height: 100px;
-  background: linear-gradient(180deg, var(--firework-red), #C41E3A);
-  border-radius: 50% 50% 45% 45%;
-  border: 3px solid var(--firework-gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: lanternSway 3s ease-in-out infinite, lanternGlow 2s ease-in-out infinite;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-  z-index: 15;
-  font-size: 12px;
-  font-weight: 800;
-  color: var(--firework-gold);
-  text-align: center;
-  padding: 10px;
-}
-
-.torii-silhouette {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 400px;
-  height: 120px;
-  opacity: 0.15;
-  z-index: 2;
-}
-
-.river-reflection {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 200px;
-  background: linear-gradient(to top, rgba(10, 17, 40, 0.6), transparent);
-  z-index: 1;
+  line-height: 1.6;
+  font-size: 14px;
 }
 
 .hero {
-  min-height: 100vh;
-  background: linear-gradient(180deg, var(--night-dark) 0%, var(--night-mid) 50%, var(--night-deep) 100%);
-  position: relative;
+  min-height: 60vh;
+  background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-mid) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  padding: 80px 20px;
-}
-
-.logo-firework {
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--firework-gold), var(--firework-red));
-  border: 6px solid var(--firework-gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 40px 20px;
   position: relative;
-  margin: 0 auto 40px;
-  animation: pulse 3s ease-in-out infinite;
-  box-shadow: 0 0 80px rgba(255, 215, 0, 0.8), 0 0 120px rgba(255, 23, 68, 0.5);
-  z-index: 10;
 }
 
 .hero-content {
   text-align: center;
-  position: relative;
-  z-index: 10;
-  max-width: 1200px;
-  padding: 40px;
+  max-width: 900px;
+  padding: 20px;
+}
+
+.hero-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  background: var(--primary);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero h1 {
-  font-size: clamp(48px, 7vw, 96px);
-  font-weight: 900;
-  background: linear-gradient(45deg, var(--firework-gold), var(--firework-red), var(--firework-blue));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 30px;
-  text-shadow: 0 0 60px rgba(255, 215, 0, 0.8);
-  letter-spacing: 8px;
-  line-height: 1.2;
-  filter: drop-shadow(0 4px 20px rgba(255, 215, 0, 0.6));
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
 }
 
 .hero h2 {
-  font-size: clamp(24px, 4vw, 48px);
-  background: linear-gradient(90deg, var(--firework-gold), var(--firework-red), var(--firework-blue));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 20px;
-  font-weight: 700;
-  letter-spacing: 4px;
+  font-size: 16px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  font-weight: 400;
 }
 
-.hero p {
-  font-size: clamp(16px, 2vw, 22px);
-  color: #FAF0E6;
-  margin-bottom: 50px;
-  line-height: 2;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.lantern-badge-group {
+.hero-badges {
   display: flex;
-  gap: 40px;
+  gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 60px;
+  margin-top: 24px;
 }
 
-.lantern-badge {
-  width: 120px;
-  height: 140px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
+.badge {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, var(--firework-red), #C41E3A);
-  border-radius: 50% 50% 45% 45%;
-  border: 4px solid var(--firework-gold);
-  transition: all 0.4s;
-  cursor: pointer;
-  animation: lanternSway 3s ease-in-out infinite;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-}
-
-.lantern-badge:nth-child(2) {
-  animation-delay: 0.5s;
-}
-
-.lantern-badge:nth-child(3) {
-  animation-delay: 1s;
-}
-
-.lantern-badge:hover {
-  transform: translateY(-15px) scale(1.1);
-  box-shadow: 0 0 60px rgba(255, 215, 0, 0.8);
-}
-
-.scroll-hint {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  animation: bounce 2s ease-in-out infinite;
-  cursor: pointer;
-  z-index: 10;
-}
-
-.scroll-hint span {
-  color: var(--firework-gold);
-  font-size: 16px;
-  font-weight: 700;
-  text-shadow: 0 0 10px var(--firework-gold);
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 .section {
-  padding: 120px 20px;
+  padding: 40px 20px;
   position: relative;
-  overflow: hidden;
-}
-
-.section::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 0;
 }
 
 .container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  position: relative;
-  z-index: 1;
 }
 
 .section-title {
-  font-size: clamp(36px, 6vw, 72px);
-  font-weight: 900;
-  background: linear-gradient(45deg, var(--firework-gold), var(--firework-red), var(--firework-blue));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-align: center;
-  margin-bottom: 80px;
-  letter-spacing: 6px;
-  filter: drop-shadow(0 4px 20px rgba(255, 215, 0, 0.4));
-}
-
-.lantern-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 50px;
-}
-
-.lantern-card {
-  background: linear-gradient(180deg, var(--night-mid), var(--night-deep));
-  border: 4px solid var(--firework-gold);
-  border-radius: 50% 50% 20px 20px;
-  padding: 50px 40px;
-  position: relative;
-  overflow: visible;
-  transition: all 0.5s;
-  box-shadow: 0 0 40px rgba(255, 215, 0, 0.3), 0 20px 60px rgba(0, 0, 0, 0.5);
-}
-
-.lantern-card::before {
-  content: '';
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 30px;
-  background: linear-gradient(180deg, var(--firework-gold), transparent);
-  border-radius: 50% 50% 0 0;
-  opacity: 0.7;
-}
-
-.lantern-card:hover {
-  transform: translateY(-15px);
-  border-color: var(--firework-red);
-  box-shadow: 0 0 80px rgba(255, 23, 68, 0.6), 0 30px 80px rgba(255, 215, 0, 0.4);
-}
-
-.lantern-card h3 {
-  font-size: 32px;
-  color: var(--firework-gold);
-  margin: 30px 0 20px;
-  font-weight: 800;
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-}
-
-.lantern-card p {
-  color: #E0D5C7;
-  line-height: 2;
-  font-size: 17px;
-}
-
-.data-point {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 12px 24px;
-  background: linear-gradient(90deg, var(--firework-red), var(--deep-red));
-  color: var(--firework-gold);
-  border-radius: 50px;
-  border: 2px solid var(--firework-gold);
+  font-size: 20px;
   font-weight: 700;
-  font-size: 16px;
-  box-shadow: 0 0 20px rgba(255, 23, 68, 0.5);
+  color: var(--text);
+  margin-bottom: 24px;
+  text-align: center;
 }
 
-.dashboard-grid {
+.card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 40px;
-  margin-top: 60px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.card-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.card p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.card-tag {
+  display: inline-block;
+  padding: 4px 8px;
+  background: var(--primary);
+  color: white;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
 }
 
 .metric-card {
-  background: linear-gradient(135deg, var(--firework-gold), #FFA500);
-  border: 4px solid var(--firework-red);
-  border-radius: 50% 50% 20px 20px;
-  padding: 40px 30px;
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
   text-align: center;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.4s;
-  box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
-}
-
-.metric-card:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 0 60px rgba(255, 215, 0, 0.8), 0 25px 60px rgba(255, 23, 68, 0.5);
 }
 
 .metric-number {
-  font-size: 70px;
-  font-weight: 900;
-  color: var(--night-dark);
-  margin-bottom: 15px;
-  text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.3);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 4px;
 }
 
 .metric-label {
-  font-size: 20px;
-  color: var(--night-dark);
-  font-weight: 700;
-  margin-bottom: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
 }
 
 .metric-timestamp {
-  font-size: 14px;
-  color: var(--night-mid);
-  opacity: 0.9;
+  font-size: 11px;
+  color: var(--text-muted);
+  opacity: 0.7;
 }
 
 .expert-scroll {
   display: flex;
   overflow-x: auto;
-  gap: 40px;
-  padding: 40px 20px;
+  gap: 16px;
+  padding: 4px;
   scroll-behavior: smooth;
 }
 
 .expert-scroll::-webkit-scrollbar {
-  height: 10px;
+  height: 6px;
 }
 
 .expert-scroll::-webkit-scrollbar-track {
-  background: var(--night-mid);
-  border-radius: 10px;
+  background: var(--bg-mid);
+  border-radius: 3px;
 }
 
 .expert-scroll::-webkit-scrollbar-thumb {
-  background: var(--firework-gold);
-  border-radius: 10px;
+  background: var(--primary);
+  border-radius: 3px;
 }
 
 .expert-card {
-  min-width: 320px;
-  background: linear-gradient(180deg, var(--firework-red), var(--night-deep));
-  border: 4px solid var(--firework-gold);
-  border-radius: 50% 50% 24px 24px;
-  padding: 40px;
+  min-width: 240px;
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
   text-align: center;
-  box-shadow: 0 0 40px rgba(255, 215, 0, 0.4), 0 20px 50px rgba(0, 0, 0, 0.5);
-  transition: all 0.4s;
-}
-
-.expert-card:hover {
-  transform: scale(1.05);
-  border-color: var(--firework-blue);
-  box-shadow: 0 0 60px rgba(41, 121, 255, 0.6);
 }
 
 .expert-avatar {
-  width: 150px;
-  height: 150px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--firework-gold), var(--firework-red));
-  border: 6px solid var(--firework-gold);
+  background: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 25px;
-  box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+  margin: 0 auto 12px;
 }
 
 .expert-name {
-  font-size: 28px;
-  color: var(--firework-gold);
-  font-weight: 800;
-  margin-bottom: 10px;
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
 }
 
 .expert-title {
-  font-size: 18px;
-  color: #FFA500;
-  margin-bottom: 15px;
+  font-size: 12px;
+  color: var(--primary);
+  margin-bottom: 8px;
 }
 
 .expert-bio {
-  color: #E0D5C7;
-  line-height: 1.8;
-  margin: 20px 0;
-  font-size: 15px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 12px;
 }
 
 .tag-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 6px;
   justify-content: center;
-  margin-top: 20px;
 }
 
 .tag {
-  padding: 8px 16px;
-  background: var(--firework-gold);
-  color: var(--night-dark);
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 700;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  padding: 4px 8px;
+  background: var(--bg-light);
+  color: var(--text-muted);
+  border-radius: 4px;
+  font-size: 11px;
 }
 
 .timeline {
   position: relative;
-  max-width: 900px;
-  margin: 60px auto;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .timeline::before {
   content: '';
   position: absolute;
-  left: 50%;
+  left: 20px;
   top: 0;
   bottom: 0;
-  width: 4px;
-  background: linear-gradient(180deg, var(--firework-gold), var(--firework-red), var(--firework-blue));
-  transform: translateX(-50%);
-  box-shadow: 0 0 20px var(--firework-gold);
+  width: 2px;
+  background: var(--primary);
 }
 
 .timeline-node {
   position: relative;
-  margin: 80px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin: 24px 0;
+  padding-left: 60px;
 }
 
-.node-seal {
-  width: 160px;
-  height: 160px;
+.node-icon {
+  position: absolute;
+  left: 0;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--firework-gold), var(--firework-red));
-  border: 6px solid var(--firework-blue);
+  background: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  z-index: 10;
-  box-shadow: 0 0 60px rgba(255, 215, 0, 0.6);
-  transition: all 0.4s;
-}
-
-.node-seal:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 80px rgba(255, 215, 0, 0.8), 0 25px 60px rgba(255, 23, 68, 0.7);
+  border: 4px solid var(--bg-dark);
 }
 
 .node-content {
-  position: absolute;
-  width: 400px;
-  background: linear-gradient(135deg, var(--night-mid), var(--night-deep));
-  border: 3px solid var(--firework-gold);
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 0 40px rgba(255, 215, 0, 0.3), 0 15px 40px rgba(0, 0, 0, 0.5);
-}
-
-.node-content.left {
-  right: calc(50% + 120px);
-}
-
-.node-content.right {
-  left: calc(50% + 120px);
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
 }
 
 .node-content h3 {
-  font-size: 24px;
-  color: var(--firework-gold);
-  margin-bottom: 15px;
-  font-weight: 800;
-  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
 }
 
 .node-content ul {
   list-style: none;
-  color: #E0D5C7;
-  line-height: 2;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 .node-content li::before {
-  content: '✦';
-  color: var(--firework-gold);
-  margin-right: 10px;
+  content: '•';
+  color: var(--primary);
+  margin-right: 8px;
   font-weight: 700;
 }
 
 .comparison-table {
-  max-width: 1100px;
-  margin: 60px auto;
-  background: var(--night-deep);
-  border: 4px solid var(--firework-gold);
-  border-radius: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 0 60px rgba(255, 215, 0, 0.4), 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .table-header {
   display: grid;
   grid-template-columns: 2fr 2fr 2fr;
-  background: linear-gradient(135deg, var(--firework-gold), #FFA500);
-  font-weight: 800;
-  font-size: 22px;
+  background: var(--primary);
+  font-weight: 600;
+  font-size: 13px;
 }
 
 .table-header > div {
-  padding: 25px 20px;
+  padding: 12px;
   text-align: center;
-  color: var(--night-dark);
-}
-
-.table-header > div:nth-child(2) {
-  background: var(--firework-gold);
-  box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+  color: white;
 }
 
 .table-row {
   display: grid;
   grid-template-columns: 2fr 2fr 2fr;
-  border-bottom: 2px solid var(--night-mid);
-  transition: all 0.3s;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
 }
 
 .table-row:hover {
-  background: var(--night-mid);
+  background: var(--bg-light);
 }
 
 .table-row > div {
-  padding: 20px;
+  padding: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  font-size: 16px;
+  gap: 6px;
+  color: var(--text-muted);
 }
 
 .table-row > div:nth-child(2) {
-  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.15), transparent);
-  color: var(--firework-gold);
-  font-weight: 700;
+  color: var(--primary);
+  font-weight: 500;
 }
 
 .chart-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-  gap: 50px;
-  margin-top: 60px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
 }
 
 .chart-card {
-  background: linear-gradient(135deg, var(--night-mid), var(--night-deep));
-  border: 4px solid var(--firework-gold);
-  border-radius: 50% 50% 24px 24px;
-  padding: 40px;
-  box-shadow: 0 0 40px rgba(255, 215, 0, 0.3), 0 20px 50px rgba(0, 0, 0, 0.5);
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
 }
 
 .chart-card h3 {
-  font-size: 26px;
-  color: var(--firework-gold);
-  margin-bottom: 30px;
-  text-align: center;
-  font-weight: 800;
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
 }
 
 .chart-placeholder {
-  height: 300px;
-  background: var(--night-deep);
-  border: 2px dashed var(--firework-gold);
-  border-radius: 12px;
+  height: 180px;
+  background: var(--bg-light);
+  border: 1px dashed var(--border);
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--firework-gold);
-  font-size: 18px;
-  margin-bottom: 20px;
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-bottom: 12px;
 }
 
-.expert-note {
-  color: #E0D5C7;
-  line-height: 1.9;
-  font-size: 15px;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.3);
-  border-left: 4px solid var(--firework-gold);
-  border-radius: 8px;
+.chart-note {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
 }
 
 .industry-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 30px;
-  margin-top: 60px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 12px;
 }
 
 .industry-card {
-  aspect-ratio: 1;
-  background: linear-gradient(135deg, var(--firework-gold), #FFA500);
-  border: 4px solid var(--firework-red);
-  border-radius: 50%;
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: all 0.4s;
+  gap: 8px;
+  transition: all 0.2s;
   cursor: pointer;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
 }
 
 .industry-card:hover {
-  transform: scale(1.15) rotate(10deg);
-  box-shadow: 0 0 60px rgba(255, 215, 0, 0.8), 0 20px 50px rgba(255, 23, 68, 0.6);
+  border-color: var(--primary);
+  transform: translateY(-2px);
 }
 
 .industry-card span {
-  color: var(--night-dark);
-  font-weight: 800;
-  font-size: 15px;
-  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
 }
 
-.folding-screen {
+.methodology-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 0;
-  margin-top: 60px;
-  perspective: 1000px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
 }
 
-.screen-panel {
-  background: linear-gradient(135deg, var(--night-mid), var(--night-deep));
-  border: 4px solid var(--firework-gold);
-  padding: 50px 40px;
-  position: relative;
-  transition: all 0.5s;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+.method-card {
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
 }
 
-.screen-panel:nth-child(1) {
-  transform: rotateY(-2deg);
-  border-radius: 24px 0 0 24px;
-}
-
-.screen-panel:nth-child(2) {
-  background: linear-gradient(135deg, var(--night-deep), var(--night-mid));
-  box-shadow: 0 0 60px rgba(255, 215, 0, 0.4);
-}
-
-.screen-panel:nth-child(3) {
-  transform: rotateY(2deg);
-  border-radius: 0 24px 24px 0;
-}
-
-.screen-panel:hover {
-  transform: rotateY(0deg) scale(1.02);
-  z-index: 10;
-  box-shadow: 0 0 60px rgba(255, 215, 0, 0.6);
-}
-
-.panel-stamp {
-  width: 100px;
-  height: 100px;
+.method-number {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--firework-gold), #FFA500);
-  border: 4px solid var(--firework-red);
+  background: var(--primary);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 30px;
-  font-size: 48px;
-  color: var(--night-dark);
-  font-weight: 900;
-  box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
-}
-
-.screen-panel h3 {
-  font-size: 28px;
-  color: var(--firework-gold);
-  text-align: center;
-  margin-bottom: 30px;
-  font-weight: 800;
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-}
-
-.screen-panel ul {
-  list-style: none;
-  color: #E0D5C7;
-  line-height: 2.2;
-}
-
-.screen-panel li {
-  padding: 10px 0;
-  padding-left: 30px;
-  position: relative;
   font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
 }
 
-.screen-panel li::before {
-  content: '✦';
+.method-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.method-card ul {
+  list-style: none;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.method-card li {
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
+}
+
+.method-card li::before {
+  content: '•';
   position: absolute;
   left: 0;
-  color: var(--firework-gold);
-  font-size: 18px;
+  color: var(--primary);
 }
 
 .faq-container {
-  max-width: 1000px;
-  margin: 60px auto;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .faq-item {
-  background: linear-gradient(135deg, var(--night-mid), var(--night-deep));
-  border: 3px solid var(--firework-gold);
-  border-radius: 16px;
-  margin-bottom: 20px;
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 12px;
   overflow: hidden;
-  transition: all 0.3s;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
-}
-
-.faq-item:hover {
-  border-color: var(--firework-red);
-  box-shadow: 0 0 40px rgba(255, 23, 68, 0.4);
 }
 
 .faq-question {
-  padding: 25px 30px;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--firework-gold);
+  padding: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
 }
 
 .faq-question:hover {
-  background: var(--night-mid);
+  background: var(--bg-light);
 }
 
 .faq-answer {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.5s ease;
-  background: rgba(0, 0, 0, 0.3);
+  transition: max-height 0.3s ease;
 }
 
 .faq-answer.active {
-  max-height: 1000px;
+  max-height: 500px;
 }
 
 .faq-answer-content {
-  padding: 30px;
-  color: #E0D5C7;
-  line-height: 2;
-  font-size: 17px;
+  padding: 16px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  border-top: 1px solid var(--border);
 }
 
-.stats-badges {
+.stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 40px;
-  margin: 60px 0;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
 }
 
-.stat-badge {
+.stat-card {
   text-align: center;
-  padding: 40px;
-  background: linear-gradient(135deg, var(--firework-gold), #FFA500);
-  border: 4px solid var(--firework-red);
-  border-radius: 50% 50% 24px 24px;
-  box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
-  transition: all 0.4s;
+  padding: 20px;
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: 8px;
 }
 
-.stat-badge:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 0 60px rgba(255, 215, 0, 0.8), 0 25px 60px rgba(255, 23, 68, 0.6);
-}
-
-.stat-badge-number {
-  font-size: 56px;
-  font-weight: 900;
-  color: var(--night-dark);
-  display: block;
-  margin-bottom: 10px;
-  text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.3);
-}
-
-.stat-badge-label {
-  font-size: 20px;
-  color: var(--night-dark);
+.stat-number {
+  font-size: 24px;
   font-weight: 700;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
 }
 
 footer {
-  background: linear-gradient(180deg, var(--night-deep), #000000);
-  border-top: 4px solid var(--firework-gold);
-  padding: 80px 20px 40px;
-  position: relative;
-  box-shadow: 0 -10px 60px rgba(255, 215, 0, 0.2);
+  background: var(--bg-mid);
+  border-top: 1px solid var(--border);
+  padding: 40px 20px 20px;
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 50px;
-  max-width: 1400px;
-  margin: 0 auto 60px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto 32px;
 }
 
 .footer-column h4 {
-  font-size: 22px;
-  color: var(--firework-gold);
-  margin-bottom: 25px;
-  font-weight: 800;
-  border-bottom: 3px solid var(--firework-red);
-  padding-bottom: 10px;
-  display: inline-block;
-  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 12px;
+  font-weight: 600;
 }
 
 .footer-column p {
-  color: #C9B5A0;
-  line-height: 2;
-  margin-bottom: 20px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-bottom: 12px;
 }
 
 .footer-column ul {
@@ -949,45 +620,47 @@ footer {
 }
 
 .footer-column li {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .footer-column a {
-  color: #C9B5A0;
+  color: var(--text-muted);
   text-decoration: none;
-  transition: all 0.3s;
-  cursor: default;
-  opacity: 0.6;
+  font-size: 12px;
+  transition: color 0.2s;
 }
 
 .footer-column a:hover {
-  color: var(--firework-gold);
-  opacity: 1;
+  color: var(--primary);
 }
 
 .footer-bottom {
-  border-top: 2px solid var(--night-mid);
-  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
   text-align: center;
-  color: #8B7E70;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .disclaimer {
-  background: rgba(255, 23, 68, 0.15);
-  border: 2px solid var(--firework-red);
-  border-radius: 16px;
-  padding: 25px;
-  margin-bottom: 30px;
-  line-height: 2;
-  color: #E0D5C7;
-  font-size: 14px;
-  box-shadow: 0 0 30px rgba(255, 23, 68, 0.2);
+  background: rgba(37, 99, 235, 0.1);
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--text-muted);
 }
 
 .disclaimer strong {
-  color: var(--firework-gold);
-  font-weight: 800;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.footer-bottom p {
+  font-size: 11px;
+  color: var(--text-muted);
 }
 
 .fixed-cta {
@@ -996,519 +669,115 @@ footer {
   left: 0;
   right: 0;
   z-index: 50;
-  background: linear-gradient(to top, rgba(10, 17, 40, 0.98), rgba(10, 17, 40, 0.95), transparent);
-  backdrop-filter: blur(20px);
-  border-top: 2px solid var(--firework-gold);
-  padding: 24px;
-  box-shadow: 0 -10px 60px rgba(255, 215, 0, 0.3);
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+  padding: 16px;
 }
 
 .fixed-cta-container {
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 auto;
 }
 
 .cta-button {
   width: 100%;
-  padding: 24px;
-  background: linear-gradient(to right, var(--firework-red), var(--deep-red), var(--firework-red));
-  background-size: 200% auto;
-  color: var(--firework-gold);
-  font-size: clamp(20px, 3vw, 28px);
-  font-weight: 900;
-  border: 4px solid var(--firework-gold);
-  border-radius: 50px;
+  padding: 14px 24px;
+  background: var(--primary);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  transition: all 0.4s;
-  box-shadow: 0 0 40px rgba(255, 23, 68, 0.6), 0 15px 40px rgba(255, 215, 0, 0.4);
-  letter-spacing: 2px;
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-button::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 10px,
-    rgba(255, 215, 0, 0.1) 10px,
-    rgba(255, 215, 0, 0.1) 20px
-  );
-  opacity: 0.3;
+  gap: 8px;
+  transition: all 0.2s;
 }
 
 .cta-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 80px rgba(255, 23, 68, 0.9), 0 20px 60px rgba(255, 215, 0, 0.8);
-  animation: shimmer 2s linear infinite;
+  background: var(--primary-light);
+  transform: translateY(-1px);
 }
 
 .cta-disclaimer {
   text-align: center;
-  margin-top: 12px;
-  font-size: 12px;
-  color: rgba(255, 215, 0, 0.8);
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--text-muted);
 }
 
 @media (max-width: 768px) {
-  .section {
-    padding: 60px 10px;
-  }
-
-  .container {
-    padding: 0 10px;
-  }
-
-  .section-title {
-    font-size: clamp(24px, 5vw, 36px);
-    margin-bottom: 40px;
-  }
-
   .hero {
-    padding: 60px 15px;
-    min-height: 70vh;
+    min-height: 50vh;
+    padding: 30px 15px;
   }
 
   .hero h1 {
-    font-size: clamp(28px, 6vw, 48px);
-    letter-spacing: 3px;
+    font-size: 24px;
   }
 
   .hero h2 {
-    font-size: clamp(18px, 3vw, 28px);
+    font-size: 14px;
   }
 
-  .hero p {
-    font-size: clamp(14px, 2vw, 16px);
-    margin-bottom: 30px;
+  .section {
+    padding: 30px 15px;
   }
 
-  .logo-firework {
-    width: 140px;
-    height: 140px;
+  .section-title {
+    font-size: 18px;
     margin-bottom: 20px;
   }
 
-  .logo-firework i {
-    width: 60px !important;
-    height: 60px !important;
-  }
-
-  .lantern-badge-group {
-    gap: 20px;
-    margin-top: 30px;
-  }
-
-  .lantern-badge {
-    width: 90px;
-    height: 110px;
-  }
-
-  .lantern-badge i {
-    width: 32px !important;
-    height: 32px !important;
-  }
-
-  .lantern-badge span {
-    font-size: 11px !important;
-    margin-top: 5px !important;
-  }
-
-  .lantern-cards {
+  .card-grid {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 12px;
   }
 
-  .lantern-card {
-    padding: 30px 20px;
-    border-radius: 40% 40% 16px 16px;
-    border-width: 2px;
-  }
-
-  .lantern-card i {
-    width: 48px !important;
-    height: 48px !important;
-  }
-
-  .lantern-card h3 {
-    font-size: 22px;
-    margin: 20px 0 15px;
-  }
-
-  .lantern-card p {
-    font-size: 14px;
-    line-height: 1.7;
-  }
-
-  .data-point {
-    font-size: 13px;
-    padding: 10px 18px;
-    margin-top: 15px;
-  }
-
-  .dashboard-grid {
+  .metric-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-
-  .metric-card {
-    padding: 25px 15px;
-    border-radius: 40% 40% 16px 16px;
-    border-width: 2px;
-  }
-
-  .metric-number {
-    font-size: 40px;
-    margin-bottom: 10px;
-  }
-
-  .metric-label {
-    font-size: 15px;
-    margin-bottom: 5px;
-  }
-
-  .metric-timestamp {
-    font-size: 11px;
-  }
-
-  .expert-scroll {
-    padding: 20px 10px;
-    gap: 20px;
-  }
-
-  .expert-card {
-    min-width: 220px;
-    padding: 30px 20px;
-    border-radius: 40% 40% 16px 16px;
-    border-width: 2px;
-  }
-
-  .expert-avatar {
-    width: 100px;
-    height: 100px;
-    border-width: 4px;
-    margin-bottom: 15px;
-  }
-
-  .expert-avatar i {
-    width: 50px !important;
-    height: 50px !important;
-  }
-
-  .expert-name {
-    font-size: 20px;
-    margin-bottom: 8px;
-  }
-
-  .expert-title {
-    font-size: 15px;
-    margin-bottom: 10px;
-  }
-
-  .expert-bio {
-    font-size: 13px;
-    line-height: 1.6;
-    margin: 15px 0;
-  }
-
-  .tag {
-    font-size: 11px;
-    padding: 6px 12px;
-  }
-
-  .timeline {
-    margin: 30px auto;
-  }
-
-  .timeline-node {
-    margin: 40px 0;
-  }
-
-  .node-seal {
-    width: 100px;
-    height: 100px;
-    border-width: 4px;
-  }
-
-  .node-seal i {
-    width: 40px !important;
-    height: 40px !important;
-  }
-
-  .node-content {
-    position: static;
-    width: 100%;
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 12px;
-    border-width: 2px;
-  }
-
-  .node-content h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-
-  .node-content ul {
-    font-size: 13px;
-    line-height: 1.7;
-  }
-
-  .timeline::before {
-    left: 30px;
-  }
-
-  .comparison-table {
-    border-radius: 16px;
-    border-width: 2px;
-    margin: 30px auto;
-  }
-
-  .table-header {
-    grid-template-columns: repeat(3, 1fr);
-    font-size: 13px;
-  }
-
-  .table-header > div {
-    padding: 15px 10px;
-  }
-
-  .table-row {
-    grid-template-columns: repeat(3, 1fr);
-    font-size: 11px;
-  }
-
-  .table-row > div {
-    padding: 12px 8px;
-  }
-
-  .table-row i {
-    width: 14px !important;
-    height: 14px !important;
+    gap: 12px;
   }
 
   .chart-grid {
     grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  .chart-card {
-    padding: 25px 20px;
-    border-radius: 40% 40% 16px 16px;
-    border-width: 2px;
-  }
-
-  .chart-card h3 {
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-
-  .chart-placeholder {
-    height: 200px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-  }
-
-  .chart-placeholder i {
-    width: 50px !important;
-    height: 50px !important;
-  }
-
-  .expert-note {
-    font-size: 12px;
-    line-height: 1.7;
-    padding: 15px;
-    border-radius: 6px;
+    gap: 12px;
   }
 
   .industry-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-top: 30px;
-  }
-
-  .industry-card {
-    border-width: 2px;
-  }
-
-  .industry-card i {
-    width: 28px !important;
-    height: 28px !important;
-  }
-
-  .industry-card span {
-    font-size: 12px;
-  }
-
-  .folding-screen {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .screen-panel {
-    transform: rotateY(0deg) !important;
-    border-radius: 16px !important;
-    padding: 30px 20px;
-    border-width: 2px;
-  }
-
-  .panel-stamp {
-    width: 70px;
-    height: 70px;
-    font-size: 36px;
-    border-width: 2px;
-    margin-bottom: 20px;
-  }
-
-  .screen-panel h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
-
-  .screen-panel ul {
-    font-size: 13px;
-    line-height: 1.9;
-  }
-
-  .screen-panel li {
-    padding: 8px 0;
-    padding-left: 25px;
-  }
-
-  .screen-panel li::before {
-    font-size: 15px;
-  }
-
-  .faq-container {
-    margin: 30px auto;
-  }
-
-  .faq-item {
-    border-radius: 12px;
-    border-width: 2px;
-    margin-bottom: 15px;
-  }
-
-  .faq-question {
-    padding: 18px 20px;
-    font-size: 16px;
     gap: 10px;
   }
 
-  .faq-question i {
-    width: 18px !important;
-    height: 18px !important;
-  }
-
-  .faq-answer-content {
-    padding: 20px;
-    font-size: 14px;
-    line-height: 1.8;
-  }
-
-  .stats-badges {
+  .methodology-grid {
     grid-template-columns: 1fr;
-    gap: 25px;
-    margin: 30px 0;
+    gap: 12px;
   }
 
-  .stat-badge {
-    padding: 30px 20px;
-    border-radius: 40% 40% 16px 16px;
-    border-width: 2px;
-  }
-
-  .stat-badge-number {
-    font-size: 40px;
-    margin-bottom: 10px;
-  }
-
-  .stat-badge-label {
-    font-size: 16px;
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
   .footer-grid {
     grid-template-columns: 1fr;
-    gap: 30px;
-    margin-bottom: 40px;
+    gap: 24px;
   }
 
-  .footer-column h4 {
-    font-size: 18px;
-    margin-bottom: 15px;
+  .timeline::before {
+    left: 12px;
   }
 
-  .footer-column p,
-  .footer-column a {
-    font-size: 13px;
-    line-height: 1.8;
+  .timeline-node {
+    padding-left: 48px;
   }
 
-  .footer-column li {
-    margin-bottom: 10px;
-  }
-
-  .disclaimer {
-    padding: 18px;
-    font-size: 12px;
-    border-radius: 12px;
-    line-height: 1.8;
-    margin-bottom: 20px;
-  }
-
-  .footer-bottom p {
-    font-size: 11px;
-  }
-
-  .fixed-cta {
-    padding: 15px;
-  }
-
-  .cta-button {
-    padding: 18px;
-    font-size: clamp(16px, 3vw, 20px);
-    border-radius: 40px;
-    border-width: 3px;
-    gap: 10px;
-  }
-
-  .cta-button i {
-    width: 24px !important;
-    height: 24px !important;
-  }
-
-  .cta-disclaimer {
-    font-size: 10px;
-    margin-top: 8px;
-  }
-
-  .scroll-hint {
-    bottom: 30px;
-  }
-
-  .scroll-hint span {
-    font-size: 13px;
-  }
-
-  .scroll-hint i {
-    width: 24px !important;
-    height: 24px !important;
-  }
-
-  .paper-lantern {
-    width: 60px;
-    height: 75px;
-    font-size: 10px;
-    padding: 8px;
-    border-width: 2px;
+  .node-icon {
+    width: 32px;
+    height: 32px;
   }
 }
 </style>
@@ -1517,40 +786,8 @@ footer {
 
 <div id="__app">
   <!-- Hero Section -->
-  <section class="hero" id="__hero">
-    <!-- Paper Lanterns at Top -->
-    <div class="paper-lantern" style="top: 20px; left: 10%; animation-delay: 0s;">市場分析</div>
-    <div class="paper-lantern" style="top: 30px; left: 25%; animation-delay: 0.5s;">情報提供</div>
-    <div class="paper-lantern" style="top: 20px; left: 40%; animation-delay: 1s;">専門家</div>
-    <div class="paper-lantern" style="top: 40px; right: 40%; animation-delay: 1.5s;">データ</div>
-    <div class="paper-lantern" style="top: 30px; right: 25%; animation-delay: 2s;">公示</div>
-    <div class="paper-lantern" style="top: 20px; right: 10%; animation-delay: 2.5s;">サービス</div>
-
-    <!-- Torii Silhouette -->
-    <div class="torii-silhouette">
-      <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
-        <rect x="50" y="20" width="15" height="100" fill="currentColor" opacity="0.3"/>
-        <rect x="335" y="20" width="15" height="100" fill="currentColor" opacity="0.3"/>
-        <rect x="20" y="10" width="360" height="20" rx="5" fill="currentColor" opacity="0.3"/>
-        <rect x="30" y="40" width="340" height="15" rx="3" fill="currentColor" opacity="0.3"/>
-      </svg>
-    </div>
-
-    <!-- River Reflection -->
-    <div class="river-reflection"></div>
-
-    <!-- Firework Bursts -->
-    <div class="firework-burst" style="top: 20%; left: 15%; animation-delay: 0s;"></div>
-    <div class="firework-burst" style="top: 30%; right: 20%; animation-delay: 2s;"></div>
-    <div class="firework-burst" style="top: 50%; left: 25%; animation-delay: 4s;"></div>
-    <div class="firework-burst" style="top: 40%; right: 15%; animation-delay: 6s;"></div>
-
+  <section class="hero">
     <div class="hero-content" id="__heroContent"></div>
-
-    <div class="scroll-hint">
-      <span id="__scrollHintText">詳細を見る</span>
-      <i data-lucide="chevron-down" style="width: 32px; height: 32px; color: var(--firework-gold);"></i>
-    </div>
   </section>
 
   <!-- Dynamic Sections Container -->
@@ -1564,10 +801,10 @@ footer {
 <div class="fixed-cta">
   <div class="fixed-cta-container">
     <button class="cta-button" id="__ctaButton">
-      <span id="__ctaText">今すぐ花火を見る</span>
-      <i data-lucide="sparkles" style="width: 28px; height: 28px;"></i>
+      <span id="__ctaText">詳細を見る</span>
+      <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
     </button>
-    <div class="cta-disclaimer" id="__ctaDisclaimer">※情報提供サービス</div>
+    <div class="cta-disclaimer">情報提供サービス</div>
   </div>
 </div>
 
@@ -1579,48 +816,47 @@ footer {
 // Configuration Objects
 window.__COPY = {
   site_name: "市場情報公示サービス",
-  page_title: "市場情報公示サービス | 専門家によるダイナミックなインサイト",
+  page_title: "市場情報公示サービス",
   hero: {
-    title: "市場情報",
-    subtitle: "専門家による花火のようなダイナミックなインサイト",
-    description: "市場動向と詳細な分析を提供する専門的な情報プラットフォーム",
+    title: "市場情報公示サービス",
+    subtitle: "専門家による詳細な分析と情報提供",
     badges: [
       { icon: "bar-chart-3", label: "市場分析" },
-      { icon: "users", label: "専門家" },
-      { icon: "trending-up", label: "動向追跡" }
+      { icon: "users", label: "専門家チーム" },
+      { icon: "trending-up", label: "データ追跡" }
     ]
   },
   sections: {
     features: {
-      title: "サービスの三大特徴",
+      title: "サービス特徴",
       cards: [
         {
           icon: "target",
-          title: "専門的な分析",
-          description: "市場動向の詳細な分析とトレンド予測。業界の最新情報と専門家による洞察を提供し、ビジネスの意思決定をサポートします。",
-          dataPoint: "専門家チーム"
+          title: "専門的分析",
+          description: "業界動向の詳細な分析。専門家による実用的な洞察を提供。",
+          dataPoint: "専門家"
         },
         {
           icon: "database",
-          title: "包括的な情報",
-          description: "様々な業界セクターにわたる包括的なデータと分析レポート。市場の全体像を把握するための詳細な情報を提供します。",
-          dataPoint: "多角的視点"
+          title: "包括的情報",
+          description: "複数業界の包括的なデータ。市場全体を把握。",
+          dataPoint: "多角的"
         },
         {
           icon: "zap",
-          title: "リアルタイム更新",
-          description: "常に最新の市場情報を提供。動的な市場環境に対応した迅速な情報更新で、タイムリーな意思決定を支援します。",
-          dataPoint: "即時対応"
+          title: "迅速更新",
+          description: "最新情報を迅速に提供。タイムリーな意思決定支援。",
+          dataPoint: "即時"
         }
       ]
     },
     metrics: {
-      title: "サービス実績",
+      title: "実績データ",
       cards: [
-        { icon: "users", number: "1000+", label: "登録ユーザー", timestamp: "2024年12月現在" },
-        { icon: "file-text", number: "500+", label: "分析レポート", timestamp: "月間公開数" },
-        { icon: "globe", number: "50+", label: "対象業界", timestamp: "カバー範囲" },
-        { icon: "award", number: "10年+", label: "サービス実績", timestamp: "運営期間" }
+        { icon: "users", number: "1000+", label: "登録ユーザー", timestamp: "2024年12月" },
+        { icon: "file-text", number: "500+", label: "月間レポート", timestamp: "公開数" },
+        { icon: "globe", number: "50+", label: "対象業界", timestamp: "カバー" },
+        { icon: "award", number: "10年+", label: "実績", timestamp: "運営" }
       ]
     },
     team: {
@@ -1628,99 +864,66 @@ window.__COPY = {
       members: [
         {
           name: "市場分析",
-          title: "マーケットアナリスト",
-          bio: "業界動向の分析と予測を専門とする経験豊富なアナリストチーム。市場の変化を捉え、実用的な洞察を提供します。",
-          tags: ["市場調査", "トレンド分析"]
+          title: "アナリスト",
+          bio: "業界動向の分析と予測。実用的な洞察提供。",
+          tags: ["市場調査", "分析"]
         },
         {
           name: "データ分析",
-          title: "データサイエンティスト",
-          bio: "高度な統計手法と機械学習を活用したデータ分析。複雑なデータから有意義な情報を抽出します。",
-          tags: ["統計分析", "データ可視化"]
+          title: "データ専門家",
+          bio: "統計手法による分析。有意義な情報抽出。",
+          tags: ["統計", "可視化"]
         },
         {
-          name: "業界専門家",
-          title: "インダストリーエキスパート",
-          bio: "各業界の深い知識と実務経験を持つ専門家。実践的な視点から市場を分析します。",
-          tags: ["業界知識", "実務経験"]
+          name: "業界専門",
+          title: "エキスパート",
+          bio: "実務経験による分析。実践的視点。",
+          tags: ["知識", "経験"]
         }
       ]
     },
     timeline: {
-      title: "サービス提供プロセス",
+      title: "提供プロセス",
       nodes: [
         {
           icon: "search",
-          position: "left",
           title: "情報収集",
-          items: [
-            "市場データの収集",
-            "業界レポートの分析",
-            "専門家へのインタビュー",
-            "最新トレンドの追跡",
-            "公開情報の整理"
-          ]
+          items: ["データ収集", "レポート分析", "トレンド追跡"]
         },
         {
           icon: "cpu",
-          position: "right",
           title: "データ分析",
-          items: [
-            "統計的分析の実施",
-            "パターン認識",
-            "トレンド予測",
-            "比較分析",
-            "インサイト抽出"
-          ]
+          items: ["統計分析", "パターン認識", "予測"]
         },
         {
           icon: "file-text",
-          position: "left",
           title: "レポート作成",
-          items: [
-            "分析結果の整理",
-            "可視化とグラフ作成",
-            "専門家による検証",
-            "実用的な提言",
-            "わかりやすい説明"
-          ]
+          items: ["結果整理", "可視化", "検証"]
         },
         {
           icon: "share-2",
-          position: "right",
           title: "情報提供",
-          items: [
-            "Webプラットフォーム公開",
-            "定期レポート配信",
-            "カスタム分析対応",
-            "質問対応サポート",
-            "継続的な更新"
-          ]
+          items: ["公開", "配信", "サポート"]
         }
       ]
     },
     comparison: {
-      title: "サービスの強み",
+      title: "サービス比較",
       rows: [
-        { item: "専門性", ours: "業界専門家", others: "一般アナリスト", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "更新頻度", ours: "リアルタイム", others: "定期更新", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "カバー範囲", ours: "50以上の業界", others: "限定的", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "データ品質", ours: "厳格な検証", others: "標準", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "サポート", ours: "専門家対応", others: "基本サポート", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "カスタマイズ", ours: "柔軟対応", others: "制限あり", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "実績", ours: "10年以上", others: "短期", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "ユーザー数", ours: "1000+", others: "少数", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "レポート数", ours: "500+/月", others: "限定", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "透明性", ours: "完全公開", others: "部分的", ourIcon: "check-circle", otherIcon: "minus" }
+        { item: "専門性", ours: "業界専門家", others: "一般", ourIcon: "check-circle", otherIcon: "minus" },
+        { item: "更新", ours: "リアルタイム", others: "定期", ourIcon: "check-circle", otherIcon: "minus" },
+        { item: "範囲", ours: "50業界", others: "限定", ourIcon: "check-circle", otherIcon: "minus" },
+        { item: "品質", ours: "検証済", others: "標準", ourIcon: "check-circle", otherIcon: "minus" },
+        { item: "サポート", ours: "専門対応", others: "基本", ourIcon: "check-circle", otherIcon: "minus" }
       ]
     },
     charts: {
       title: "分析サービス",
       items: [
-        { title: "市場トレンド分析", icon: "trending-up", note: "業界動向の詳細な分析と将来予測" },
-        { title: "セクター別比較", icon: "pie-chart", note: "複数業界の横断的な比較分析" },
-        { title: "成長率推移", icon: "bar-chart-2", note: "時系列データに基づく成長分析" },
-        { title: "競合分析", icon: "activity", note: "市場における競合状況の評価" }
+        { title: "トレンド分析", icon: "trending-up", note: "業界動向の詳細分析" },
+        { title: "比較分析", icon: "pie-chart", note: "業界横断比較" },
+        { title: "成長分析", icon: "bar-chart-2", note: "時系列分析" },
+        { title: "競合分析", icon: "activity", note: "競合状況評価" }
       ]
     },
     industries: {
@@ -1730,7 +933,7 @@ window.__COPY = {
         { icon: "shopping-cart", label: "小売" },
         { icon: "briefcase", label: "金融" },
         { icon: "truck", label: "物流" },
-        { icon: "heart", label: "ヘルスケア" },
+        { icon: "heart", label: "医療" },
         { icon: "home", label: "不動産" },
         { icon: "zap", label: "エネルギー" },
         { icon: "smartphone", label: "通信" },
@@ -1741,128 +944,79 @@ window.__COPY = {
       title: "分析手法",
       panels: [
         {
-          title: "1. データ収集",
-          items: [
-            "信頼できる情報源の選定",
-            "包括的なデータ収集",
-            "リアルタイム情報の取得",
-            "品質管理の実施"
-          ]
+          title: "データ収集",
+          items: ["情報源選定", "データ収集", "品質管理"]
         },
         {
-          title: "2. 分析プロセス",
-          items: [
-            "統計的手法の適用",
-            "多角的な視点での検証",
-            "専門家による評価",
-            "トレンドの特定"
-          ]
+          title: "分析",
+          items: ["統計手法", "検証", "評価"]
         },
         {
-          title: "3. 品質保証",
-          items: [
-            "データの整合性確認",
-            "分析結果の検証",
-            "専門家レビュー",
-            "継続的な改善"
-          ]
+          title: "品質保証",
+          items: ["整合性確認", "検証", "改善"]
         },
         {
-          title: "4. 情報提供",
-          items: [
-            "わかりやすい可視化",
-            "実用的な提言",
-            "タイムリーな配信",
-            "カスタマイズ対応"
-          ]
+          title: "提供",
+          items: ["可視化", "配信", "対応"]
         }
       ]
     },
     faq: {
-      title: "よくある質問（FAQ）",
+      title: "よくある質問",
       items: [
         {
-          q: "このサービスは何を提供していますか？",
-          a: "市場動向に関する包括的な情報と専門家による分析を提供する情報サービスです。様々な業界のトレンド、データ分析、専門的な洞察をお届けします。"
+          q: "どのようなサービスですか？",
+          a: "市場情報と専門家分析を提供する情報サービスです。"
         },
         {
-          q: "どのような業界をカバーしていますか？",
-          a: "テクノロジー、金融、小売、ヘルスケア、エネルギー、不動産など、50以上の業界セクターをカバーしています。"
+          q: "対象業界は？",
+          a: "50以上の業界をカバーしています。"
         },
         {
-          q: "情報の更新頻度はどれくらいですか？",
-          a: "リアルタイムで情報を更新しており、重要な市場動向については即座に分析レポートを公開します。定期レポートは毎月配信しています。"
+          q: "更新頻度は？",
+          a: "リアルタイムで更新、月次レポート配信。"
         },
         {
-          q: "専門家チームについて教えてください",
-          a: "業界経験豊富なアナリスト、データサイエンティスト、各分野の専門家で構成されています。10年以上の実績を持つプロフェッショナルが分析を担当します。"
+          q: "専門家チームは？",
+          a: "経験豊富なアナリストと専門家が対応。"
         },
         {
-          q: "カスタム分析は依頼できますか？",
-          a: "はい、特定の業界や企業に関するカスタム分析レポートの作成も承っております。お問い合わせフォームからご相談ください。"
-        },
-        {
-          q: "データの信頼性はどのように確保していますか？",
-          a: "信頼できる公開情報源からデータを収集し、複数の専門家による検証プロセスを経て分析結果を公開しています。"
-        },
-        {
-          q: "過去のレポートも閲覧できますか？",
-          a: "はい、過去の分析レポートもアーカイブとして閲覧可能です。トレンドの変遷を追跡する際に有用です。"
-        },
-        {
-          q: "サポート体制について教えてください",
-          a: "専門スタッフがお問い合わせに対応します。サービス内容や分析結果についてのご質問にお答えします。"
+          q: "カスタム分析は？",
+          a: "可能です。お問い合わせください。"
         }
       ]
     },
     stats: {
-      title: "サービス概要",
+      title: "概要",
       badges: [
-        { number: "1000+", label: "登録ユーザー数" },
-        { number: "500+", label: "月間レポート数" },
-        { number: "50+", label: "対象業界数" },
-        { number: "10年+", label: "サービス実績" },
-        { number: "24/7", label: "情報更新体制" },
-        { number: "100%", label: "品質保証" }
+        { number: "1000+", label: "ユーザー" },
+        { number: "500+", label: "月間レポート" },
+        { number: "50+", label: "業界" },
+        { number: "10年+", label: "実績" },
+        { number: "24/7", label: "更新" },
+        { number: "100%", label: "品質" }
       ]
     }
   },
   footer: {
     overview: {
-      title: "サービス概要",
-      content: "市場情報の公開プラットフォーム。専門家による詳細な分析と業界動向の情報を提供します。ビジネスの意思決定をサポートする信頼性の高い情報サービスです。"
+      title: "概要",
+      content: "市場情報プラットフォーム。専門家による分析と情報提供。"
     },
     data: {
-      title: "提供サービス",
-      links: [
-        "市場分析レポート",
-        "業界動向調査",
-        "トレンド予測",
-        "データ分析",
-        "カスタムレポート"
-      ]
+      title: "サービス",
+      links: ["分析レポート", "動向調査", "予測", "データ分析", "カスタム"]
     },
     links: {
       title: "リンク",
-      links: [
-        "サービス紹介",
-        "専門家チーム",
-        "分析手法",
-        "利用規約",
-        "プライバシーポリシー"
-      ]
+      links: ["紹介", "チーム", "手法", "規約", "プライバシー"]
     },
     contact: {
       title: "お問い合わせ",
-      links: [
-        "お問い合わせフォーム",
-        "営業時間: 平日 9:00-18:00",
-        "よくある質問",
-        "サポート"
-      ]
+      links: ["フォーム", "平日 9:00-18:00", "FAQ", "サポート"]
     },
-    disclaimer: "本サービスは市場情報の提供を目的としています。提供する情報は参考目的であり、ビジネス判断は必ずご自身の責任で行ってください。情報の正確性については最善を尽くしていますが、完全性を保証するものではありません。",
-    copyright: "© 2024 市場情報公示サービス | Market Information Platform"
+    disclaimer: "本サービスは市場情報提供を目的としています。情報は参考目的であり、判断は自己責任で行ってください。",
+    copyright: "© 2024 市場情報公示サービス"
   }
 };
 
@@ -1881,20 +1035,19 @@ function __escapeHtml(text) {
 function __renderHero() {
   const hero = window.__COPY.hero;
   const badges = hero.badges.map(badge => `
-    <div class="lantern-badge">
-      <i data-lucide="${badge.icon}" style="width: 40px; height: 40px; color: var(--firework-gold);"></i>
-      <span style="color: var(--firework-gold); font-weight: 800; font-size: 13px; margin-top: 10px;">${__escapeHtml(badge.label)}</span>
+    <div class="badge">
+      <i data-lucide="${badge.icon}" style="width: 14px; height: 14px;"></i>
+      ${__escapeHtml(badge.label)}
     </div>
   `).join('');
 
   document.getElementById('__heroContent').innerHTML = `
-    <div class="logo-firework">
-      <i data-lucide="sparkles" style="width: 90px; height: 90px; color: var(--firework-gold);"></i>
+    <div class="hero-icon">
+      <i data-lucide="bar-chart-2" style="width: 32px; height: 32px; color: white;"></i>
     </div>
     <h1>${__escapeHtml(hero.title)}</h1>
     <h2>${__escapeHtml(hero.subtitle)}</h2>
-    <p>${__escapeHtml(hero.description)}</p>
-    <div class="lantern-badge-group">
+    <div class="hero-badges">
       ${badges}
     </div>
   `;
@@ -1903,19 +1056,19 @@ function __renderHero() {
 function __renderFeatures() {
   const section = window.__COPY.sections.features;
   const cards = section.cards.map(card => `
-    <div class="lantern-card">
-      <i data-lucide="${card.icon}" style="width: 64px; height: 64px; color: var(--firework-gold);"></i>
+    <div class="card">
+      <i data-lucide="${card.icon}" class="card-icon"></i>
       <h3>${__escapeHtml(card.title)}</h3>
       <p>${__escapeHtml(card.description)}</p>
-      <span class="data-point">${__escapeHtml(card.dataPoint)}</span>
+      <span class="card-tag">${__escapeHtml(card.dataPoint)}</span>
     </div>
   `).join('');
 
   return `
-    <section class="section" style="background: linear-gradient(180deg, var(--night-dark), var(--night-mid));">
+    <section class="section" style="background: var(--bg-dark);">
       <div class="container">
         <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="lantern-cards">
+        <div class="card-grid">
           ${cards}
         </div>
       </div>
@@ -1930,15 +1083,14 @@ function __renderMetrics() {
       <div class="metric-number">${__escapeHtml(card.number)}</div>
       <div class="metric-label">${__escapeHtml(card.label)}</div>
       <div class="metric-timestamp">${__escapeHtml(card.timestamp)}</div>
-      <i data-lucide="${card.icon}" style="width: 32px; height: 32px; color: var(--night-dark); margin-top: 15px;"></i>
     </div>
   `).join('');
 
   return `
-    <section class="section" style="background: var(--night-mid);">
+    <section class="section" style="background: var(--bg-mid);">
       <div class="container">
         <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="dashboard-grid">
+        <div class="metric-grid">
           ${cards}
         </div>
       </div>
@@ -1951,7 +1103,7 @@ function __renderTeam() {
   const members = section.members.map(member => `
     <div class="expert-card">
       <div class="expert-avatar">
-        <i data-lucide="user" style="width: 80px; height: 80px; color: var(--firework-gold);"></i>
+        <i data-lucide="user" style="width: 24px; height: 24px; color: white;"></i>
       </div>
       <div class="expert-name">${__escapeHtml(member.name)}</div>
       <div class="expert-title">${__escapeHtml(member.title)}</div>
@@ -1963,7 +1115,7 @@ function __renderTeam() {
   `).join('');
 
   return `
-    <section class="section" style="background: linear-gradient(180deg, var(--night-mid), var(--night-deep));">
+    <section class="section" style="background: var(--bg-dark);">
       <div class="container">
         <h2 class="section-title">${__escapeHtml(section.title)}</h2>
         <div class="expert-scroll">
@@ -1978,10 +1130,10 @@ function __renderTimeline() {
   const section = window.__COPY.sections.timeline;
   const nodes = section.nodes.map(node => `
     <div class="timeline-node">
-      <div class="node-seal">
-        <i data-lucide="${node.icon}" style="width: 64px; height: 64px; color: var(--firework-gold);"></i>
+      <div class="node-icon">
+        <i data-lucide="${node.icon}" style="width: 20px; height: 20px; color: white;"></i>
       </div>
-      <div class="node-content ${node.position}">
+      <div class="node-content">
         <h3>${__escapeHtml(node.title)}</h3>
         <ul>
           ${node.items.map(item => `<li>${__escapeHtml(item)}</li>`).join('')}
@@ -1991,7 +1143,7 @@ function __renderTimeline() {
   `).join('');
 
   return `
-    <section class="section" style="background: var(--night-dark);">
+    <section class="section" style="background: var(--bg-mid);">
       <div class="container">
         <h2 class="section-title">${__escapeHtml(section.title)}</h2>
         <div class="timeline">
@@ -2007,20 +1159,20 @@ function __renderComparison() {
   const rows = section.rows.map(row => `
     <div class="table-row">
       <div>${__escapeHtml(row.item)}</div>
-      <div><i data-lucide="${row.ourIcon}" style="width: 20px; height: 20px; color: ${row.ourIcon === 'check-circle' ? '#4ADE80' : '#F59E0B'};"></i> ${__escapeHtml(row.ours)}</div>
-      <div><i data-lucide="${row.otherIcon}" style="width: 20px; height: 20px; color: ${row.otherIcon === 'x-circle' ? '#F87171' : '#F59E0B'};"></i> ${__escapeHtml(row.others)}</div>
+      <div><i data-lucide="${row.ourIcon}" style="width: 14px; height: 14px; color: #10B981;"></i> ${__escapeHtml(row.ours)}</div>
+      <div><i data-lucide="${row.otherIcon}" style="width: 14px; height: 14px; color: #94A3B8;"></i> ${__escapeHtml(row.others)}</div>
     </div>
   `).join('');
 
   return `
-    <section class="section" style="background: linear-gradient(180deg, var(--night-deep), var(--night-mid));">
+    <section class="section" style="background: var(--bg-dark);">
       <div class="container">
         <h2 class="section-title">${__escapeHtml(section.title)}</h2>
         <div class="comparison-table">
           <div class="table-header">
             <div>項目</div>
             <div>本サービス</div>
-            <div>一般的なサービス</div>
+            <div>他社</div>
           </div>
           ${rows}
         </div>
@@ -2035,14 +1187,14 @@ function __renderCharts() {
     <div class="chart-card">
       <h3>${__escapeHtml(chart.title)}</h3>
       <div class="chart-placeholder">
-        <i data-lucide="${chart.icon}" style="width: 80px; height: 80px;"></i>
+        <i data-lucide="${chart.icon}" style="width: 40px; height: 40px;"></i>
       </div>
-      <div class="expert-note">${__escapeHtml(chart.note)}</div>
+      <div class="chart-note">${__escapeHtml(chart.note)}</div>
     </div>
   `).join('');
 
   return `
-    <section class="section" style="background: var(--night-mid);">
+    <section class="section" style="background: var(--bg-mid);">
       <div class="container">
         <h2 class="section-title">${__escapeHtml(section.title)}</h2>
         <div class="chart-grid">
@@ -2057,13 +1209,13 @@ function __renderIndustries() {
   const section = window.__COPY.sections.industries;
   const categories = section.categories.map(cat => `
     <div class="industry-card">
-      <i data-lucide="${cat.icon}" style="width: 40px; height: 40px; color: var(--night-dark);"></i>
+      <i data-lucide="${cat.icon}" style="width: 24px; height: 24px; color: var(--primary);"></i>
       <span>${__escapeHtml(cat.label)}</span>
     </div>
   `).join('');
 
   return `
-    <section class="section" style="background: linear-gradient(180deg, var(--night-mid), var(--night-deep));">
+    <section class="section" style="background: var(--bg-dark);">
       <div class="container">
         <h2 class="section-title">${__escapeHtml(section.title)}</h2>
         <div class="industry-grid">
@@ -2077,8 +1229,8 @@ function __renderIndustries() {
 function __renderMethodology() {
   const section = window.__COPY.sections.methodology;
   const panels = section.panels.map((panel, index) => `
-    <div class="screen-panel">
-      <div class="panel-stamp">${index + 1}</div>
+    <div class="method-card">
+      <div class="method-number">${index + 1}</div>
       <h3>${__escapeHtml(panel.title)}</h3>
       <ul>
         ${panel.items.map(item => `<li>${__escapeHtml(item)}</li>`).join('')}
@@ -2087,10 +1239,10 @@ function __renderMethodology() {
   `).join('');
 
   return `
-    <section class="section" style="background: var(--night-dark);">
+    <section class="section" style="background: var(--bg-mid);">
       <div class="container">
         <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="folding-screen">
+        <div class="methodology-grid">
           ${panels}
         </div>
       </div>
@@ -2104,7 +1256,7 @@ function __renderFAQ() {
     <div class="faq-item">
       <div class="faq-question" onclick="toggleFaq(this)">
         <span>${__escapeHtml(item.q)}</span>
-        <i data-lucide="chevron-down" style="width: 24px; height: 24px; transition: transform 0.3s;"></i>
+        <i data-lucide="chevron-down" style="width: 16px; height: 16px; transition: transform 0.3s;"></i>
       </div>
       <div class="faq-answer">
         <div class="faq-answer-content">${__escapeHtml(item.a)}</div>
@@ -2113,7 +1265,7 @@ function __renderFAQ() {
   `).join('');
 
   return `
-    <section class="section" style="background: var(--night-mid);">
+    <section class="section" style="background: var(--bg-dark);">
       <div class="container">
         <h2 class="section-title">${__escapeHtml(section.title)}</h2>
         <div class="faq-container">
@@ -2127,17 +1279,17 @@ function __renderFAQ() {
 function __renderStats() {
   const section = window.__COPY.sections.stats;
   const badges = section.badges.map(badge => `
-    <div class="stat-badge">
-      <span class="stat-badge-number">${__escapeHtml(badge.number)}</span>
-      <span class="stat-badge-label">${__escapeHtml(badge.label)}</span>
+    <div class="stat-card">
+      <span class="stat-number">${__escapeHtml(badge.number)}</span>
+      <span class="stat-label">${__escapeHtml(badge.label)}</span>
     </div>
   `).join('');
 
   return `
-    <section class="section" style="background: linear-gradient(180deg, var(--night-deep), var(--night-mid));">
+    <section class="section" style="background: var(--bg-mid);">
       <div class="container">
         <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="stats-badges">
+        <div class="stats-grid">
           ${badges}
         </div>
       </div>
@@ -2157,25 +1309,25 @@ function __renderFooter() {
         <div class="footer-column">
           <h4>${__escapeHtml(footer.data.title)}</h4>
           <ul>
-            ${footer.data.links.map(link => `<li><a href="javascript:void(0)" onclick="return false;">${__escapeHtml(link)}</a></li>`).join('')}
+            ${footer.data.links.map(link => `<li><a href="javascript:void(0)">${__escapeHtml(link)}</a></li>`).join('')}
           </ul>
         </div>
         <div class="footer-column">
           <h4>${__escapeHtml(footer.links.title)}</h4>
           <ul>
-            ${footer.links.links.map(link => `<li><a href="javascript:void(0)" onclick="return false;">${__escapeHtml(link)}</a></li>`).join('')}
+            ${footer.links.links.map(link => `<li><a href="javascript:void(0)">${__escapeHtml(link)}</a></li>`).join('')}
           </ul>
         </div>
         <div class="footer-column">
           <h4>${__escapeHtml(footer.contact.title)}</h4>
           <ul>
-            ${footer.contact.links.map(link => `<li><a href="javascript:void(0)" onclick="return false;">${__escapeHtml(link)}</a></li>`).join('')}
+            ${footer.contact.links.map(link => `<li><a href="javascript:void(0)">${__escapeHtml(link)}</a></li>`).join('')}
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <div class="disclaimer">
-          <strong>【免責事項】</strong><br>
+          <strong>免責事項</strong><br>
           ${__escapeHtml(footer.disclaimer)}
         </div>
         <p>${__escapeHtml(footer.copyright)}</p>
@@ -2211,7 +1363,7 @@ function __renderAll() {
   lucide.createIcons();
 }
 
-// Helper function for FAQ/Accordion toggle
+// Helper function for FAQ toggle
 function toggleFaq(element) {
   const answer = element.nextElementSibling;
   const icon = element.querySelector('[data-lucide="chevron-down"]');
@@ -2226,59 +1378,13 @@ function toggleFaq(element) {
   }
 }
 
-// Firework Animation System
-function createFirework(x, y) {
-  const colors = ['var(--firework-gold)', 'var(--firework-red)', 'var(--firework-blue)', 'var(--firework-purple)'];
-  const particleCount = 30;
-
-  for (let i = 0; i < particleCount; i++) {
-    const particle = document.createElement('div');
-    particle.className = 'firework';
-    particle.style.left = x + 'px';
-    particle.style.top = y + 'px';
-    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-
-    const angle = (Math.PI * 2 * i) / particleCount;
-    const velocity = 2 + Math.random() * 3;
-    const tx = Math.cos(angle) * velocity * 50;
-    const ty = Math.sin(angle) * velocity * 50;
-
-    particle.style.setProperty('--tx', tx + 'px');
-    particle.style.setProperty('--ty', ty + 'px');
-
-    document.querySelector('.hero').appendChild(particle);
-
-    particle.style.animation = 'sparkFall 2s ease-out forwards';
-
-    setTimeout(() => particle.remove(), 2000);
-  }
-}
-
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
   __renderAll();
 
-  document.querySelector('.scroll-hint').addEventListener('click', function() {
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: 'smooth'
-    });
-  });
-
-  // Create continuous fireworks
-  setInterval(() => {
-    const x = Math.random() * window.innerWidth;
-    const y = Math.random() * (window.innerHeight * 0.6);
-    createFirework(x, y);
-  }, 3000);
-
   document.getElementById('__ctaButton').addEventListener('click', function(event) {
-    // Create firework burst on button
-    const rect = this.getBoundingClientRect();
-    createFirework(rect.left + rect.width / 2, rect.top + rect.height / 2);
-
     if (typeof addjoin === 'function') {
-      addjoin(event, '今すぐ花火を見る', 1);
+      addjoin(event, '詳細を見る', 1);
     }
   });
 });
