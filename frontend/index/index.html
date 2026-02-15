@@ -621,17 +621,9 @@ footer {
 
 .footer-column li {
   margin-bottom: 8px;
-}
-
-.footer-column a {
   color: var(--text-muted);
-  text-decoration: none;
   font-size: 12px;
-  transition: color 0.2s;
-}
-
-.footer-column a:hover {
-  color: var(--primary);
+  line-height: 1.5;
 }
 
 .footer-bottom {
@@ -643,19 +635,15 @@ footer {
 }
 
 .disclaimer {
-  background: rgba(37, 99, 235, 0.1);
-  border: 1px solid var(--primary);
-  border-radius: 6px;
-  padding: 16px;
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
   margin-bottom: 16px;
-  font-size: 11px;
-  line-height: 1.6;
-  color: var(--text-muted);
-}
-
-.disclaimer strong {
-  color: var(--primary);
-  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--text);
+  text-align: left;
 }
 
 .footer-bottom p {
@@ -1002,22 +990,29 @@ window.__COPY = {
   footer: {
     overview: {
       title: "概要",
-      content: "市場情報プラットフォーム。専門家による分析と情報提供。"
+      content: "市場情報プラットフォーム。専門家による分析と情報提供サービス。"
     },
-    data: {
+    services: {
       title: "サービス",
-      links: ["分析レポート", "動向調査", "予測", "データ分析", "カスタム"]
+      items: ["分析レポート", "動向調査", "市場予測", "データ分析", "カスタムサービス"]
     },
-    links: {
-      title: "リンク",
-      links: ["紹介", "チーム", "手法", "規約", "プライバシー"]
+    legal: {
+      title: "法的事項",
+      items: ["利用規約", "プライバシーポリシー", "免責事項", "特定商取引法"]
     },
     contact: {
       title: "お問い合わせ",
-      links: ["フォーム", "平日 9:00-18:00", "FAQ", "サポート"]
+      items: ["お問い合わせフォーム", "営業時間：平日 9:00-18:00", "よくある質問", "サポートセンター"]
     },
-    disclaimer: "本サービスは市場情報提供を目的としています。情報は参考目的であり、判断は自己責任で行ってください。",
-    copyright: "© 2024 市場情報公示サービス"
+    terms: `【利用規約】
+本サービスは市場情報の提供を目的としています。ユーザーは本規約に同意の上、サービスをご利用ください。情報の正確性については最善を尽くしておりますが、完全性を保証するものではありません。
+
+【プライバシーポリシー】
+当サービスは、お客様の個人情報を適切に管理し、法令を遵守します。収集した情報はサービス提供・改善目的にのみ使用し、第三者への開示は行いません。Cookie等の技術を使用してサービスの利用状況を分析する場合があります。
+
+【免責事項】
+本サービスで提供される情報は参考目的であり、投資助言や特定の行動を推奨するものではありません。情報に基づく判断・行動は、お客様ご自身の責任において行ってください。当サービスは情報の利用により生じた損害について一切の責任を負いません。`,
+    copyright: "© 2024 市場情報公示サービス All Rights Reserved."
   }
 };
 
@@ -1308,30 +1303,29 @@ function __renderFooter() {
           <p>${__escapeHtml(footer.overview.content)}</p>
         </div>
         <div class="footer-column">
-          <h4>${__escapeHtml(footer.data.title)}</h4>
+          <h4>${__escapeHtml(footer.services.title)}</h4>
           <ul>
-            ${footer.data.links.map(link => `<li><a href="javascript:void(0)">${__escapeHtml(link)}</a></li>`).join('')}
+            ${footer.services.items.map(item => `<li>${__escapeHtml(item)}</li>`).join('')}
           </ul>
         </div>
         <div class="footer-column">
-          <h4>${__escapeHtml(footer.links.title)}</h4>
+          <h4>${__escapeHtml(footer.legal.title)}</h4>
           <ul>
-            ${footer.links.links.map(link => `<li><a href="javascript:void(0)">${__escapeHtml(link)}</a></li>`).join('')}
+            ${footer.legal.items.map(item => `<li>${__escapeHtml(item)}</li>`).join('')}
           </ul>
         </div>
         <div class="footer-column">
           <h4>${__escapeHtml(footer.contact.title)}</h4>
           <ul>
-            ${footer.contact.links.map(link => `<li><a href="javascript:void(0)">${__escapeHtml(link)}</a></li>`).join('')}
+            ${footer.contact.items.map(item => `<li>${__escapeHtml(item)}</li>`).join('')}
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <div class="disclaimer">
-          <strong>免責事項</strong><br>
-          ${__escapeHtml(footer.disclaimer)}
+          ${__escapeHtml(footer.terms).replace(/\n/g, '<br>')}
         </div>
-        <p>${__escapeHtml(footer.copyright)}</p>
+        <p style="margin-top: 20px;">${__escapeHtml(footer.copyright)}</p>
       </div>
     </div>
   `;
