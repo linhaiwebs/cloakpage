@@ -4,22 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index,follow">
-<title>市場情報公示サービス | 専門的なインサイト</title>
+<title>Brasdo Insights | 市場情報サービス</title>
 <meta name="description" content="市場情報の公開プラットフォーム。専門家による詳細な分析と情報提供サービス。">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root {
-  --zen-white-sand: #F5F5F5;
-  --zen-light-gray: #E8E8E8;
-  --zen-gray: #D0D0D0;
-  --zen-stone: #808080;
-  --zen-stone-dark: #5C5C5C;
-  --zen-ink: #2C2C2C;
-  --zen-moss: #4A6741;
-  --zen-wood: #8B7355;
+  --primary-orange: #FF9500;
+  --primary-red: #FF4444;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --border-color: #E5E5E5;
+  --bg-white: #FFFFFF;
+  --bg-gray: #F8F8F8;
+  --link-blue: #007AFF;
 }
 
 * {
@@ -33,837 +29,222 @@ html {
 }
 
 body {
-  font-family: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
-  background: var(--zen-white-sand);
-  color: var(--zen-ink);
-  overflow-x: hidden;
-  line-height: 2;
+  font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  background: var(--bg-white);
+  color: var(--text-primary);
+  line-height: 1.6;
   font-size: 14px;
-  font-weight: 300;
-  letter-spacing: 0.1em;
+  padding-bottom: 80px;
 }
 
-@keyframes sand-ripple {
-  0% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.3;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1.5);
-    opacity: 0;
-  }
-}
-
-@keyframes draw-circle {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes ripple {
-  to {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-10px) rotate(1deg);
-  }
-}
-
-.hero {
-  min-height: 100vh;
-  background: linear-gradient(180deg, var(--zen-white-sand) 0%, var(--zen-light-gray) 50%, var(--zen-gray) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
+header {
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(44, 44, 44, 0.03) 2px,
-      rgba(44, 44, 44, 0.03) 4px
-    );
-  pointer-events: none;
+  z-index: 1000;
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px 16px;
 }
 
-.sand-ripple {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  border: 2px solid rgba(128, 128, 128, 0.15);
-  border-radius: 50%;
-  animation: sand-ripple 8s ease-out infinite;
-  pointer-events: none;
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 100%;
 }
 
-.sand-ripple:nth-child(1) {
-  top: 20%;
-  left: 30%;
-}
-
-.sand-ripple:nth-child(2) {
-  top: 60%;
-  left: 70%;
-  animation-delay: 2s;
-}
-
-.sand-ripple:nth-child(3) {
-  top: 40%;
-  left: 50%;
-  animation-delay: 4s;
-}
-
-.zen-stone {
-  position: absolute;
-  background: linear-gradient(135deg, var(--zen-stone) 0%, var(--zen-stone-dark) 100%);
-  border-radius: 8px;
-  box-shadow: 20px 20px 0 rgba(44, 44, 44, 0.1);
-  animation: float 6s ease-in-out infinite;
-}
-
-.zen-stone:nth-child(4) {
-  width: 80px;
-  height: 60px;
-  top: 15%;
-  left: 10%;
-  animation-delay: 0s;
-}
-
-.zen-stone:nth-child(5) {
-  width: 100px;
-  height: 80px;
-  top: 70%;
-  left: 15%;
-  animation-delay: 1s;
-}
-
-.zen-stone:nth-child(6) {
-  width: 60px;
-  height: 50px;
-  top: 25%;
-  right: 20%;
-  animation-delay: 2s;
-}
-
-.zen-stone:nth-child(7) {
-  width: 90px;
-  height: 70px;
-  bottom: 20%;
-  right: 10%;
-  animation-delay: 3s;
-}
-
-.moss-dot {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: var(--zen-moss);
-  border-radius: 50%;
-  opacity: 0.6;
-}
-
-.moss-dot:nth-child(8) {
-  top: 30%;
-  left: 25%;
-}
-
-.moss-dot:nth-child(9) {
-  top: 65%;
-  left: 80%;
-  width: 6px;
-  height: 6px;
-}
-
-.moss-dot:nth-child(10) {
-  top: 80%;
-  left: 40%;
-  width: 10px;
-  height: 10px;
-}
-
-.temple-shadow {
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 200px;
-  background: linear-gradient(90deg, transparent 0%, rgba(44, 44, 44, 0.08) 100%);
-  pointer-events: none;
-}
-
-.hero-content {
-  text-align: center;
-  max-width: 900px;
-  padding: 60px 20px;
-  position: relative;
-  z-index: 10;
-}
-
-.enso-circle {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 40px;
-  position: relative;
-}
-
-.enso-circle svg {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.enso-circle circle {
-  fill: none;
-  stroke: var(--zen-ink);
-  stroke-width: 8;
-  stroke-linecap: round;
-  stroke-dasharray: 360;
-  stroke-dashoffset: 360;
-  animation: draw-circle 2s ease-out forwards;
-}
-
-.enso-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: var(--zen-ink);
-}
-
-.hero h1 {
-  font-size: 42px;
-  font-weight: 400;
-  color: var(--zen-ink);
-  margin-bottom: 20px;
-  letter-spacing: 0.15em;
-  line-height: 1.5;
-}
-
-.hero h2 {
+.logo {
   font-size: 16px;
-  color: var(--zen-stone);
-  margin-bottom: 40px;
-  font-weight: 300;
-  letter-spacing: 0.12em;
-  line-height: 2;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logo-icon {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #FF9500 0%, #FF6B00 100%);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+}
+
+.nav-links a {
+  color: var(--link-blue);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+main {
+  margin-top: 56px;
+  padding: 16px;
 }
 
 .section {
-  padding: 80px 20px;
-  position: relative;
-}
-
-.section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 3px,
-      rgba(44, 44, 44, 0.02) 3px,
-      rgba(44, 44, 44, 0.02) 6px
-    );
-  pointer-events: none;
-  opacity: 0.5;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
 }
 
 .section-title {
-  font-size: 24px;
-  font-weight: 400;
-  color: var(--zen-ink);
-  margin-bottom: 60px;
-  text-align: center;
-  letter-spacing: 0.2em;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-}
-
-.card {
-  background: linear-gradient(135deg, var(--zen-light-gray) 0%, var(--zen-gray) 100%);
-  border: 1px solid var(--zen-gray);
-  border-radius: 12px;
-  padding: 40px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image:
-    radial-gradient(circle at 20% 30%, rgba(44, 44, 44, 0.03) 1px, transparent 1px),
-    radial-gradient(circle at 80% 70%, rgba(44, 44, 44, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-}
-
-.card::after {
-  content: '';
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 12px;
-  height: 12px;
-  background: var(--zen-moss);
-  border-radius: 50%;
-  opacity: 0.6;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(44, 44, 44, 0.15);
-}
-
-.card:hover::before {
-  animation: ripple 0.6s ease-out;
-}
-
-.card-icon {
-  width: 32px;
-  height: 32px;
-  color: var(--zen-stone-dark);
-  margin-bottom: 24px;
-}
-
-.card h3 {
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--zen-ink);
-  margin-bottom: 16px;
-  letter-spacing: 0.1em;
-}
-
-.card p {
-  font-size: 13px;
-  color: var(--zen-stone);
-  line-height: 2;
-  margin-bottom: 20px;
-  font-weight: 300;
-}
-
-.card-tag {
-  display: inline-block;
-  padding: 6px 16px;
-  background: var(--zen-stone);
-  color: var(--zen-white-sand);
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 400;
-}
-
-.metric-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px;
-}
-
-.metric-card {
-  background: linear-gradient(135deg, var(--zen-light-gray) 0%, var(--zen-gray) 100%);
-  border: 1px solid var(--zen-gray);
-  border-radius: 12px;
-  padding: 40px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.metric-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image:
-    radial-gradient(circle at 20% 30%, rgba(44, 44, 44, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-}
-
-.metric-number {
-  font-size: 32px;
-  font-weight: 500;
-  color: var(--zen-stone-dark);
-  margin-bottom: 8px;
-  letter-spacing: 0.05em;
-}
-
-.metric-label {
-  font-size: 13px;
-  color: var(--zen-stone);
-  margin-bottom: 4px;
-  font-weight: 300;
-}
-
-.metric-timestamp {
-  font-size: 11px;
-  color: var(--zen-stone);
-  opacity: 0.7;
-  font-weight: 300;
-}
-
-.expert-scroll {
-  display: flex;
-  overflow-x: auto;
-  gap: 24px;
-  padding: 8px;
-  scroll-behavior: smooth;
-}
-
-.expert-scroll::-webkit-scrollbar {
-  height: 8px;
-}
-
-.expert-scroll::-webkit-scrollbar-track {
-  background: var(--zen-light-gray);
-  border-radius: 4px;
-}
-
-.expert-scroll::-webkit-scrollbar-thumb {
-  background: var(--zen-stone);
-  border-radius: 4px;
-}
-
-.expert-card {
-  min-width: 240px;
-  background: linear-gradient(135deg, var(--zen-light-gray) 0%, var(--zen-gray) 100%);
-  border: 1px solid var(--zen-gray);
-  border-radius: 12px;
-  padding: 30px;
-  text-align: center;
-  position: relative;
-}
-
-.expert-card::after {
-  content: '';
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  width: 10px;
-  height: 10px;
-  background: var(--zen-moss);
-  border-radius: 50%;
-  opacity: 0.6;
-}
-
-.expert-avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--zen-stone) 0%, var(--zen-stone-dark) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 20px;
-}
-
-.expert-name {
   font-size: 15px;
-  font-weight: 500;
-  color: var(--zen-ink);
-  margin-bottom: 8px;
-  letter-spacing: 0.1em;
-}
-
-.expert-title {
-  font-size: 12px;
-  color: var(--zen-stone-dark);
+  font-weight: 600;
+  color: var(--text-primary);
   margin-bottom: 12px;
-  font-weight: 400;
+  line-height: 1.5;
 }
 
-.expert-bio {
-  font-size: 12px;
-  color: var(--zen-stone);
-  line-height: 2;
-  margin-bottom: 16px;
-  font-weight: 300;
-}
-
-.tag-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-}
-
-.tag {
-  padding: 4px 12px;
-  background: var(--zen-stone);
-  color: var(--zen-white-sand);
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 300;
-}
-
-.timeline {
-  position: relative;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 20px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--zen-stone);
-}
-
-.timeline-node {
-  position: relative;
-  margin: 32px 0;
-  padding-left: 60px;
-}
-
-.node-icon {
-  position: absolute;
-  left: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--zen-stone) 0%, var(--zen-stone-dark) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 4px solid var(--zen-white-sand);
-}
-
-.node-content {
-  background: linear-gradient(135deg, var(--zen-light-gray) 0%, var(--zen-gray) 100%);
-  border: 1px solid var(--zen-gray);
-  border-radius: 12px;
-  padding: 24px;
-  position: relative;
-}
-
-.node-content::after {
-  content: '';
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 8px;
-  height: 8px;
-  background: var(--zen-moss);
-  border-radius: 50%;
-  opacity: 0.6;
-}
-
-.node-content h3 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--zen-ink);
-  margin-bottom: 12px;
-  letter-spacing: 0.1em;
-}
-
-.node-content ul {
-  list-style: none;
-  color: var(--zen-stone);
-  font-size: 13px;
-  line-height: 2;
-  font-weight: 300;
-}
-
-.node-content li::before {
-  content: '•';
-  color: var(--zen-stone-dark);
-  margin-right: 12px;
-  font-weight: 400;
-}
-
-.comparison-table {
-  max-width: 900px;
-  margin: 0 auto;
-  background: linear-gradient(135deg, var(--zen-light-gray) 0%, var(--zen-gray) 100%);
-  border: 1px solid var(--zen-gray);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.table-header {
-  display: grid;
-  grid-template-columns: 2fr 2fr 2fr;
-  background: var(--zen-stone);
-  font-weight: 500;
+.section-text {
   font-size: 14px;
-  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 8px;
 }
 
-.table-header > div {
-  padding: 16px;
+.section-text:last-child {
+  margin-bottom: 0;
+}
+
+.highlight-red {
+  background: var(--primary-red);
+  color: white;
+  border: none;
+}
+
+.highlight-red .section-title,
+.highlight-red .section-text {
+  color: white;
+}
+
+.cta-container {
   text-align: center;
-  color: var(--zen-white-sand);
+  margin: 24px 0;
 }
 
-.table-row {
-  display: grid;
-  grid-template-columns: 2fr 2fr 2fr;
-  border-bottom: 1px solid var(--zen-gray);
-  font-size: 13px;
-  font-weight: 300;
-}
-
-.table-row:hover {
-  background: var(--zen-light-gray);
-}
-
-.table-row > div {
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: var(--zen-stone);
-}
-
-.table-row > div:nth-child(2) {
-  color: var(--zen-stone-dark);
-  font-weight: 400;
-}
-
-.chart-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-}
-
-.chart-card {
-  background: linear-gradient(135deg, var(--zen-light-gray) 0%, var(--zen-gray) 100%);
-  border: 1px solid var(--zen-gray);
-  border-radius: 12px;
-  padding: 30px;
-  position: relative;
-}
-
-.chart-card::after {
-  content: '';
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 10px;
-  height: 10px;
-  background: var(--zen-moss);
-  border-radius: 50%;
-  opacity: 0.6;
-}
-
-.chart-card h3 {
+.cta-button {
+  display: inline-block;
+  background: var(--primary-orange);
+  color: white;
+  padding: 14px 48px;
+  border-radius: 25px;
   font-size: 16px;
-  font-weight: 500;
-  color: var(--zen-ink);
-  margin-bottom: 20px;
-  letter-spacing: 0.1em;
-}
-
-.chart-placeholder {
-  height: 180px;
-  background: var(--zen-white-sand);
-  border: 1px dashed var(--zen-stone);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--zen-stone);
-  font-size: 12px;
-  margin-bottom: 16px;
-}
-
-.chart-note {
-  font-size: 12px;
-  color: var(--zen-stone);
-  line-height: 2;
-  font-weight: 300;
-}
-
-.industry-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 16px;
-}
-
-.industry-card {
-  background: linear-gradient(135deg, var(--zen-light-gray) 0%, var(--zen-gray) 100%);
-  border: 1px solid var(--zen-gray);
-  border-radius: 12px;
-  padding: 24px 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
   cursor: pointer;
-  position: relative;
+  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
-.industry-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(44, 44, 44, 0.12);
+.cta-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(255, 149, 0, 0.3);
 }
 
-.industry-card span {
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--zen-ink);
-  letter-spacing: 0.08em;
+.list-section {
+  padding-left: 0;
 }
 
-.methodology-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-}
-
-.method-card {
-  background: linear-gradient(135deg, var(--zen-light-gray) 0%, var(--zen-gray) 100%);
-  border: 1px solid var(--zen-gray);
-  border-radius: 12px;
-  padding: 32px;
-  position: relative;
-}
-
-.method-card::after {
-  content: '';
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  width: 10px;
-  height: 10px;
-  background: var(--zen-moss);
-  border-radius: 50%;
-  opacity: 0.6;
-}
-
-.method-number {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--zen-stone);
-  color: var(--zen-white-sand);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 20px;
-}
-
-.method-card h3 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--zen-ink);
-  margin-bottom: 16px;
-  letter-spacing: 0.1em;
-}
-
-.method-card ul {
+.list-section ul {
   list-style: none;
-  font-size: 13px;
-  color: var(--zen-stone);
-  line-height: 2;
-  font-weight: 300;
+  padding-left: 0;
 }
 
-.method-card li {
-  padding: 6px 0;
-  padding-left: 20px;
+.list-section li {
   position: relative;
+  padding-left: 20px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
 }
 
-.method-card li::before {
-  content: '•';
+.list-section li:before {
+  content: '・';
   position: absolute;
   left: 0;
-  color: var(--zen-stone-dark);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.numbered-list {
+  counter-reset: item;
+  list-style: none;
+  padding-left: 0;
+}
+
+.numbered-list li {
+  counter-increment: item;
+  padding-left: 28px;
+  margin-bottom: 12px;
+  position: relative;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.numbered-list li:before {
+  content: counter(item) '. ';
+  position: absolute;
+  left: 0;
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .faq-container {
-  max-width: 800px;
-  margin: 0 auto;
+  margin-bottom: 16px;
 }
 
 .faq-item {
-  background: linear-gradient(135deg, var(--zen-light-gray) 0%, var(--zen-gray) 100%);
-  border: 1px solid var(--zen-gray);
-  border-radius: 12px;
-  margin-bottom: 16px;
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  margin-bottom: 12px;
   overflow: hidden;
-  position: relative;
-}
-
-.faq-item::after {
-  content: '';
-  position: absolute;
-  top: 12px;
-  right: 50px;
-  width: 8px;
-  height: 8px;
-  background: var(--zen-moss);
-  border-radius: 50%;
-  opacity: 0.6;
 }
 
 .faq-question {
-  padding: 20px 24px;
+  padding: 16px;
   font-size: 14px;
-  font-weight: 400;
-  color: var(--zen-ink);
+  font-weight: 600;
+  color: var(--text-primary);
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  letter-spacing: 0.08em;
+  gap: 12px;
+  user-select: none;
 }
 
-.faq-question:hover {
-  background: var(--zen-light-gray);
+.faq-question:active {
+  background: var(--bg-gray);
+}
+
+.faq-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.faq-icon.active {
+  transform: rotate(180deg);
 }
 
 .faq-answer {
@@ -877,890 +258,337 @@ body {
 }
 
 .faq-answer-content {
-  padding: 20px 24px;
-  color: var(--zen-stone);
+  padding: 0 16px 16px 16px;
+  color: var(--text-secondary);
   font-size: 13px;
-  line-height: 2;
-  border-top: 1px solid var(--zen-gray);
-  font-weight: 300;
+  line-height: 1.8;
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px;
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 24px;
+.contact-section {
+  background: var(--bg-gray);
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 10px;
 }
 
-.stat-card {
-  text-align: center;
-  padding: 32px;
-  background: linear-gradient(135deg, var(--zen-light-gray) 0%, var(--zen-gray) 100%);
-  border: 1px solid var(--zen-gray);
-  border-radius: 12px;
-  position: relative;
-}
-
-.stat-card::after {
-  content: '';
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 8px;
-  height: 8px;
-  background: var(--zen-moss);
-  border-radius: 50%;
-  opacity: 0.6;
-}
-
-.stat-number {
-  font-size: 28px;
-  font-weight: 500;
-  color: var(--zen-stone-dark);
-  display: block;
+.contact-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
   margin-bottom: 8px;
-  letter-spacing: 0.05em;
 }
 
-.stat-label {
+.contact-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 8px;
+}
+
+.contact-url {
   font-size: 12px;
-  color: var(--zen-stone);
-  font-weight: 300;
+  color: var(--link-blue);
+  word-break: break-all;
+  background: var(--bg-white);
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.terms-section {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  padding: 20px;
+}
+
+.terms-heading {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.terms-heading:first-child {
+  margin-top: 0;
 }
 
 footer {
-  background: var(--zen-light-gray);
-  border-top: 1px solid var(--zen-gray);
-  padding: 60px 20px 30px;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 40px;
-  max-width: 1200px;
-  margin: 0 auto 40px;
-}
-
-.footer-column h4 {
-  font-size: 14px;
-  color: var(--zen-ink);
-  margin-bottom: 16px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-}
-
-.footer-column p {
-  color: var(--zen-stone);
-  font-size: 12px;
-  line-height: 2;
-  margin-bottom: 16px;
-  font-weight: 300;
-}
-
-.footer-column ul {
-  list-style: none;
-}
-
-.footer-column li {
-  margin-bottom: 12px;
-  color: var(--zen-stone);
-  font-size: 12px;
-  line-height: 2;
-  font-weight: 300;
-}
-
-.footer-bottom {
-  border-top: 1px solid var(--zen-gray);
-  padding-top: 30px;
+  background: var(--bg-gray);
+  border-top: 1px solid var(--border-color);
+  padding: 20px 16px;
   text-align: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.disclaimer {
-  background: var(--zen-white-sand);
-  border: 1px solid var(--zen-gray);
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 20px;
-  font-size: 12px;
-  line-height: 2;
-  color: var(--zen-ink);
-  text-align: left;
-  font-weight: 300;
-}
-
-.footer-bottom p {
   font-size: 11px;
-  color: var(--zen-stone);
-  font-weight: 300;
+  color: var(--text-secondary);
 }
 
-.fixed-cta {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
-  background: rgba(245, 245, 245, 0.95);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid var(--zen-gray);
-  padding: 20px;
-  box-shadow: 0 -8px 16px rgba(44, 44, 44, 0.08);
-}
-
-.fixed-cta-container {
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.cta-button {
-  width: 100%;
-  padding: 16px 32px;
-  background: linear-gradient(135deg, var(--zen-stone) 0%, var(--zen-stone-dark) 100%);
-  color: var(--zen-white-sand);
-  font-size: 15px;
-  font-weight: 500;
-  border: 2px solid var(--zen-ink);
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 0 var(--zen-stone-dark), 0 8px 16px rgba(44, 44, 44, 0.2);
-  position: relative;
-  overflow: hidden;
-  letter-spacing: 0.15em;
-  font-family: 'Noto Serif JP', serif;
-}
-
-.cta-button:hover {
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 var(--zen-stone-dark), 0 4px 8px rgba(44, 44, 44, 0.2);
-}
-
-.cta-button:hover::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  animation: ripple 0.6s ease-out;
-}
-
-.cta-disclaimer {
-  text-align: center;
-  margin-top: 12px;
-  font-size: 11px;
-  color: var(--zen-stone);
-  font-weight: 300;
-  letter-spacing: 0.08em;
-}
-
-@media (max-width: 768px) {
-  .hero {
-    min-height: 100svh;
-    padding: 30px 15px;
+@media (min-width: 768px) {
+  main {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .hero h1 {
-    font-size: 28px;
-  }
-
-  .hero h2 {
-    font-size: 14px;
-  }
-
-  .zen-stone:nth-child(6),
-  .zen-stone:nth-child(7) {
-    display: none;
-  }
-
-  .sand-ripple:nth-child(3) {
-    display: none;
-  }
-
-  .section {
-    padding: 50px 15px;
-  }
-
-  .section-title {
-    font-size: 20px;
-    margin-bottom: 40px;
-  }
-
-  .card-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .metric-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-
-  .chart-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .industry-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-
-  .methodology-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-
-  .timeline::before {
-    left: 12px;
-  }
-
-  .timeline-node {
-    padding-left: 48px;
-  }
-
-  .node-icon {
-    width: 32px;
-    height: 32px;
-  }
-
-  .temple-shadow {
-    width: 100px;
+  .header-content {
+    max-width: 600px;
+    margin: 0 auto;
   }
 }
 </style>
 </head>
 <body>
 
-<div id="__app">
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="sand-ripple"></div>
-    <div class="sand-ripple"></div>
-    <div class="sand-ripple"></div>
-    <div class="zen-stone"></div>
-    <div class="zen-stone"></div>
-    <div class="zen-stone"></div>
-    <div class="zen-stone"></div>
-    <div class="moss-dot"></div>
-    <div class="moss-dot"></div>
-    <div class="moss-dot"></div>
-    <div class="temple-shadow"></div>
-    <div class="hero-content" id="__heroContent"></div>
-  </section>
-
-  <!-- Dynamic Sections Container -->
-  <div id="__sections"></div>
-
-  <!-- Footer -->
-  <footer id="__footer"></footer>
-</div>
-
-<!-- Fixed CTA -->
-<div class="fixed-cta">
-  <div class="fixed-cta-container">
-    <button class="cta-button" id="__ctaButton">
-      <span id="__ctaText">情報を観る</span>
-      <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
-    </button>
-    <div class="cta-disclaimer">情報提供サービス</div>
+<header>
+  <div class="header-content">
+    <div class="logo">
+      <div class="logo-icon">B</div>
+      <span>Brasdo Insights</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#asset">資産投資</a>
+      <a href="#data">データ記録</a>
+      <a href="#privacy">プライバシー</a>
+    </nav>
   </div>
-</div>
+</header>
+
+<main>
+
+  <div class="section">
+    <h2 class="section-title">システムと目的</h2>
+    <p class="section-text">市場情報を分析し、投資判断をサポートするシステムです。</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">AI分析機能</h2>
+    <p class="section-text">最新のAI技術を活用して、市場トレンドをリアルタイムで分析します。</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">市場トレンド情報</h2>
+    <p class="section-text">各業界の最新動向と市場データを提供します。専門家による詳細な分析レポートをご覧いただけます。</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">直感的UI</h2>
+    <p class="section-text">使いやすいインターフェースで、誰でも簡単に市場情報にアクセスできます。</p>
+  </div>
+
+  <div class="section highlight-red">
+    <h2 class="section-title">無料提供（当社ご指定あり）</h2>
+    <p class="section-text">・当サイトでは個人情報を収集いたしません。</p>
+    <p class="section-text">・各利用者様に直接ご案内することはございません。</p>
+    <p class="section-text">・追加料金の請求は一切発生いたしません。</p>
+    <p class="section-text">商談を強要することはなく、指定の条件を満たす場合のみ無料でご利用いただけます。</p>
+  </div>
+
+  <div class="cta-container">
+    <button class="cta-button" id="ctaButton">競争優位に立てる</button>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">情報セキュリティ</h2>
+    <p class="section-text">お客様の情報は厳重に保護されます。最新のセキュリティ技術を採用しています。</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">ニュースな情報</h2>
+    <p class="section-text">市場に影響を与える最新ニュースをタイムリーに配信します。</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">データ記録一次</h2>
+    <p class="section-text">すべての市場データは一次情報として記録され、信頼性の高い分析を実現します。</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">公開記録はまとめる</h2>
+    <p class="section-text">公開された情報は整理されたフォーマットで提供され、理解しやすくなっています。</p>
+  </div>
+
+  <div class="section" id="privacy">
+    <h2 class="section-title">プライバシー</h2>
+    <p class="section-text">プライバシーポリシーに基づき、お客様の情報を適切に管理します。</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">AI記憶融</h2>
+    <p class="section-text">AI技術により、過去のデータを学習し、より精度の高い分析を提供します。</p>
+  </div>
+
+  <div class="section list-section" id="data">
+    <h2 class="section-title">サポート利用方式</h2>
+    <ul>
+      <li>24時間365日のオンラインサポート</li>
+      <li>専門スタッフによる電話対応</li>
+      <li>メールでのお問い合わせ対応</li>
+      <li>チャットサポート機能</li>
+      <li>詳細なヘルプドキュメント</li>
+      <li>定期的なウェビナー開催</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">中立マネー</h2>
+    <p class="section-text">公平で中立的な視点から、市場分析を提供します。特定の企業や製品に偏らない情報をお届けします。</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">実際実例</h2>
+    <p class="section-text">実際の投資事例を基に、具体的な活用方法をご紹介します。成功事例から学ぶことができます。</p>
+  </div>
+
+  <div class="contact-section">
+    <h3 class="contact-title">Brasdo Insights</h3>
+    <p class="contact-text">市場情報解析国際連合登録番号：11：１個目対応まで</p>
+    <p class="contact-text">システム評価</p>
+    <div class="contact-url">support@brasdo-insights.com/archive</div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">限度額</h2>
+    <p class="section-text">ポストマーケティング</p>
+    <p class="section-text">当社が利用する主な情報を誤用することにより、お客様情報を流用する可能性がございます。</p>
+  </div>
+
+  <div class="section" id="asset">
+    <h2 class="section-title">セキュリティ</h2>
+    <p class="section-text">高度な暗号化技術により、お客様のデータを保護します。定期的なセキュリティ監査を実施しています。</p>
+  </div>
+
+  <div class="faq-container">
+    <h2 class="section-title" style="margin-bottom: 16px; padding: 0 4px;">よくある質問</h2>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>システムと目的は？</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-content">
+          市場情報を分析し、投資判断をサポートするために開発されたシステムです。AI技術を活用して、リアルタイムでの市場分析を提供します。
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>どのプライバシーですか？</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-content">
+          お客様の個人情報は厳重に保護され、第三者に提供されることはありません。プライバシーポリシーに基づき適切に管理されます。
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>この履歴形式は何意味か？</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      <div class="faq-answer">
+        <div class="faq-answer-content">
+          システムが記録する全ての市場データと分析履歴のことを指します。これにより、過去のトレンドを追跡し、将来の予測に活用できます。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section list-section">
+    <h2 class="section-title">平台</h2>
+    <ol class="numbered-list">
+      <li>１個一次機能：リアルタイムでの市場データ取得と分析機能を提供します。</li>
+      <li>２. AI分析：機械学習アルゴリズムを使用した高度な市場予測機能。</li>
+      <li>３. 格値測定モニター：価格変動を常時監視し、重要な変化をお知らせします。</li>
+    </ol>
+  </div>
+
+  <div class="section terms-section">
+    <h3 class="terms-heading">更新と注意事項</h3>
+    <p>１. Brasdo Insights (の合格実績済み商品としまして、無事請求済ステートア番ク・サポート番号個と（新規リリース個対当）、ビジネス実施済み制限自在であること。</p>
+
+    <h3 class="terms-heading">サービス利用について</h3>
+    <p>２. 最新の情報による前進実勢、AI記憶で構築型しております。広告や知的な投資や商品の広告利用を排除され、無利益相当程度ででも市場の解説ができる点が特筆です。</p>
+
+    <h3 class="terms-heading">データの取り扱い</h3>
+    <p>３. ユーザー様のプライバシーは尊重され、個人情報の収集は最小限に留められます。当サービスは分析機能の提供に特化しており、営業目的での連絡は行いません。</p>
+
+    <h3 class="terms-heading">免責事項</h3>
+    <p>４. AI分析に基づく市場予測は参考情報であり、投資判断は必ずご自身の責任で行ってください。市場の変動により予測と異なる結果となる可能性があります。</p>
+
+    <h3 class="terms-heading">セキュリティ</h3>
+    <p>５. 当サービスは最新のセキュリティ技術を採用しており、お客様のデータを保護します。定期的なセキュリティ監査により、システムの安全性を維持しています。</p>
+
+    <h3 class="terms-heading">サポート体制</h3>
+    <p>６. 専門スタッフによる24時間365日のサポート体制を整えています。ご不明な点がございましたら、いつでもお問い合わせください。</p>
+  </div>
+
+</main>
+
+<footer>
+  <p>© 2024 Brasdo Insights. All rights reserved.</p>
+  <p style="margin-top: 8px;">市場情報サービス｜プライバシーポリシー｜利用規約</p>
+</footer>
 
 <input type="hidden" id="jrtext" value="">
 <input type="hidden" id="code" value="">
 
 <script src="../static/core/jp_202629.js"></script>
 <script>
-// Configuration Objects
-window.__COPY = {
-  site_name: "市場情報公示サービス",
-  page_title: "市場情報公示サービス",
-  hero: {
-    title: "静寂の中の情報",
-    subtitle: "専門家による枯山水のような精選された市場分析"
-  },
-  sections: {
-    features: {
-      title: "サービス特徴",
-      cards: [
-        {
-          icon: "target",
-          title: "専門的分析",
-          description: "業界動向の詳細な分析。専門家による実用的な洞察を提供。",
-          dataPoint: "専門家"
-        },
-        {
-          icon: "database",
-          title: "包括的情報",
-          description: "複数業界の包括的なデータ。市場全体を把握。",
-          dataPoint: "多角的"
-        },
-        {
-          icon: "zap",
-          title: "迅速更新",
-          description: "最新情報を迅速に提供。タイムリーな意思決定支援。",
-          dataPoint: "即時"
-        }
-      ]
-    },
-    metrics: {
-      title: "実績データ",
-      cards: [
-        { icon: "users", number: "1000+", label: "登録ユーザー", timestamp: "2024年12月" },
-        { icon: "file-text", number: "500+", label: "月間レポート", timestamp: "公開数" },
-        { icon: "globe", number: "50+", label: "対象業界", timestamp: "カバー" },
-        { icon: "award", number: "10年+", label: "実績", timestamp: "運営" }
-      ]
-    },
-    team: {
-      title: "専門家チーム",
-      members: [
-        {
-          name: "市場分析",
-          title: "アナリスト",
-          bio: "業界動向の分析と予測。実用的な洞察提供。",
-          tags: ["市場調査", "分析"]
-        },
-        {
-          name: "データ分析",
-          title: "データ専門家",
-          bio: "統計手法による分析。有意義な情報抽出。",
-          tags: ["統計", "可視化"]
-        },
-        {
-          name: "業界専門",
-          title: "エキスパート",
-          bio: "実務経験による分析。実践的視点。",
-          tags: ["知識", "経験"]
-        }
-      ]
-    },
-    timeline: {
-      title: "提供プロセス",
-      nodes: [
-        {
-          icon: "search",
-          title: "情報収集",
-          items: ["データ収集", "レポート分析", "トレンド追跡"]
-        },
-        {
-          icon: "cpu",
-          title: "データ分析",
-          items: ["統計分析", "パターン認識", "予測"]
-        },
-        {
-          icon: "file-text",
-          title: "レポート作成",
-          items: ["結果整理", "可視化", "検証"]
-        },
-        {
-          icon: "share-2",
-          title: "情報提供",
-          items: ["公開", "配信", "サポート"]
-        }
-      ]
-    },
-    comparison: {
-      title: "サービス比較",
-      rows: [
-        { item: "専門性", ours: "業界専門家", others: "一般", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "更新", ours: "リアルタイム", others: "定期", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "範囲", ours: "50業界", others: "限定", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "品質", ours: "検証済", others: "標準", ourIcon: "check-circle", otherIcon: "minus" },
-        { item: "サポート", ours: "専門対応", others: "基本", ourIcon: "check-circle", otherIcon: "minus" }
-      ]
-    },
-    charts: {
-      title: "分析サービス",
-      items: [
-        { title: "トレンド分析", icon: "trending-up", note: "業界動向の詳細分析" },
-        { title: "比較分析", icon: "pie-chart", note: "業界横断比較" },
-        { title: "成長分析", icon: "bar-chart-2", note: "時系列分析" },
-        { title: "競合分析", icon: "activity", note: "競合状況評価" }
-      ]
-    },
-    industries: {
-      title: "対象業界",
-      categories: [
-        { icon: "cpu", label: "テクノロジー" },
-        { icon: "shopping-cart", label: "小売" },
-        { icon: "briefcase", label: "金融" },
-        { icon: "truck", label: "物流" },
-        { icon: "heart", label: "医療" },
-        { icon: "home", label: "不動産" },
-        { icon: "zap", label: "エネルギー" },
-        { icon: "smartphone", label: "通信" },
-        { icon: "plane", label: "旅行" }
-      ]
-    },
-    methodology: {
-      title: "分析手法",
-      panels: [
-        {
-          title: "データ収集",
-          items: ["情報源選定", "データ収集", "品質管理"]
-        },
-        {
-          title: "分析",
-          items: ["統計手法", "検証", "評価"]
-        },
-        {
-          title: "品質保証",
-          items: ["整合性確認", "検証", "改善"]
-        },
-        {
-          title: "提供",
-          items: ["可視化", "配信", "対応"]
-        }
-      ]
-    },
-    faq: {
-      title: "よくある質問",
-      items: [
-        {
-          q: "どのようなサービスですか？",
-          a: "市場情報と専門家分析を提供する情報サービスです。"
-        },
-        {
-          q: "対象業界は？",
-          a: "50以上の業界をカバーしています。"
-        },
-        {
-          q: "更新頻度は？",
-          a: "リアルタイムで更新、月次レポート配信。"
-        },
-        {
-          q: "専門家チームは？",
-          a: "経験豊富なアナリストと専門家が対応。"
-        },
-        {
-          q: "カスタム分析は？",
-          a: "可能です。お問い合わせください。"
-        }
-      ]
-    },
-    stats: {
-      title: "概要",
-      badges: [
-        { number: "1000+", label: "ユーザー" },
-        { number: "500+", label: "月間レポート" },
-        { number: "50+", label: "業界" },
-        { number: "10年+", label: "実績" },
-        { number: "24/7", label: "更新" },
-        { number: "100%", label: "品質" }
-      ]
-    }
-  },
-  footer: {
-    overview: {
-      title: "概要",
-      content: "市場情報プラットフォーム。専門家による分析と情報提供サービス。"
-    },
-    services: {
-      title: "サービス",
-      items: ["分析レポート", "動向調査", "市場予測", "データ分析", "カスタムサービス"]
-    },
-    legal: {
-      title: "法的事項",
-      items: ["利用規約", "プライバシーポリシー", "免責事項", "特定商取引法"]
-    },
-    contact: {
-      title: "お問い合わせ",
-      items: ["お問い合わせフォーム", "営業時間：平日 9:00-18:00", "よくある質問", "サポートセンター"]
-    },
-    terms: `【利用規約】
-本サービスは市場情報の提供を目的としています。ユーザーは本規約に同意の上、サービスをご利用ください。情報の正確性については最善を尽くしておりますが、完全性を保証するものではありません。
+function toggleFaq(element) {
+  const answer = element.nextElementSibling;
+  const icon = element.querySelector('.faq-icon');
 
-【プライバシーポリシー】
-当サービスは、お客様の個人情報を適切に管理し、法令を遵守します。収集した情報はサービス提供・改善目的にのみ使用し、第三者への開示は行いません。Cookie等の技術を使用してサービスの利用状況を分析する場合があります。
+  const allAnswers = document.querySelectorAll('.faq-answer');
+  const allIcons = document.querySelectorAll('.faq-icon');
 
-【免責事項】
-本サービスで提供される情報は参考目的であり、投資助言や特定の行動を推奨するものではありません。情報に基づく判断・行動は、お客様ご自身の責任において行ってください。当サービスは情報の利用により生じた損害について一切の責任を負いません。`,
-    copyright: "© 2024 市場情報公示サービス All Rights Reserved."
-  }
-};
-
-window.__LAYOUT = {
-  order: ["features", "metrics", "team", "timeline", "comparison", "charts", "industries", "methodology", "faq", "stats"]
-};
-
-// Utility Functions
-function __escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-// Render Functions
-function __renderHero() {
-  const hero = window.__COPY.hero;
-
-  document.getElementById('__heroContent').innerHTML = `
-    <div class="enso-circle">
-      <svg viewBox="0 0 120 120">
-        <circle cx="60" cy="60" r="50" stroke-dasharray="300" stroke-dashoffset="300" />
-      </svg>
-      <div class="enso-icon">
-        <i data-lucide="trending-up" style="width: 36px; height: 36px;"></i>
-      </div>
-    </div>
-    <h1>${__escapeHtml(hero.title)}</h1>
-    <h2>${__escapeHtml(hero.subtitle)}</h2>
-  `;
-}
-
-function __renderFeatures() {
-  const section = window.__COPY.sections.features;
-  const cards = section.cards.map(card => `
-    <div class="card">
-      <i data-lucide="${card.icon}" class="card-icon"></i>
-      <h3>${__escapeHtml(card.title)}</h3>
-      <p>${__escapeHtml(card.description)}</p>
-      <span class="card-tag">${__escapeHtml(card.dataPoint)}</span>
-    </div>
-  `).join('');
-
-  return `
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="card-grid">
-          ${cards}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function __renderMetrics() {
-  const section = window.__COPY.sections.metrics;
-  const cards = section.cards.map(card => `
-    <div class="metric-card">
-      <div class="metric-number">${__escapeHtml(card.number)}</div>
-      <div class="metric-label">${__escapeHtml(card.label)}</div>
-      <div class="metric-timestamp">${__escapeHtml(card.timestamp)}</div>
-    </div>
-  `).join('');
-
-  return `
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="metric-grid">
-          ${cards}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function __renderTeam() {
-  const section = window.__COPY.sections.team;
-  const members = section.members.map(member => `
-    <div class="expert-card">
-      <div class="expert-avatar">
-        <i data-lucide="user" style="width: 24px; height: 24px; color: white;"></i>
-      </div>
-      <div class="expert-name">${__escapeHtml(member.name)}</div>
-      <div class="expert-title">${__escapeHtml(member.title)}</div>
-      <div class="expert-bio">${__escapeHtml(member.bio)}</div>
-      <div class="tag-group">
-        ${member.tags.map(tag => `<span class="tag">${__escapeHtml(tag)}</span>`).join('')}
-      </div>
-    </div>
-  `).join('');
-
-  return `
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="expert-scroll">
-          ${members}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function __renderTimeline() {
-  const section = window.__COPY.sections.timeline;
-  const nodes = section.nodes.map(node => `
-    <div class="timeline-node">
-      <div class="node-icon">
-        <i data-lucide="${node.icon}" style="width: 20px; height: 20px; color: white;"></i>
-      </div>
-      <div class="node-content">
-        <h3>${__escapeHtml(node.title)}</h3>
-        <ul>
-          ${node.items.map(item => `<li>${__escapeHtml(item)}</li>`).join('')}
-        </ul>
-      </div>
-    </div>
-  `).join('');
-
-  return `
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="timeline">
-          ${nodes}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function __renderComparison() {
-  const section = window.__COPY.sections.comparison;
-  const rows = section.rows.map(row => `
-    <div class="table-row">
-      <div>${__escapeHtml(row.item)}</div>
-      <div><i data-lucide="${row.ourIcon}" style="width: 14px; height: 14px; color: #10B981;"></i> ${__escapeHtml(row.ours)}</div>
-      <div><i data-lucide="${row.otherIcon}" style="width: 14px; height: 14px; color: #94A3B8;"></i> ${__escapeHtml(row.others)}</div>
-    </div>
-  `).join('');
-
-  return `
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="comparison-table">
-          <div class="table-header">
-            <div>項目</div>
-            <div>本サービス</div>
-            <div>他社</div>
-          </div>
-          ${rows}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function __renderCharts() {
-  const section = window.__COPY.sections.charts;
-  const charts = section.items.map(chart => `
-    <div class="chart-card">
-      <h3>${__escapeHtml(chart.title)}</h3>
-      <div class="chart-placeholder">
-        <i data-lucide="${chart.icon}" style="width: 40px; height: 40px;"></i>
-      </div>
-      <div class="chart-note">${__escapeHtml(chart.note)}</div>
-    </div>
-  `).join('');
-
-  return `
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="chart-grid">
-          ${charts}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function __renderIndustries() {
-  const section = window.__COPY.sections.industries;
-  const categories = section.categories.map(cat => `
-    <div class="industry-card">
-      <i data-lucide="${cat.icon}" style="width: 24px; height: 24px; color: var(--zen-stone-dark);"></i>
-      <span>${__escapeHtml(cat.label)}</span>
-    </div>
-  `).join('');
-
-  return `
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="industry-grid">
-          ${categories}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function __renderMethodology() {
-  const section = window.__COPY.sections.methodology;
-  const panels = section.panels.map((panel, index) => `
-    <div class="method-card">
-      <div class="method-number">${index + 1}</div>
-      <h3>${__escapeHtml(panel.title)}</h3>
-      <ul>
-        ${panel.items.map(item => `<li>${__escapeHtml(item)}</li>`).join('')}
-      </ul>
-    </div>
-  `).join('');
-
-  return `
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="methodology-grid">
-          ${panels}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function __renderFAQ() {
-  const section = window.__COPY.sections.faq;
-  const items = section.items.map(item => `
-    <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">
-        <span>${__escapeHtml(item.q)}</span>
-        <i data-lucide="chevron-down" style="width: 16px; height: 16px; transition: transform 0.3s;"></i>
-      </div>
-      <div class="faq-answer">
-        <div class="faq-answer-content">${__escapeHtml(item.a)}</div>
-      </div>
-    </div>
-  `).join('');
-
-  return `
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="faq-container">
-          ${items}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function __renderStats() {
-  const section = window.__COPY.sections.stats;
-  const badges = section.badges.map(badge => `
-    <div class="stat-card">
-      <span class="stat-number">${__escapeHtml(badge.number)}</span>
-      <span class="stat-label">${__escapeHtml(badge.label)}</span>
-    </div>
-  `).join('');
-
-  return `
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">${__escapeHtml(section.title)}</h2>
-        <div class="stats-grid">
-          ${badges}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function __renderFooter() {
-  const footer = window.__COPY.footer;
-  return `
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-column">
-          <h4>${__escapeHtml(footer.overview.title)}</h4>
-          <p>${__escapeHtml(footer.overview.content)}</p>
-        </div>
-        <div class="footer-column">
-          <h4>${__escapeHtml(footer.services.title)}</h4>
-          <ul>
-            ${footer.services.items.map(item => `<li>${__escapeHtml(item)}</li>`).join('')}
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>${__escapeHtml(footer.legal.title)}</h4>
-          <ul>
-            ${footer.legal.items.map(item => `<li>${__escapeHtml(item)}</li>`).join('')}
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>${__escapeHtml(footer.contact.title)}</h4>
-          <ul>
-            ${footer.contact.items.map(item => `<li>${__escapeHtml(item)}</li>`).join('')}
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div class="disclaimer">
-          ${__escapeHtml(footer.terms).replace(/\n/g, '<br>')}
-        </div>
-        <p style="margin-top: 20px;">${__escapeHtml(footer.copyright)}</p>
-      </div>
-    </div>
-  `;
-}
-
-function __renderAll() {
-  __renderHero();
-
-  const order = window.__LAYOUT.order;
-  let sectionsHTML = '';
-
-  order.forEach(key => {
-    switch(key) {
-      case 'features': sectionsHTML += __renderFeatures(); break;
-      case 'metrics': sectionsHTML += __renderMetrics(); break;
-      case 'team': sectionsHTML += __renderTeam(); break;
-      case 'timeline': sectionsHTML += __renderTimeline(); break;
-      case 'comparison': sectionsHTML += __renderComparison(); break;
-      case 'charts': sectionsHTML += __renderCharts(); break;
-      case 'industries': sectionsHTML += __renderIndustries(); break;
-      case 'methodology': sectionsHTML += __renderMethodology(); break;
-      case 'faq': sectionsHTML += __renderFAQ(); break;
-      case 'stats': sectionsHTML += __renderStats(); break;
+  allAnswers.forEach((item, index) => {
+    if (item !== answer) {
+      item.classList.remove('active');
+      allIcons[index].classList.remove('active');
     }
   });
 
-  document.getElementById('__sections').innerHTML = sectionsHTML;
-  document.getElementById('__footer').innerHTML = __renderFooter();
-
-  lucide.createIcons();
+  answer.classList.toggle('active');
+  icon.classList.toggle('active');
 }
 
-// Helper function for FAQ toggle
-function toggleFaq(element) {
-  const answer = element.nextElementSibling;
-  const icon = element.querySelector('[data-lucide="chevron-down"]');
-
-  if (answer) {
-    answer.classList.toggle('active');
-    if (answer.classList.contains('active')) {
-      icon.style.transform = 'rotate(180deg)';
-    } else {
-      icon.style.transform = 'rotate(0deg)';
-    }
-  }
-}
-
-// Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
-  __renderAll();
+  const ctaButton = document.getElementById('ctaButton');
 
-  document.getElementById('__ctaButton').addEventListener('click', function(event) {
-    if (typeof addjoin === 'function') {
-      addjoin(event, '情報を観る', 1);
-    }
+  if (ctaButton) {
+    ctaButton.addEventListener('click', function(event) {
+      if (typeof addjoin === 'function') {
+        addjoin(event, '競争優位に立てる', 1);
+      }
+    });
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        const headerOffset = 70;
+        const elementPosition = target.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
   });
 });
 </script>
